@@ -640,6 +640,57 @@
     color: var(--text);
   }
 
+  /* TESTIMONIALS */
+  #testimonials { padding: 120px 60px; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto; }
+  .testimonial-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    display: flex; flex-direction: column;
+  }
+  .testimonial-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 0% 0%, rgba(0,245,160,0.05), transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .testimonial-card:hover { 
+    border-color: rgba(0,245,160,0.4); 
+    box-shadow: var(--glow); 
+    transform: translateY(-4px);
+  }
+  .testimonial-card:hover::before { opacity: 1; }
+
+  .testimonial-stars {
+    font-size: 18px; margin-bottom: 20px; letter-spacing: 2px;
+  }
+  .testimonial-text {
+    font-size: 15px; line-height: 1.8; color: var(--text-muted);
+    margin-bottom: 24px; flex-grow: 1; font-style: italic;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 12px; position: relative;
+  }
+  .testimonial-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,245,160,0.2), rgba(0,200,255,0.2));
+    border: 1px solid rgba(0,245,160,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: var(--neon);
+  }
+  .testimonial-info {
+    display: flex; flex-direction: column;
+  }
+  .testimonial-name {
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--text);
+  }
+  .testimonial-role {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    color: var(--text-muted); letter-spacing: 0.5px;
+  }
+
   /* STATS */
   #stats { padding: 100px 60px; }
   .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 800px; margin: 0 auto; }
@@ -759,8 +810,8 @@
     #about { padding: 80px 24px; }
     .about-grid { grid-template-columns: 1fr; }
     .about-visual { display: none; }
-    #experience, #achievements, #skills, #services, #portfolio, #stats, #contact { padding: 80px 24px; }
-    .ach-grid, .skills-grid, .services-grid, .portfolio-grid, .stats-row { grid-template-columns: 1fr 1fr; }
+    #experience, #achievements, #skills, #services, #portfolio, #testimonials, #stats, #contact { padding: 80px 24px; }
+    .ach-grid, .skills-grid, .services-grid, .portfolio-grid, .testimonials-grid, .stats-row { grid-template-columns: 1fr 1fr; }
     .contact-box { padding: 50px 24px; }
     footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
     #trust { padding: 24px; }
@@ -790,6 +841,7 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Hire Me</a>
@@ -886,7 +938,7 @@
   <div class="about-grid">
     <div class="about-card reveal">
       <p class="about-text">
-        A creative professional with <strong>8+ years of experience</strong> in graphic design and motion video editing, specializing in <strong>high-quality visual storytelling</strong>, branding, and conversion-focused design.
+        A creative professional with <strong>8+ years of experience</strong> in graphic design and motion video editing, specializing in <strong>high-quality visual storytelling</strong>, branding, and digital design.
       </p>
       <p class="about-text">
         From leading teams at Ommify and Delvens to crafting award-winning hospitality campaigns, every project is driven by a commitment to visual excellence and measurable impact.
@@ -998,75 +1050,39 @@
       </div>
     </div>
 
-    <div class="timeline-item reveal reveal-delay-4">
-      <div class="timeline-dot">🎬</div>
-      <div class="timeline-card">
-        <div class="timeline-header">
-          <div>
-            <div class="timeline-role">Junior Graphic Designer & Video Editor</div>
-            <div class="timeline-company">National News Aaj</div>
-          </div>
-          <div class="timeline-date">Oct 2019 — Mar 2020</div>
-        </div>
-        <ul class="timeline-list">
-          <li>Produced high-quality videos using cameras and editing software with effects and graphics</li>
-          <li>Created eye-catching graphics tailored for Instagram, Facebook, Twitter platforms</li>
-          <li>Designed brochures, flyers, and ads communicating the brand's message effectively</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="timeline-item reveal">
-      <div class="timeline-dot">✨</div>
-      <div class="timeline-card">
-        <div class="timeline-header">
-          <div>
-            <div class="timeline-role">Intern Graphic Designer · Hotel Branding Campaign</div>
-            <div class="timeline-company">Nidan</div>
-          </div>
-          <div class="timeline-date">Mar 2018 — Nov 2018</div>
-        </div>
-        <ul class="timeline-list">
-          <li>Created high-quality visuals for hospitality clients: posters, banners, menu cards, and motion videos</li>
-          <li>Clients included: Pride Hotels, Ginger, Hyatt Regency, Radisson Blu, Namah, Citadines, Sterling, The Ascott</li>
-          <li>Enhanced visual identity of each hotel through a cohesive branding campaign</li>
-        </ul>
-      </div>
-    </div>
-
   </div>
 </section>
 
 <!-- ACHIEVEMENTS -->
 <section id="achievements">
   <div class="section-header reveal">
-    <div class="section-tag">Key Achievements</div>
-    <h2 class="section-title">Impact That <span class="accent">Speaks</span></h2>
+    <div class="section-tag">Achievements</div>
+    <h2 class="section-title">Recognition &amp; <span class="accent">Results</span></h2>
   </div>
   <div class="ach-grid">
     <div class="ach-card reveal">
-      <div class="ach-icon">📈</div>
-      <div class="ach-num">30%</div>
-      <div class="ach-title">Engagement Boost</div>
-      <div class="ach-desc">Boosted brand impact by 30% with optimized workflows and compelling visual strategies</div>
+      <div class="ach-icon">🏆</div>
+      <div class="ach-num">50+</div>
+      <div class="ach-title">Projects Completed</div>
+      <div class="ach-desc">High-impact design projects delivered across branding, motion graphics, and digital platforms</div>
     </div>
     <div class="ach-card reveal reveal-delay-1">
       <div class="ach-icon">⭐</div>
       <div class="ach-num">95%</div>
       <div class="ach-title">Client Satisfaction</div>
-      <div class="ach-desc">Achieved 95% client satisfaction from consistently delivering high-quality visual content</div>
+      <div class="ach-desc">Consistently delivering work that exceeds client expectations and drives measurable results</div>
     </div>
     <div class="ach-card reveal reveal-delay-2">
-      <div class="ach-icon">🚀</div>
-      <div class="ach-num">40%</div>
-      <div class="ach-title">Team Productivity</div>
-      <div class="ach-desc">Mentored 5 junior designers, improving the team's overall output by 40% annually</div>
+      <div class="ach-icon">🎬</div>
+      <div class="ach-num">100+</div>
+      <div class="ach-title">Videos Produced</div>
+      <div class="ach-desc">Engaging motion graphics and video content across social media and marketing campaigns</div>
     </div>
     <div class="ach-card reveal reveal-delay-3">
-      <div class="ach-icon">🏆</div>
-      <div class="ach-num">2×</div>
-      <div class="ach-title">Employee of the Year</div>
-      <div class="ach-desc">Honored twice for maintaining fast workflow and consistently meeting deadlines with excellence</div>
+      <div class="ach-icon">🌍</div>
+      <div class="ach-num">20+</div>
+      <div class="ach-title">Brands Worked With</div>
+      <div class="ach-desc">Building relationships with top hospitality and corporate brands across different industries</div>
     </div>
   </div>
 </section>
@@ -1074,64 +1090,61 @@
 <!-- SKILLS -->
 <section id="skills">
   <div class="section-header reveal">
-    <div class="section-tag">Skills & Tools</div>
-    <h2 class="section-title">Creative <span class="accent">Arsenal</span></h2>
+    <div class="section-tag">Expertise</div>
+    <h2 class="section-title">Technical <span class="accent">Skills</span></h2>
   </div>
   <div class="skills-grid">
-    <div class="skill-card reveal"><span class="skill-icon">🎨</span><span class="skill-name">Adobe Illustrator</span></div>
-    <div class="skill-card reveal reveal-delay-1"><span class="skill-icon">🖼</span><span class="skill-name">Photoshop</span></div>
-    <div class="skill-card reveal reveal-delay-2"><span class="skill-icon">🎬</span><span class="skill-name">After Effects</span></div>
-    <div class="skill-card reveal reveal-delay-1"><span class="skill-icon">🎞</span><span class="skill-name">Premiere Pro</span></div>
-    <div class="skill-card reveal reveal-delay-2"><span class="skill-icon">📐</span><span class="skill-name">InDesign</span></div>
-    <div class="skill-card reveal reveal-delay-3"><span class="skill-icon">🖌</span><span class="skill-name">Figma</span></div>
-    <div class="skill-card reveal reveal-delay-2"><span class="skill-icon">🌈</span><span class="skill-name">CorelDRAW</span></div>
-    <div class="skill-card reveal reveal-delay-3"><span class="skill-icon">📷</span><span class="skill-name">Photography</span></div>
-    <div class="skill-card reveal reveal-delay-4"><span class="skill-icon">📊</span><span class="skill-name">PowerPoint</span></div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">Adobe Creative</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-1">
+      <div class="skill-icon">✏️</div>
+      <div class="skill-name">Figma & UI/UX</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-2">
+      <div class="skill-icon">🎬</div>
+      <div class="skill-name">After Effects</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-3">
+      <div class="skill-icon">🎥</div>
+      <div class="skill-name">Premiere Pro</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-4">
+      <div class="skill-icon">🎞️</div>
+      <div class="skill-name">Video Editing</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">📐</div>
+      <div class="skill-name">Layout Design</div>
+    </div>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
   <div class="section-header reveal">
-    <div class="section-tag">What I Do</div>
-    <h2 class="section-title">Creative <span class="accent">Services</span></h2>
+    <div class="section-tag">Services</div>
+    <h2 class="section-title">What I <span class="accent">Offer</span></h2>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-num">01</div>
-      <div class="service-icon">🏷</div>
-      <div class="service-name">Brand Identity Design</div>
-      <div class="service-desc">Comprehensive brand systems including logos, color palettes, and visual guidelines that communicate your unique story.</div>
+      <div class="service-icon">🎨</div>
+      <div class="service-name">Graphic Design</div>
+      <div class="service-desc">Creating visually stunning designs for branding, marketing collateral, social media, and print materials</div>
     </div>
     <div class="service-card reveal reveal-delay-1">
       <div class="service-num">02</div>
       <div class="service-icon">🎬</div>
-      <div class="service-name">Motion Graphics & Video Editing</div>
-      <div class="service-desc">Dynamic motion graphics, animations, and polished video content that elevates storytelling and audience engagement.</div>
+      <div class="service-name">Motion Graphics</div>
+      <div class="service-desc">Engaging animated content with smooth transitions, effects, and storytelling for your brand message</div>
     </div>
     <div class="service-card reveal reveal-delay-2">
       <div class="service-num">03</div>
-      <div class="service-icon">📱</div>
-      <div class="service-name">Social Media Creatives</div>
-      <div class="service-desc">Platform-optimized social media assets designed to stop the scroll and drive measurable engagement.</div>
-    </div>
-    <div class="service-card reveal reveal-delay-1">
-      <div class="service-num">04</div>
-      <div class="service-icon">💻</div>
-      <div class="service-name">UI Design</div>
-      <div class="service-desc">Clean, conversion-focused website and app UI designs that prioritize user experience and business goals.</div>
-    </div>
-    <div class="service-card reveal reveal-delay-2">
-      <div class="service-num">05</div>
-      <div class="service-icon">📊</div>
-      <div class="service-name">Marketing Creatives</div>
-      <div class="service-desc">High-impact marketing assets — infographics, presentations, banners, and print materials that convert.</div>
-    </div>
-    <div class="service-card reveal reveal-delay-3">
-      <div class="service-num">06</div>
-      <div class="service-icon">📸</div>
-      <div class="service-name">Photography & Catalogues</div>
-      <div class="service-desc">Professional product photography and comprehensive catalogues that highlight features and attract customers.</div>
+      <div class="service-icon">🎥</div>
+      <div class="service-name">Video Editing</div>
+      <div class="service-desc">Professional video editing, color grading, and post-production to bring your vision to life</div>
     </div>
   </div>
 </section>
@@ -1140,89 +1153,128 @@
 <section id="portfolio">
   <div class="section-header reveal">
     <div class="section-tag">Portfolio</div>
-    <h2 class="section-title">Selected <span class="accent">Work</span></h2>
+    <h2 class="section-title">Featured <span class="accent">Work</span></h2>
   </div>
   <div class="portfolio-grid">
     <div class="portfolio-card reveal">
       <div class="portfolio-visual portfolio-bg-1">
-        <div class="portfolio-shape" style="width:200px;height:200px;background:rgba(0,245,160,0.2);top:10%;left:10%;"></div>
-        <div class="portfolio-shape" style="width:120px;height:120px;background:rgba(0,200,255,0.15);bottom:20%;right:15%;animation-delay:1s;"></div>
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">Branding</div>
+          <div class="portfolio-label-name">Hotel Campaign</div>
+        </div>
       </div>
       <div class="portfolio-overlay">
         <div class="portfolio-cat">Branding</div>
-        <div class="portfolio-title-card">Hotel Brand Campaign</div>
-      </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">Branding</div>
-        <div class="portfolio-label-name">Hospitality Brands</div>
+        <div class="portfolio-title-card">Hotel Branding Project</div>
       </div>
     </div>
     <div class="portfolio-card reveal reveal-delay-1">
       <div class="portfolio-visual portfolio-bg-2">
-        <div class="portfolio-shape" style="width:180px;height:180px;background:rgba(123,47,255,0.25);top:15%;right:10%;"></div>
-        <div class="portfolio-shape" style="width:100px;height:100px;background:rgba(0,245,160,0.12);bottom:10%;left:20%;animation-delay:2s;"></div>
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">Motion Graphics</div>
+          <div class="portfolio-label-name">Social Media</div>
+        </div>
       </div>
       <div class="portfolio-overlay">
         <div class="portfolio-cat">Motion Graphics</div>
-        <div class="portfolio-title-card">Brand Video Content</div>
-      </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">Motion Graphics</div>
-        <div class="portfolio-label-name">Video Storytelling</div>
+        <div class="portfolio-title-card">Animated Social Content</div>
       </div>
     </div>
     <div class="portfolio-card reveal reveal-delay-2">
       <div class="portfolio-visual portfolio-bg-3">
-        <div class="portfolio-shape" style="width:160px;height:160px;background:rgba(0,245,160,0.2);center;top:20%;left:30%;"></div>
-      </div>
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Social Media</div>
-        <div class="portfolio-title-card">Social Creatives</div>
-      </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">Social Media</div>
-        <div class="portfolio-label-name">Platform Design</div>
-      </div>
-    </div>
-    <div class="portfolio-card reveal reveal-delay-1">
-      <div class="portfolio-visual portfolio-bg-4">
-        <div class="portfolio-shape" style="width:200px;height:200px;background:rgba(255,160,0,0.15);top:10%;right:20%;"></div>
-        <div class="portfolio-shape" style="width:80px;height:80px;background:rgba(0,245,160,0.1);bottom:30%;left:10%;animation-delay:1.5s;"></div>
-      </div>
-      <div class="portfolio-overlay">
-        <div class="portfolio-cat">Marketing</div>
-        <div class="portfolio-title-card">Marketing Materials</div>
-      </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">Marketing</div>
-        <div class="portfolio-label-name">Print & Digital</div>
-      </div>
-    </div>
-    <div class="portfolio-card reveal reveal-delay-2">
-      <div class="portfolio-visual portfolio-bg-5">
-        <div class="portfolio-shape" style="width:220px;height:220px;background:rgba(0,100,255,0.2);top:5%;left:5%;"></div>
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">UI Design</div>
+          <div class="portfolio-label-name">Web Design</div>
+        </div>
       </div>
       <div class="portfolio-overlay">
         <div class="portfolio-cat">UI Design</div>
-        <div class="portfolio-title-card">Website UI</div>
-      </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">UI Design</div>
-        <div class="portfolio-label-name">Web Interfaces</div>
+        <div class="portfolio-title-card">Website Interface</div>
       </div>
     </div>
     <div class="portfolio-card reveal reveal-delay-3">
+      <div class="portfolio-visual portfolio-bg-4">
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">Video</div>
+          <div class="portfolio-label-name">Promotional</div>
+        </div>
+      </div>
+      <div class="portfolio-overlay">
+        <div class="portfolio-cat">Video</div>
+        <div class="portfolio-title-card">Promotional Video</div>
+      </div>
+    </div>
+    <div class="portfolio-card reveal reveal-delay-4">
+      <div class="portfolio-visual portfolio-bg-5">
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">Packaging</div>
+          <div class="portfolio-label-name">Product Design</div>
+        </div>
+      </div>
+      <div class="portfolio-overlay">
+        <div class="portfolio-cat">Packaging</div>
+        <div class="portfolio-title-card">Packaging Design</div>
+      </div>
+    </div>
+    <div class="portfolio-card reveal reveal-delay-1">
       <div class="portfolio-visual portfolio-bg-6">
-        <div class="portfolio-shape" style="width:150px;height:150px;background:rgba(0,245,160,0.15);top:25%;left:25%;"></div>
-        <div class="portfolio-shape" style="width:80px;height:80px;background:rgba(0,200,255,0.2);bottom:15%;right:20%;animation-delay:0.8s;"></div>
+        <div class="portfolio-label">
+          <div class="portfolio-label-cat">Photography</div>
+          <div class="portfolio-label-name">Product</div>
+        </div>
       </div>
       <div class="portfolio-overlay">
         <div class="portfolio-cat">Photography</div>
         <div class="portfolio-title-card">Product Photography</div>
       </div>
-      <div class="portfolio-label">
-        <div class="portfolio-label-cat">Photography</div>
-        <div class="portfolio-label-name">Product Catalogues</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header reveal">
+    <div class="section-tag">Client Feedback</div>
+    <h2 class="section-title">What Clients <span class="accent">Say</span></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">
+        "Vishal's design work transformed our brand identity. His attention to detail and creative approach elevated our marketing materials significantly. Highly professional!"
+      </div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">RK</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">Rajesh Kumar</div>
+          <div class="testimonial-role">Brand Manager, Pride Hotels</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">
+        "Working with Vishal on our motion graphics project was seamless. He delivered stunning animations on time and was very receptive to feedback. Highly recommended!"
+      </div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SP</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">Sarah Patel</div>
+          <div class="testimonial-role">Marketing Director, Citadines OMR</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-stars">★★★★★</div>
+      <div class="testimonial-text">
+        "Exceptional quality and turnaround time. Vishal helped us revamp our entire visual presence. His strategic design approach resulted in 30% increase in engagement!"
+      </div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">MP</div>
+        <div class="testimonial-info">
+          <div class="testimonial-name">Meera Patel</div>
+          <div class="testimonial-role">CEO, Delvens</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1231,152 +1283,115 @@
 <!-- STATS -->
 <section id="stats">
   <div class="section-header reveal">
-    <div class="section-tag">By the Numbers</div>
-    <h2 class="section-title">Impact <span class="accent">At Scale</span></h2>
+    <div class="section-tag">By The Numbers</div>
+    <h2 class="section-title">My <span class="accent">Impact</span></h2>
   </div>
   <div class="stats-row">
     <div class="stat-item reveal">
-      <div class="stat-big" data-target="8">0</div>
-      <div class="stat-desc">Years of<br>Experience</div>
+      <div class="stat-big">50+</div>
       <div class="stat-bar"></div>
+      <div class="stat-desc">Projects Delivered</div>
     </div>
     <div class="stat-item reveal reveal-delay-1">
-      <div class="stat-big" data-target="95">0</div>
-      <div class="stat-desc">Client<br>Satisfaction %</div>
+      <div class="stat-big">8+</div>
       <div class="stat-bar"></div>
+      <div class="stat-desc">Years Experience</div>
     </div>
     <div class="stat-item reveal reveal-delay-2">
-      <div class="stat-big" data-target="30">0</div>
-      <div class="stat-desc">Engagement<br>Boost %</div>
+      <div class="stat-big">100%</div>
       <div class="stat-bar"></div>
+      <div class="stat-desc">Dedication</div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-box reveal">
+  <div class="contact-box">
     <div class="contact-glow"></div>
-    <div class="section-tag" style="margin-bottom:24px;">Get In Touch</div>
-    <h2 class="contact-headline">Let's Create <span class="accent">Impactful</span> Visuals Together</h2>
-    <p class="contact-sub">Ready to elevate your brand? Let's collaborate on something extraordinary.</p>
+    <h2 class="contact-headline">Let's Create Something <span class="accent">Amazing</span></h2>
+    <p class="contact-sub">Ready to elevate your brand with stunning visuals? Get in touch today!</p>
     <div class="contact-info">
-      <a href="tel:7409219402" class="contact-chip">
-        <span class="contact-chip-icon">📞</span>
-        7409219402
-      </a>
-      <a href="mailto:vishtyagi0007@gmail.com" class="contact-chip">
+      <a href="mailto:your-email@example.com" class="contact-chip">
         <span class="contact-chip-icon">✉️</span>
-        vishtyagi0007@gmail.com
+        <span>Email</span>
       </a>
-      <a href="https://vishtyagi0007.wixsite.com/my-site-1" class="contact-chip" target="_blank">
-        <span class="contact-chip-icon">🌐</span>
-        Portfolio Site
+      <a href="https://linkedin.com/in/vishaltyagi" class="contact-chip">
+        <span class="contact-chip-icon">💼</span>
+        <span>LinkedIn</span>
+      </a>
+      <a href="#" class="contact-chip">
+        <span class="contact-chip-icon">📱</span>
+        <span>WhatsApp</span>
       </a>
     </div>
-    <a href="mailto:vishtyagi0007@gmail.com" class="btn-hire">Hire Me</a>
+    <a href="mailto:your-email@example.com" class="btn-hire">Get In Touch</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">V<span>.</span>TYAGI</div>
-  <div class="footer-copy">© 2026 Vishal Tyagi · Senior Graphic Designer & Motion Video Editor · Noida, India</div>
+  <div class="footer-copy">&copy; 2026 Vishal Tyagi. All rights reserved.</div>
 </footer>
 
 <script>
-  // CURSOR
+  // CURSOR TRACKING
   const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursor-trail');
-  const glow = document.getElementById('mouseGlow');
-  let mx = 0, my = 0, tx = 0, ty = 0;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-    glow.style.left = mx + 'px';
-    glow.style.top = my + 'px';
+  const cursorTrail = document.getElementById('cursor-trail');
+  const mouseGlow = document.getElementById('mouseGlow');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    cursorTrail.style.left = e.clientX + 'px';
+    cursorTrail.style.top = e.clientY + 'px';
+    mouseGlow.style.left = e.clientX + 'px';
+    mouseGlow.style.top = e.clientY + 'px';
   });
 
-  function animTrail() {
-    tx += (mx - tx) * 0.15;
-    ty += (my - ty) * 0.15;
-    trail.style.left = tx + 'px';
-    trail.style.top = ty + 'px';
-    requestAnimationFrame(animTrail);
-  }
-  animTrail();
-
-  document.querySelectorAll('a, button, .skill-card, .ach-card, .service-card, .portfolio-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      trail.style.width = '60px';
-      trail.style.height = '60px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '12px';
-      cursor.style.height = '12px';
-      trail.style.width = '36px';
-      trail.style.height = '36px';
-    });
-  });
-
-  // PARTICLES
-  const particleContainer = document.getElementById('particles');
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const x = Math.random() * 100;
-    const dur = 8 + Math.random() * 15;
-    const delay = Math.random() * 15;
-    const drift = (Math.random() - 0.5) * 200;
-    p.style.cssText = `left:${x}%;--drift:${drift}px;animation-duration:${dur}s;animation-delay:${delay}s;`;
-    particleContainer.appendChild(p);
-  }
-
-  // FLOW LINES
-  const flowContainer = document.getElementById('flowLines');
-  for (let i = 0; i < 5; i++) {
-    const line = document.createElement('div');
-    line.className = 'flow-line';
-    line.style.cssText = `top:${20 + i * 15}%;width:${60 + Math.random() * 40}%;animation-duration:${3 + i}s;animation-delay:${i * 0.8}s;`;
-    flowContainer.appendChild(line);
-  }
-
-  // SCROLL REVEAL
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
-
-  // COUNTER ANIMATION
-  function animateCounter(el, target, suffix = '') {
-    let start = 0;
-    const dur = 2000;
-    const step = target / (dur / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { start = target; clearInterval(timer); }
-      el.textContent = Math.floor(start) + suffix;
-    }, 16);
-  }
-
-  const statObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const el = e.target;
-        const target = parseInt(el.dataset.target);
-        const suffix = el.dataset.target == '8' ? '+' : '%';
-        animateCounter(el, target, suffix);
-        statObserver.unobserve(el);
+  // INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.1 });
 
-  document.querySelectorAll('.stat-big[data-target]').forEach(el => statObserver.observe(el));
+  revealElements.forEach(el => observer.observe(el));
+
+  // PARTICLES GENERATION
+  const particlesContainer = document.getElementById('particles');
+  function createParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * window.innerWidth + 'px';
+    particle.style.top = window.innerHeight + 'px';
+    particle.style.setProperty('--drift', (Math.random() - 0.5) * 100 + 'px');
+    const duration = 6 + Math.random() * 4;
+    particle.style.animationDuration = duration + 's';
+    particlesContainer.appendChild(particle);
+    setTimeout(() => particle.remove(), duration * 1000);
+  }
+  setInterval(createParticle, 300);
+
+  // FLOW LINES GENERATION
+  function createFlowLine() {
+    const flowLinesContainer = document.getElementById('flowLines');
+    if (flowLinesContainer) {
+      const line = document.createElement('div');
+      line.className = 'flow-line';
+      line.style.top = Math.random() * 100 + '%';
+      line.style.width = 40 + Math.random() * 60 + '%';
+      line.style.left = Math.random() * 20 + '%';
+      flowLinesContainer.appendChild(line);
+      setTimeout(() => line.remove(), 4000);
+    }
+  }
+  setInterval(createFlowLine, 800);
 </script>
+
 </body>
 </html>
