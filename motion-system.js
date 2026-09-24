@@ -47,7 +47,7 @@
     }catch(e){}
   }
 
-  if(!window.gsap) return;
+  if(!window.gsap||!window.ScrollTrigger) return;
 
   var q=gsap.utils.toArray;
   var ease='power4.out';
