@@ -106,10 +106,7 @@
     if(images[count-1])timeline.to(images[count-1],{
       scale:1.025,yPercent:-1.5,duration:.62
     },count-1+.10);
-    timeline.set({},{},units);
-    window.addEventListener('resize',function(){
-      ScrollTrigger.refresh();
-    },{passive:true});
+    // GSAP's built-in ScrollTrigger refresh handles resize and layout changes.
   })();
 
   if(reduce) return;
