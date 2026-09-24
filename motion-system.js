@@ -141,17 +141,22 @@
     }
   });
 
-  // QA v7 — normal-flow sticky chapters. No project is hidden.
-  // Each incoming full-screen scene naturally covers the previous one while the previous shrinks and tilts.
+  // QA v8 — wrapper scroll-space + sticky surface + late overlap.
+  // Every project remains in normal document flow. Nothing is hidden.
   var story=document.querySelector('.story-stack');
   var stage=story&&story.querySelector('.story-stage');
   var scenes=stage?q('.story-stage .scene'):[];
   if(story&&stage&&scenes.length&&innerWidth>640){
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')||scene});
 
-    // Clear all old pinned-stage transforms.
     gsap.set(scenes,{clearProps:'transform,position,inset'});
-    gsap.set(surfaces,{scale:1,rotation:0,y:0,filter:'brightness(1)',boxShadow:'none',transformOrigin:'50% 50%',force3D:true});
+    gsap.set(surfaces,{
+      scale:1,rotation:0,x:0,y:0,
+      filter:'brightness(1)',
+      boxShadow:'none',
+      transformOrigin:'50% 50%',
+      force3D:true
+    });
 
     scenes.forEach(function(scene,i){
       var surface=surfaces[i];
@@ -161,58 +166,80 @@
       var art=scene.querySelector('.scene-art');
       var img=scene.querySelector('.scene-art img');
 
-      // Scene content resolves gently while the project reaches the viewport.
+      // Content settles while the full-screen panel approaches its sticky state.
       var enter=gsap.timeline({
         scrollTrigger:{
           trigger:scene,
-          start:'top 92%',
-          end:'top 24%',
-          scrub:1.05,
+          start:'top 88%',
+          end:'top 16%',
+          scrub:1.15,
           invalidateOnRefresh:true
         }
       });
-      if(title) enter.fromTo(title,{y:54,opacity:.34},{y:0,opacity:1,ease:'none'},0);
-      if(number) enter.fromTo(number,{y:30,opacity:.4},{y:0,opacity:1,ease:'none'},0);
-      if(copy) enter.fromTo(copy,{y:38,opacity:.34},{y:0,opacity:1,ease:'none'},.03);
-      if(art) enter.fromTo(art,{y:46,scale:.98,opacity:.48},{y:0,scale:1,opacity:1,ease:'none'},.02);
+      if(title) enter.fromTo(title,{y:56,opacity:.28},{y:0,opacity:1,ease:'none'},0);
+      if(number) enter.fromTo(number,{y:30,opacity:.35},{y:0,opacity:1,ease:'none'},0);
+      if(copy) enter.fromTo(copy,{y:38,opacity:.3},{y:0,opacity:1,ease:'none'},.04);
+      if(art) enter.fromTo(art,{y:48,scale:.975,opacity:.45},{y:0,scale:1,opacity:1,ease:'none'},.03);
 
-      // Internal artwork parallax.
+      // Slow inner-media parallax for depth.
       if(img){
         gsap.fromTo(img,
           {scale:1.055,yPercent:4},
-          {scale:1.015,yPercent:-4,ease:'none',
-           scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:1.55,invalidateOnRefresh:true}}
+          {scale:1.012,yPercent:-4,ease:'none',
+           scrollTrigger:{
+             trigger:scene,
+             start:'top bottom',
+             end:'bottom top',
+             scrub:1.7,
+             invalidateOnRefresh:true
+           }}
         );
       }
 
-      // When the next scene starts entering, this scene visibly shrinks/tilts first.
       if(i<scenes.length-1){
         var next=scenes[i+1];
-        var dir=1;
+
+        // Reference behavior: current stays full-size for most of its hold,
+        // then visibly shrinks + tilts only while the next full panel rises from below.
         gsap.fromTo(surface,
-          {scale:1,rotation:0,y:0,filter:'brightness(1)',boxShadow:'none'},
           {
-            scale:.89,
-            rotation:dir*1.8,
-            y:-14,
-            filter:'brightness(.94)',
-            boxShadow:'0 34px 86px rgba(8,24,28,.20)',
+            scale:1,
+            rotation:0,
+            x:0,
+            y:0,
+            filter:'brightness(1)',
+            boxShadow:'0 0 0 rgba(0,0,0,0)'
+          },
+          {
+            scale:.895,
+            rotation:1.95,
+            x:0,
+            y:-10,
+            filter:'brightness(.965)',
+            boxShadow:'0 34px 90px rgba(8,24,28,.20)',
             ease:'none',
             scrollTrigger:{
               trigger:next,
-              start:'top bottom',
-              end:'top 38%',
-              scrub:1.45,
+              start:'top 102%',
+              end:'top 18%',
+              scrub:1.55,
               invalidateOnRefresh:true
             }
           }
         );
-        if(title) gsap.to(title,{y:-18,opacity:.76,ease:'none',
-          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
-        if(copy) gsap.to(copy,{y:-10,opacity:.64,ease:'none',
-          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
-        if(art) gsap.to(art,{y:-12,scale:.98,opacity:.88,ease:'none',
-          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
+
+        if(title) gsap.to(title,{
+          y:-14,opacity:.8,ease:'none',
+          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
+        });
+        if(copy) gsap.to(copy,{
+          y:-8,opacity:.68,ease:'none',
+          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
+        });
+        if(art) gsap.to(art,{
+          y:-10,scale:.982,opacity:.9,ease:'none',
+          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
+        });
       }
     });
   }
