@@ -88,11 +88,13 @@
     // One continuous transform timeline per chapter, with no duplicate frame updates.
     for(var i=0;i<count-1;i++){
       var at=i;
+      // Keep the outgoing card shrinking and tilting until the incoming
+      // card reaches yPercent:0 at at+1.00. No .10-unit frozen end frame.
       timeline.to(surfaces[i],{
-        scale:.865,rotation:2.35,y:-14,duration:.80
+        scale:.865,rotation:2.35,y:-14,duration:.90
       },at+.10);
       if(images[i])timeline.to(images[i],{
-        scale:1.045,yPercent:-2,duration:.80
+        scale:1.045,yPercent:-2,duration:.90
       },at+.10);
       timeline.fromTo(scenes[i+1],{yPercent:100},{yPercent:0,duration:.70},at+.30);
       if(images[i+1])timeline.fromTo(images[i+1],
