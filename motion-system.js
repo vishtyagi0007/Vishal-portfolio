@@ -28,9 +28,9 @@
   if(!reduce&&window.Lenis){
     try{
       lenis=new Lenis({
-        lerp:.14,
+        lerp:.19,
         smoothWheel:true,
-        wheelMultiplier:.9,
+        wheelMultiplier:.92,
         touchMultiplier:1,
         syncTouch:false,
         anchors:{offset:-92},
@@ -49,7 +49,7 @@
   }
 
 
-  // QA v13 — single-source smooth stack.
+  // QA v14 — cached transform-only stack; Lenis is the sole scroll smoother.
   // Lenis owns scroll smoothing. This engine maps Lenis' animated scroll directly to transforms.
   // No second easing loop = no catch-up lag.
   (function initProjectStackV13(){
@@ -84,7 +84,6 @@
 
     function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
     function mix(a,b,t){return a+(b-a)*t}
-    function smooth(t){return t*t*(3-2*t)}
 
     function measure(){
       var r=story.getBoundingClientRect();
@@ -92,8 +91,16 @@
       storyTravel=Math.max(1,story.offsetHeight-innerHeight);
     }
 
+    // One compositor transform per element instead of multiple inherited CSS
+    // variables. Cache unchanged values so idle panels never cause style work.
+    function updateTransform(el,value){
+      if(!el||el.__vtStackTransform===value)return;
+      el.__vtStackTransform=value;
+      el.style.setProperty('transform',value,'important');
+    }
+
     function setSceneY(scene,value){
-      scene.style.setProperty('--scene-y',value.toFixed(3)+'%');
+      updateTransform(scene,'translateY('+value.toFixed(2)+'%)');
     }
 
     function setCard(surface,p,tail){
@@ -101,41 +108,46 @@
       var rotate=tail!=null?mix(0,.85,tail):mix(0,rotateEnd,p);
       var y=tail!=null?mix(0,-7,tail):mix(0,yEnd,p);
 
-      surface.style.setProperty('--card-scale',scale.toFixed(4));
-      surface.style.setProperty('--card-rotate',rotate.toFixed(3)+'deg');
-      surface.style.setProperty('--card-y',y.toFixed(2)+'px');
+      updateTransform(surface,
+        'translate3d(0,'+y.toFixed(1)+'px,0) scale('+
+        scale.toFixed(4)+') rotate('+rotate.toFixed(3)+'deg)');
     }
 
     function setImage(image,outgoing,incoming,tail){
       if(!image)return;
-
-      var scale;
-      var y;
-
+      var scale,y;
       if(tail!=null){
         scale=mix(1,1.025,tail);
         y=mix(0,-1.5,tail);
       }else{
-        // Image inherits the exact card angle from its parent.
-        // Inside that angle it has a subtle push/parallax only.
-        scale=1 + outgoing*.045 + (1-incoming)*.022;
-        y=-outgoing*2.0 + (1-incoming)*2.6;
+        // The picture inherits its parent's tilt; internal zoom/drift stays subtle.
+        scale=1+outgoing*.045+(1-incoming)*.022;
+        y=-outgoing*2.0+(1-incoming)*2.6;
       }
+      updateTransform(image,
+        'translate3d(0,'+y.toFixed(2)+'%,0) scale('+scale.toFixed(4)+')');
+    }
 
-      image.style.setProperty('--image-scale',scale.toFixed(4));
-      image.style.setProperty('--image-y',y.toFixed(3)+'%');
+    function markActive(scene,surface,image,active){
+      if(scene.__vtStackActive===active)return;
+      scene.__vtStackActive=active;
+      var priority='important';
+      scene.style.setProperty('will-change',active?'transform':'auto',priority);
+      surface.style.setProperty('will-change',active?'transform':'auto',priority);
+      if(image)image.style.setProperty('will-change',active?'transform':'auto',priority);
     }
 
     function paintFromScroll(scroll){
       var progress=clamp((scroll-storyTop)/storyTravel,0,1);
       var units=progress*totalUnits;
 
-      // Final Project 5 tail: hold -> subtle recede -> sticky stage releases naturally.
+      // Final Project 5 tail: continuous recede -> sticky stage releases naturally.
       if(units>=transitionUnits){
         var tailLocal=clamp((units-transitionUnits)/tailUnits,0,1);
-        var tail=smooth(clamp((tailLocal-.48)/.52,0,1));
+        var tail=clamp((tailLocal-.10)/.88,0,1);
 
         scenes.forEach(function(scene,i){
+          markActive(scene,surfaces[i],images[i],i===transitionUnits);
           setSceneY(scene,i<=transitionUnits?0:100);
           setCard(surfaces[i],i===transitionUnits?0:1,null);
           setImage(images[i],i<transitionUnits?1:0,1,null);
@@ -151,10 +163,11 @@
       var local=units-current;
 
       // Full-screen hold first, then shrink/tilt, then the next project rises.
-      var shrink=smooth(clamp((local-.24)/.30,0,1));
-      var incoming=smooth(clamp((local-.43)/.57,0,1));
+      var shrink=clamp((local-.10)/.80,0,1);
+      var incoming=clamp((local-.30)/.68,0,1);
 
       scenes.forEach(function(scene,i){
+        markActive(scene,surfaces[i],images[i],i===current||i===current+1);
         if(i<current){
           setSceneY(scene,0);
           setCard(surfaces[i],1,null);
