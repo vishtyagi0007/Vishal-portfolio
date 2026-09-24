@@ -28,9 +28,9 @@
   if(window.Lenis){
     try{
       lenis=new Lenis({
-        lerp:.085,
+        lerp:.072,
         smoothWheel:true,
-        wheelMultiplier:.88,
+        wheelMultiplier:.86,
         touchMultiplier:1,
         anchors:{offset:-92},
         stopInertiaOnNavigate:true,
@@ -141,8 +141,8 @@
     }
   });
 
-  // QA v8 — wrapper scroll-space + sticky surface + late overlap.
-  // Every project remains in normal document flow. Nothing is hidden.
+  // QA v9 — calibrated full-screen hold -> shrink/tilt -> next-panel cover.
+  // No project is hidden. The next scene enters naturally from normal document flow.
   var story=document.querySelector('.story-stack');
   var stage=story&&story.querySelector('.story-stage');
   var scenes=stage?q('.story-stage .scene'):[];
@@ -151,9 +151,13 @@
 
     gsap.set(scenes,{clearProps:'transform,position,inset'});
     gsap.set(surfaces,{
-      scale:1,rotation:0,x:0,y:0,
+      scale:1,
+      rotation:0,
+      x:0,
+      y:0,
       filter:'brightness(1)',
       boxShadow:'none',
+      borderRadius:'0px',
       transformOrigin:'50% 50%',
       force3D:true
     });
@@ -166,80 +170,88 @@
       var art=scene.querySelector('.scene-art');
       var img=scene.querySelector('.scene-art img');
 
-      // Content settles while the full-screen panel approaches its sticky state.
+      // Incoming content resolves as the full-size panel rises toward the top.
       var enter=gsap.timeline({
         scrollTrigger:{
           trigger:scene,
-          start:'top 88%',
-          end:'top 16%',
-          scrub:1.15,
+          start:'top 96%',
+          end:'top 28%',
+          scrub:1.1,
           invalidateOnRefresh:true
         }
       });
-      if(title) enter.fromTo(title,{y:56,opacity:.28},{y:0,opacity:1,ease:'none'},0);
-      if(number) enter.fromTo(number,{y:30,opacity:.35},{y:0,opacity:1,ease:'none'},0);
-      if(copy) enter.fromTo(copy,{y:38,opacity:.3},{y:0,opacity:1,ease:'none'},.04);
-      if(art) enter.fromTo(art,{y:48,scale:.975,opacity:.45},{y:0,scale:1,opacity:1,ease:'none'},.03);
+      if(title) enter.fromTo(title,{y:42,opacity:.42},{y:0,opacity:1,ease:'none'},0);
+      if(number) enter.fromTo(number,{y:24,opacity:.48},{y:0,opacity:1,ease:'none'},0);
+      if(copy) enter.fromTo(copy,{y:30,opacity:.42},{y:0,opacity:1,ease:'none'},.03);
+      if(art) enter.fromTo(art,{y:34,scale:.985,opacity:.55},{y:0,scale:1,opacity:1,ease:'none'},.02);
 
-      // Slow inner-media parallax for depth.
+      // Subtle internal image drift — slower than the panel itself.
       if(img){
         gsap.fromTo(img,
-          {scale:1.055,yPercent:4},
-          {scale:1.012,yPercent:-4,ease:'none',
+          {scale:1.045,yPercent:3},
+          {scale:1.012,yPercent:-3,ease:'none',
            scrollTrigger:{
              trigger:scene,
              start:'top bottom',
              end:'bottom top',
-             scrub:1.7,
+             scrub:1.8,
              invalidateOnRefresh:true
            }}
         );
       }
 
       if(i<scenes.length-1){
-        var next=scenes[i+1];
-
-        // Reference behavior: current stays full-size for most of its hold,
-        // then visibly shrinks + tilts only while the next full panel rises from below.
-        gsap.fromTo(surface,
-          {
-            scale:1,
-            rotation:0,
-            x:0,
-            y:0,
-            filter:'brightness(1)',
-            boxShadow:'0 0 0 rgba(0,0,0,0)'
-          },
-          {
-            scale:.895,
-            rotation:1.95,
-            x:0,
-            y:-10,
-            filter:'brightness(.965)',
-            boxShadow:'0 34px 90px rgba(8,24,28,.20)',
-            ease:'none',
-            scrollTrigger:{
-              trigger:next,
-              start:'top 102%',
-              end:'top 18%',
-              scrub:1.55,
-              invalidateOnRefresh:true
-            }
+        // Scene wrapper is 200svh. Sticky travel = 100svh.
+        // Timeline mapping:
+        // 0–55%  = full-screen hold
+        // 55–80% = shrink + tilt
+        // 80–100%= hold shrunken while next panel starts appearing at the bottom.
+        var tl=gsap.timeline({
+          scrollTrigger:{
+            trigger:scene,
+            start:'top top',
+            end:'bottom bottom',
+            scrub:1.45,
+            invalidateOnRefresh:true
           }
-        );
+        });
 
-        if(title) gsap.to(title,{
-          y:-14,opacity:.8,ease:'none',
-          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
-        });
-        if(copy) gsap.to(copy,{
-          y:-8,opacity:.68,ease:'none',
-          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
-        });
-        if(art) gsap.to(art,{
-          y:-10,scale:.982,opacity:.9,ease:'none',
-          scrollTrigger:{trigger:next,start:'top 102%',end:'top 18%',scrub:1.45,invalidateOnRefresh:true}
-        });
+        tl.to({}, {duration:.55})
+          .to(surface,{
+            scale:.89,
+            rotation:1.85,
+            y:-8,
+            filter:'brightness(.965)',
+            boxShadow:'0 34px 88px rgba(8,24,28,.20)',
+            borderRadius:'3px',
+            duration:.25,
+            ease:'none'
+          })
+          .to({}, {duration:.20});
+
+        if(title){
+          gsap.timeline({
+            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
+          }).to({}, {duration:.55})
+            .to(title,{y:-12,opacity:.84,duration:.25,ease:'none'})
+            .to({}, {duration:.20});
+        }
+
+        if(copy){
+          gsap.timeline({
+            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
+          }).to({}, {duration:.55})
+            .to(copy,{y:-6,opacity:.74,duration:.25,ease:'none'})
+            .to({}, {duration:.20});
+        }
+
+        if(art){
+          gsap.timeline({
+            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
+          }).to({}, {duration:.55})
+            .to(art,{y:-8,scale:.985,opacity:.92,duration:.25,ease:'none'})
+            .to({}, {duration:.20});
+        }
       }
     });
   }
