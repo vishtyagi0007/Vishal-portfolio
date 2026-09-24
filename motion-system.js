@@ -49,184 +49,67 @@
   }
 
 
-  // QA v14 — cached transform-only stack; Lenis is the sole scroll smoother.
-  // Lenis owns scroll smoothing. This engine maps Lenis' animated scroll directly to transforms.
-  // No second easing loop = no catch-up lag.
-  (function initProjectStackV13(){
-    if(innerWidth<=640) return;
-
-    var story=document.querySelector('.story-stack');
-    if(!story) return;
+  // V15: a single GSAP ScrollTrigger timeline. Native sticky owns pinning;
+  // Lenis owns wheel smoothing. No manual RAF, scroll listeners, or CSS variable writes.
+  (function initSelectedWorkV15(){
+    if(window.innerWidth<=640 || reduce || !window.gsap || !window.ScrollTrigger)return;
+    var story=document.querySelector('.work-cinematic .story-stack');
+    if(!story)return;
     var stage=story.querySelector('.story-stage');
-    var scenes=[].slice.call(story.querySelectorAll('.scene'));
-    if(!stage||scenes.length<2) return;
-
+    var scenes=Array.prototype.slice.call(story.querySelectorAll('.scene'));
+    if(!stage||scenes.length<2)return;
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')});
     var images=scenes.map(function(scene){return scene.querySelector('.scene-art img')});
-    if(surfaces.some(function(x){return !x})) return;
+    if(surfaces.some(function(surface){return !surface}))return;
 
+    // All geometry is fixed in CSS before ScrollTrigger measures the section.
     story.classList.add('stack-enhanced');
+    var count=scenes.length;
+    var tail=.72;
+    var units=(count-1)+tail;
+    story.style.height='calc(100svh + '+((count-1)*118+82)+'svh)';
+    gsap.set(scenes,{yPercent:100});
+    gsap.set(scenes[0],{yPercent:0});
+    gsap.set(surfaces,{scale:1,rotation:0,y:0,transformOrigin:'50% 50%'});
+    images.forEach(function(img){
+      if(img)gsap.set(img,{scale:1,yPercent:0});
+    });
 
-    // 4 project-to-project transitions + a dedicated final-project exit tail.
-    var transitionUnits=scenes.length-1;
-    var tailUnits=.72;
-    var totalUnits=transitionUnits+tailUnits;
-    story.style.setProperty('--stack-height',(100+transitionUnits*118+82)+'svh');
-
-    var storyTop=0;
-    var storyTravel=1;
-    var pendingScroll=window.scrollY||0;
-    var ticking=false;
-
-    var scaleEnd=reduce?.94:.865;
-    var rotateEnd=reduce?.65:2.35;
-    var yEnd=reduce?-4:-14;
-
-    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
-    function mix(a,b,t){return a+(b-a)*t}
-
-    function measure(){
-      var r=story.getBoundingClientRect();
-      storyTop=r.top+(window.scrollY||0);
-      storyTravel=Math.max(1,story.offsetHeight-innerHeight);
-    }
-
-    // One compositor transform per element instead of multiple inherited CSS
-    // variables. Cache unchanged values so idle panels never cause style work.
-    function updateTransform(el,value){
-      if(!el||el.__vtStackTransform===value)return;
-      el.__vtStackTransform=value;
-      el.style.setProperty('transform',value,'important');
-    }
-
-    function setSceneY(scene,value){
-      updateTransform(scene,'translateY('+value.toFixed(2)+'%)');
-    }
-
-    function setCard(surface,p,tail){
-      var scale=tail!=null?mix(1,.952,tail):mix(1,scaleEnd,p);
-      var rotate=tail!=null?mix(0,.85,tail):mix(0,rotateEnd,p);
-      var y=tail!=null?mix(0,-7,tail):mix(0,yEnd,p);
-
-      updateTransform(surface,
-        'translate3d(0,'+y.toFixed(1)+'px,0) scale('+
-        scale.toFixed(4)+') rotate('+rotate.toFixed(3)+'deg)');
-    }
-
-    function setImage(image,outgoing,incoming,tail){
-      if(!image)return;
-      var scale,y;
-      if(tail!=null){
-        scale=mix(1,1.025,tail);
-        y=mix(0,-1.5,tail);
-      }else{
-        // The picture inherits its parent's tilt; internal zoom/drift stays subtle.
-        scale=1+outgoing*.045+(1-incoming)*.022;
-        y=-outgoing*2.0+(1-incoming)*2.6;
+    var timeline=gsap.timeline({
+      defaults:{ease:'none'},
+      scrollTrigger:{
+        trigger:story,
+        start:'top top',
+        end:'bottom bottom',
+        scrub:true,
+        invalidateOnRefresh:true
       }
-      updateTransform(image,
-        'translate3d(0,'+y.toFixed(2)+'%,0) scale('+scale.toFixed(4)+')');
+    });
+    // One continuous transform timeline per chapter, with no duplicate frame updates.
+    for(var i=0;i<count-1;i++){
+      var at=i;
+      timeline.to(surfaces[i],{
+        scale:.865,rotation:2.35,y:-14,duration:.80
+      },at+.10);
+      if(images[i])timeline.to(images[i],{
+        scale:1.045,yPercent:-2,duration:.80
+      },at+.10);
+      timeline.fromTo(scenes[i+1],{yPercent:100},{yPercent:0,duration:.70},at+.30);
+      if(images[i+1])timeline.fromTo(images[i+1],
+        {scale:1.022,yPercent:2.6},
+        {scale:1,yPercent:0,duration:.70},at+.30);
     }
-
-    function markActive(scene,surface,image,active){
-      if(scene.__vtStackActive===active)return;
-      scene.__vtStackActive=active;
-      var priority='important';
-      scene.style.setProperty('will-change',active?'transform':'auto',priority);
-      surface.style.setProperty('will-change',active?'transform':'auto',priority);
-      if(image)image.style.setProperty('will-change',active?'transform':'auto',priority);
-    }
-
-    function paintFromScroll(scroll){
-      var progress=clamp((scroll-storyTop)/storyTravel,0,1);
-      var units=progress*totalUnits;
-
-      // Final Project 5 tail: continuous recede -> sticky stage releases naturally.
-      if(units>=transitionUnits){
-        var tailLocal=clamp((units-transitionUnits)/tailUnits,0,1);
-        var tail=clamp((tailLocal-.10)/.88,0,1);
-
-        scenes.forEach(function(scene,i){
-          markActive(scene,surfaces[i],images[i],i===transitionUnits);
-          // Final card is updated once below; don't reset then re-animate it
-          // during every scroll frame (that caused a visible Project 5 hitch).
-          if(i===transitionUnits)return;
-          setSceneY(scene,0);
-          setCard(surfaces[i],1,null);
-          setImage(images[i],1,1,null);
-        });
-
-        setSceneY(scenes[transitionUnits],0);
-        setCard(surfaces[transitionUnits],0,tail);
-        setImage(images[transitionUnits],0,1,tail);
-        return;
-      }
-
-      var current=Math.floor(units);
-      var local=units-current;
-
-      // Full-screen hold first, then shrink/tilt, then the next project rises.
-      var shrink=clamp((local-.10)/.80,0,1);
-      var incoming=clamp((local-.30)/.68,0,1);
-
-      scenes.forEach(function(scene,i){
-        markActive(scene,surfaces[i],images[i],i===current||i===current+1);
-        if(i<current){
-          setSceneY(scene,0);
-          setCard(surfaces[i],1,null);
-          setImage(images[i],1,1,null);
-        }else if(i===current){
-          setSceneY(scene,0);
-          setCard(surfaces[i],shrink,null);
-          setImage(images[i],shrink,1,null);
-        }else if(i===current+1){
-          setSceneY(scene,mix(100,0,incoming));
-          setCard(surfaces[i],0,null);
-          setImage(images[i],0,incoming,null);
-        }else{
-          setSceneY(scene,100);
-          setCard(surfaces[i],0,null);
-          setImage(images[i],0,0,null);
-        }
-      });
-    }
-
-    function frame(){
-      ticking=false;
-      paintFromScroll(pendingScroll);
-    }
-
-    function requestRender(scroll){
-      if(typeof scroll==='number')pendingScroll=scroll;
-      else pendingScroll=window.scrollY||0;
-      if(ticking)return;
-      ticking=true;
-      requestAnimationFrame(frame);
-    }
-
-    function bind(){
-      if(window.__vtLenis&&window.__vtLenis.on){
-        // Animated Lenis position is already smooth: use it directly.
-        window.__vtLenis.on('scroll',function(e){
-          requestRender(typeof e.animatedScroll==='number'?e.animatedScroll:(window.scrollY||0));
-        });
-      }else{
-        // Native fallback only when Lenis is unavailable.
-        window.addEventListener('scroll',function(){
-          requestRender(window.scrollY||0);
-        },{passive:true});
-      }
-    }
-
+    // Project 5 has its own smooth exit; the sticky section then releases naturally.
+    timeline.to(surfaces[count-1],{
+      scale:.952,rotation:.85,y:-7,duration:.62
+    },count-1+.10);
+    if(images[count-1])timeline.to(images[count-1],{
+      scale:1.025,yPercent:-1.5,duration:.62
+    },count-1+.10);
+    timeline.set({},{},units);
     window.addEventListener('resize',function(){
-      measure();
-      requestRender(window.scrollY||0);
+      ScrollTrigger.refresh();
     },{passive:true});
-
-    measure();
-    bind();
-    requestRender(window.scrollY||0);
-    setTimeout(function(){measure();requestRender(window.scrollY||0)},250);
   })();
 
   if(reduce) return;
@@ -325,7 +208,7 @@
     }
   });
 
-  // Project stack handled by QA v10 engine above.
+  // Selected Work is handled by the single V15 timeline above.
   q('.showreel-card,.motion-frame').forEach(function(box){
     gsap.fromTo(box,{clipPath:'inset(8% 5% 8% 5% round 12px)',scale:.985},
       {clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1,ease:'none',
