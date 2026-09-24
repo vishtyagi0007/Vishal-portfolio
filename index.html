@@ -186,6 +186,57 @@
   .work-cinematic .scene:nth-child(4){z-index:40}
   .work-cinematic .scene:nth-child(5){z-index:50}
 }
+
+/* QA v4 — real pinned stage timeline; no CSS sticky-card overlap */
+@media(min-width:641px){
+  .work-cinematic .story-stack{
+    position:relative;
+    height:auto;
+    padding:0;
+    background:#f1efed;
+    overflow:visible;
+  }
+  .work-cinematic .story-stage{
+    position:relative;
+    width:100%;
+    height:100svh;
+    overflow:hidden;
+    background:#f1efed;
+  }
+  .work-cinematic .scene{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+  .work-cinematic .scene-surface{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:clamp(34px,4vw,72px)!important;
+    border-radius:0;
+    box-shadow:none;
+    transform-origin:50% 0%;
+    backface-visibility:hidden;
+    will-change:transform,filter;
+  }
+  .work-cinematic .scene-top{position:relative;z-index:2}
+  .work-cinematic .scene-body{position:relative;z-index:2}
+  .work-cinematic .scene-art{height:min(58vh,590px)}
+}
+@media(max-width:640px){
+  .work-cinematic .story-stage{display:block}
+}
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js"></script></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true">◐</span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume ↓</a><a class="head-cta" href="#contact">LET'S TALK <span aria-hidden="true">↗</span></a></nav></header>
@@ -194,7 +245,7 @@
 <section class="intro" id="about"><div class="micro reveal">01 / A LITTLE ABOUT ME</div><h2 class="reveal">I make things <span class="serif">look right.</span> Then I make them <span class="serif">work.</span></h2><div class="intro-foot reveal"><p>I'm Vishal, a graphic and motion designer working across identity, marketing campaigns, website interfaces and video. This is a selection of work from client projects and my own design practice.</p><div style="display:flex;gap:18px;flex-wrap:wrap"><a class="inline-link" href="#work">SEE WHAT I'VE MADE ↗</a><a class="inline-link resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>DOWNLOAD RESUME ↓</a></div></div></section>
 <section class="brand-section" id="brands" aria-labelledby="brandsTitle"><div class="brand-top"><div><div class="brand-kicker">SELECTED CLIENT / PROPERTY WORK</div><h2 id="brandsTitle">The names behind the briefs.</h2></div><a class="inline-link" href="portfolio/">EXPLORE CLIENT WORK ↗</a></div><div class="brand-grid"><a class="brand-logo-card" href="portfolio/#pride" aria-label="View Pride Hotels & Resorts projects"><img src="portfolio/assets/021-website-logo-01.webp" loading="lazy" decoding="async" alt="Pride Hotels & Resorts brand logo"/><span>Pride Hotels & Resorts</span></a><a class="brand-logo-card" href="portfolio/#ginger" aria-label="View Ginger Srinagar projects"><img src="portfolio/assets/030-website-logo-02.webp" loading="lazy" decoding="async" alt="Ginger Srinagar brand logo"/><span>Ginger Srinagar</span></a><a class="brand-logo-card" href="portfolio/#hyatt" aria-label="View Hyatt Regency Kolkata projects"><img src="portfolio/assets/037-website-logo-03.webp" loading="lazy" decoding="async" alt="Hyatt Regency Kolkata brand logo"/><span>Hyatt Regency Kolkata</span></a><a class="brand-logo-card" href="portfolio/#radisson-mumbai" aria-label="View Radisson Blu Mumbai projects"><img src="portfolio/assets/042-website-logo-04.webp" loading="lazy" decoding="async" alt="Radisson Blu Mumbai brand logo"/><span>Radisson Blu Mumbai</span></a><a class="brand-logo-card" href="portfolio/#citadines" aria-label="View Citadines OMR Chennai projects"><img src="portfolio/assets/044-website-logo-06.webp" loading="lazy" decoding="async" alt="Citadines OMR Chennai brand logo"/><span>Citadines OMR Chennai</span></a><a class="brand-logo-card" href="portfolio/#namah" aria-label="View Namah projects"><img src="portfolio/assets/048-website-logo-07.webp" loading="lazy" decoding="async" alt="Namah brand logo"/><span>Namah</span></a><a class="brand-logo-card" href="portfolio/#oakwood" aria-label="View Oakwood Residence Kapil Hyderabad projects"><img src="portfolio/assets/051-website-logo-08.webp" loading="lazy" decoding="async" alt="Oakwood Residence Kapil Hyderabad brand logo"/><span>Oakwood Residence Kapil Hyderabad</span></a><a class="brand-logo-card" href="portfolio/#ascott" aria-label="View The Ascott Limited projects"><img src="portfolio/assets/007-website-logo-09.webp" loading="lazy" decoding="async" alt="The Ascott Limited brand logo"/><span>The Ascott Limited</span></a><a class="brand-logo-card" href="portfolio/#signum" aria-label="View Signum projects"><img src="portfolio/assets/053-website-logo-10.webp" loading="lazy" decoding="async" alt="Signum brand logo"/><span>Signum</span></a><a class="brand-logo-card" href="portfolio/#rcz" aria-label="View Radisson Chandigarh Zirakpur projects"><img src="portfolio/assets/026-rcz-logo.webp" loading="lazy" decoding="async" alt="Radisson Chandigarh Zirakpur brand logo"/><span>Radisson Chandigarh Zirakpur</span></a></div></section><section class="work work-cinematic" id="work">
   <div class="work-heading reveal"><div><div class="micro"><span class="count">02 /</span> PROJECTS WORTH A CLOSER LOOK</div><h2>Selected<br/>work<span class="count">.</span></h2></div><div class="section-small">Five projects, five different briefs. Scroll through each one, then explore the full client-wise archive.</div></div>
-  <div class="story story-stack">
+  <div class="story story-stack"><div class="story-stage">
     <article class="scene" id="scene-resultbull" style="--scene-bg:#f0ede5;--scene-fg:#153a42">
       <div class="scene-surface">
         <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Identity / Web UI</span><h3>Resultbull.ai<span class="scene-period">.</span></h3></div><span class="scene-number">(01)</span></div>
@@ -224,8 +275,7 @@
         <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Campaign / Hospitality</span><h3>Radisson Chandigarh<span class="scene-period">.</span></h3></div><span class="scene-number">(05)</span></div>
         <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 05</span><p>An invitation to the weekend.</p><small>Radisson Chandigarh Zirakpur · Campaign artwork</small><a class="scene-link" href="portfolio/#rcz">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/022-rcz-weekend-buffet-carnival-1.webp" alt="Radisson Chandigarh Zirakpur campaign artwork"/></div></div>
       </div>
-    </article>
-  </div>
+    </article></div></div>
   <a class="see-all" href="portfolio/"><span>See the full portfolio.</span><span aria-hidden="true">↗</span></a>
 </section>
 <section class="services" id="services"><div class="services-head reveal"><div><div class="micro">03 / WHAT I DO</div><h2>My work<span style="color:var(--rose)">.</span></h2></div><p>Different formats. Same attention to concept, typography, composition and detail.</p></div><div class="service-row reveal"><span class="number">01</span><h3>Identity & branding</h3><p>Marks, systems and brand assets that hold together.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">02</span><h3>Campaign design</h3><p>Social, digital and print artwork made for real briefs.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">03</span><h3>Web & UI design</h3><p>Clear screens, purposeful hierarchy and practical handoff.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">04</span><h3>Motion & video</h3><p>Editing, motion graphics and visual storytelling.</p><span class="arrow" aria-hidden="true">↗</span></div></section>
