@@ -166,7 +166,8 @@
       var local=units-current;
 
       // Full-screen hold first, then shrink/tilt, then the next project rises.
-      var shrink=clamp((local-.10)/.80,0,1);
+      // Keep the live animation; outgoing shrink/tilt completes exactly when the incoming card covers it.
+      var shrink=clamp((local-.10)/.88,0,1);
       var incoming=clamp((local-.30)/.68,0,1);
 
       scenes.forEach(function(scene,i){
