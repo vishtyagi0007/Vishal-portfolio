@@ -149,7 +149,7 @@
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')||scene});
     gsap.set(scenes,{position:'absolute',inset:0,yPercent:100,force3D:true});
     gsap.set(scenes[0],{yPercent:0});
-    gsap.set(surfaces,{scale:1,rotation:0,yPercent:0,filter:'brightness(1)',transformOrigin:'50% 0%',force3D:true});
+    gsap.set(surfaces,{scale:1,rotation:0,yPercent:0,filter:'brightness(1)',transformOrigin:'50% 50%',force3D:true});
     scenes.forEach(function(scene,i){gsap.set(scene,{zIndex:(i+1)*10})});
 
     var stackTl=gsap.timeline({
@@ -176,15 +176,15 @@
       var nextNumber=next.querySelector('.scene-number');
       var nextCopy=next.querySelector('.scene-copy');
       var nextArt=next.querySelector('.scene-art');
-      var dir=i%2===0?-1:1;
+      var dir=1;
 
       // Full-screen hold before anything changes.
       stackTl.to({}, {duration:.34});
 
       // Previous panel visibly becomes a smaller, tilted card first.
       stackTl.to(current,{
-        scale:.885,
-        rotation:dir*2.15,
+        scale:.89,
+        rotation:dir*1.8,
         yPercent:-1.6,
         filter:'brightness(.94)',
         boxShadow:'0 34px 86px rgba(8,24,28,.20)',
@@ -200,7 +200,7 @@
       stackTl.fromTo(next,
         {yPercent:100},
         {yPercent:0,duration:.72,ease:'none'},
-        '>-0.28'
+        '>-0.12'
       );
 
       // Its content settles while the panel is travelling upward.
