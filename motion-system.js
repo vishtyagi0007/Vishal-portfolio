@@ -148,9 +148,12 @@
 
         scenes.forEach(function(scene,i){
           markActive(scene,surfaces[i],images[i],i===transitionUnits);
-          setSceneY(scene,i<=transitionUnits?0:100);
-          setCard(surfaces[i],i===transitionUnits?0:1,null);
-          setImage(images[i],i<transitionUnits?1:0,1,null);
+          // Final card is updated once below; don't reset then re-animate it
+          // during every scroll frame (that caused a visible Project 5 hitch).
+          if(i===transitionUnits)return;
+          setSceneY(scene,0);
+          setCard(surfaces[i],1,null);
+          setImage(images[i],1,1,null);
         });
 
         setSceneY(scenes[transitionUnits],0);
