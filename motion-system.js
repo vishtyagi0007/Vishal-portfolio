@@ -17,15 +17,15 @@
 
   if(reduce){
     if(transition) transition.remove();
-    return;
+    root.classList.add('reduced-motion');
   }
 
-  if(window.gsap&&window.ScrollTrigger){
+  if(!reduce&&window.gsap&&window.ScrollTrigger){
     gsap.registerPlugin(ScrollTrigger);
   }
 
   var lenis=null;
-  if(window.Lenis){
+  if(!reduce&&window.Lenis){
     try{
       lenis=new Lenis({
         lerp:.072,
@@ -48,66 +48,90 @@
   }
 
 
-  // QA v10 — project stack motion does not depend on GSAP.
-  (function initProjectStack(){
+  // QA v11 — deterministic single-stage project stack.
+  // CSS variables + !important transforms prevent legacy rules from cancelling the effect.
+  (function initProjectStackV11(){
     if(innerWidth<=640) return;
-    var scenes=[].slice.call(document.querySelectorAll('.story-stage .scene'));
-    if(!scenes.length) return;
+
+    var story=document.querySelector('.story-stack');
+    if(!story) return;
+    var stage=story.querySelector('.story-stage');
+    var scenes=[].slice.call(story.querySelectorAll('.scene'));
+    if(!stage||scenes.length<2) return;
+
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')});
     if(surfaces.some(function(x){return !x})) return;
 
+    story.classList.add('stack-enhanced');
+    story.style.setProperty('--stack-height',(100+(scenes.length-1)*132)+'svh');
+
     var ticking=false;
+    var scaleEnd=reduce?.94:.885;
+    var rotateEnd=reduce?.65:1.95;
+    var yEnd=reduce?-4:-10;
+
     function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
     function mix(a,b,t){return a+(b-a)*t}
-    function ease(t){return t*t*(3-2*t)}
+    function smooth(t){return t*t*(3-2*t)}
+
+    function setSceneY(scene,value){
+      scene.style.setProperty('--scene-y',value+'%');
+    }
+
+    function setCard(surface,p){
+      surface.style.setProperty('--card-scale',mix(1,scaleEnd,p).toFixed(4));
+      surface.style.setProperty('--card-rotate',mix(0,rotateEnd,p).toFixed(3)+'deg');
+      surface.style.setProperty('--card-y',mix(0,yEnd,p).toFixed(2)+'px');
+      surface.style.setProperty('--card-brightness',mix(1,.965,p).toFixed(4));
+      surface.style.setProperty('--card-radius',mix(0,4,p).toFixed(2)+'px');
+      surface.style.setProperty('--card-shadow',mix(0,.20,p).toFixed(3));
+    }
 
     function render(){
       ticking=false;
+      var rect=story.getBoundingClientRect();
       var vh=innerHeight||1;
+      var travel=Math.max(1,rect.height-vh);
+      var progress=clamp((-rect.top)/travel,0,1);
+      var segments=scenes.length-1;
+      var position=progress*segments;
+      var current=Math.min(segments,Math.floor(position));
+      var local=current>=segments?1:position-current;
+
+      // Reference choreography inside every transition:
+      // 0–30%: current project holds full screen.
+      // 30–58%: current project visibly shrinks + tilts.
+      // 50–100%: next full-screen panel rises from the bottom and covers it.
+      var shrink=smooth(clamp((local-.30)/.28,0,1));
+      var incoming=smooth(clamp((local-.50)/.50,0,1));
 
       scenes.forEach(function(scene,i){
         var surface=surfaces[i];
-        var p=0;
 
-        if(i<scenes.length-1){
-          var nextTop=scenes[i+1].getBoundingClientRect().top;
-          p=clamp((vh-nextTop)/(vh*.58),0,1);
-          p=ease(p);
-        }
-
-        var scale=mix(1,.89,p);
-        var rot=mix(0,1.9,p);
-        var y=mix(0,-10,p);
-        var radius=mix(0,4,p);
-        var bright=mix(1,.96,p);
-        var shadowAlpha=mix(0,.20,p);
-
-        surface.style.transform='translate3d(0,'+y.toFixed(2)+'px,0) scale('+scale.toFixed(4)+') rotate('+rot.toFixed(3)+'deg)';
-        surface.style.filter='brightness('+bright.toFixed(4)+')';
-        surface.style.borderRadius=radius.toFixed(2)+'px';
-        surface.style.boxShadow='0 34px 90px rgba(8,24,28,'+shadowAlpha.toFixed(3)+')';
-
-        var title=scene.querySelector('.scene-title-group h3');
-        var copy=scene.querySelector('.scene-copy');
-        var art=scene.querySelector('.scene-art');
-
-        if(title){
-          title.style.transform='translate3d(0,'+mix(0,-12,p).toFixed(2)+'px,0)';
-          title.style.opacity=mix(1,.82,p).toFixed(3);
-        }
-        if(copy){
-          copy.style.transform='translate3d(0,'+mix(0,-6,p).toFixed(2)+'px,0)';
-          copy.style.opacity=mix(1,.72,p).toFixed(3);
-        }
-        if(art){
-          art.style.transform='translate3d(0,'+mix(0,-8,p).toFixed(2)+'px,0) scale('+mix(1,.985,p).toFixed(4)+')';
-          art.style.opacity=mix(1,.91,p).toFixed(3);
+        if(i<current){
+          setSceneY(scene,0);
+          setCard(surface,1);
+        }else if(i===current){
+          setSceneY(scene,0);
+          setCard(surface,current===segments?0:shrink);
+        }else if(i===current+1){
+          setSceneY(scene,mix(100,0,incoming));
+          setCard(surface,0);
+        }else{
+          setSceneY(scene,100);
+          setCard(surface,0);
         }
       });
+
+      // On the final project there is no outgoing shrink.
+      if(current===segments){
+        setCard(surfaces[segments],0);
+        setSceneY(scenes[segments],0);
+      }
     }
 
     function requestRender(){
-      if(ticking) return;
+      if(ticking)return;
       ticking=true;
       requestAnimationFrame(render);
     }
@@ -117,10 +141,13 @@
     if(window.__vtLenis&&window.__vtLenis.on){
       try{window.__vtLenis.on('scroll',requestRender)}catch(e){}
     }
+
     requestRender();
-    setTimeout(requestRender,120);
-    setTimeout(requestRender,600);
+    setTimeout(requestRender,100);
+    setTimeout(requestRender,500);
   })();
+
+  if(reduce) return;
 
   if(!window.gsap||!window.ScrollTrigger) return;
 
