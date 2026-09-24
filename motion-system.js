@@ -78,9 +78,9 @@
     var pendingScroll=window.scrollY||0;
     var ticking=false;
 
-    var scaleEnd=reduce?.95:.89;
-    var rotateEnd=reduce?.55:1.85;
-    var yEnd=reduce?-3:-9;
+    var scaleEnd=reduce?.94:.865;
+    var rotateEnd=reduce?.65:2.35;
+    var yEnd=reduce?-4:-14;
 
     function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
     function mix(a,b,t){return a+(b-a)*t}
@@ -97,8 +97,8 @@
     }
 
     function setCard(surface,p,tail){
-      var scale=tail!=null?mix(1,.968,tail):mix(1,scaleEnd,p);
-      var rotate=tail!=null?mix(0,.55,tail):mix(0,rotateEnd,p);
+      var scale=tail!=null?mix(1,.952,tail):mix(1,scaleEnd,p);
+      var rotate=tail!=null?mix(0,.85,tail):mix(0,rotateEnd,p);
       var y=tail!=null?mix(0,-7,tail):mix(0,yEnd,p);
 
       surface.style.setProperty('--card-scale',scale.toFixed(4));
