@@ -1,0 +1,67 @@
+:root{
+  --vt-ease:cubic-bezier(.16,1,.3,1);
+  --vt-ease-soft:cubic-bezier(.22,1,.36,1);
+}
+html.motion-v2{scroll-behavior:auto!important}
+html.motion-v2 body{overscroll-behavior-y:none}
+html.motion-v2 .reveal,
+html.motion-v2 .will-reveal{opacity:1;transform:none;transition:none}
+html.motion-v2 .project .project-head,
+html.motion-v2 .project .project-media,
+html.motion-v2 .project-featured .project-media{transition:none!important}
+html.motion-v2 .scene{transition:none!important;will-change:transform}
+html.motion-v2 .hero-title,
+html.motion-v2 .hero-mark,
+html.motion-v2 .hero-bottom,
+html.motion-v2 .hero-showreel,
+html.motion-v2 .project-media,
+html.motion-v2 .motion-frame,
+html.motion-v2 .showreel-card{will-change:transform}
+.vt-page-transition{
+  position:fixed;inset:0;z-index:99999;pointer-events:none;
+  display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden
+}
+.vt-page-transition span{display:block;height:100%;background:#153a42;transform:translateY(-105%)}
+.vt-page-transition span:nth-child(2){background:#176b74}
+.vt-page-transition span:nth-child(3){background:#b16e7f}
+.vt-page-transition.is-covering{pointer-events:auto}
+.motion-v2 .nav,.motion-v2 .head{will-change:transform}
+.motion-v2 .scene-image,
+.motion-v2 .project-media,
+.motion-v2 .motion-frame,
+.motion-v2 .showreel-card,
+.motion-v2 .index-preview-media{overflow:hidden}
+.motion-v2 .scene-image img,
+.motion-v2 .project-media img,
+.motion-v2 .motion-frame video,
+.motion-v2 .showreel-card video,
+.motion-v2 .index-preview-media img{will-change:transform;backface-visibility:hidden}
+.motion-v2 .service-row,
+.motion-v2 .process-step,
+.motion-v2 .index-item{transition:
+  background-color .55s var(--vt-ease),
+  color .55s var(--vt-ease),
+  padding .7s var(--vt-ease),
+  border-color .55s var(--vt-ease)!important
+}
+.motion-v2 .hero-card,
+.motion-v2 .brand-logo-card,
+.motion-v2 .form-submit,
+.motion-v2 .head-cta,
+.motion-v2 .contact,
+.motion-v2 .project-link,
+.motion-v2 .inline-link,
+.motion-v2 .see-all,
+.motion-v2 .contact-circle{transition:
+  transform .7s var(--vt-ease),
+  opacity .5s var(--vt-ease),
+  box-shadow .7s var(--vt-ease),
+  background-color .5s var(--vt-ease),
+  color .5s var(--vt-ease)!important
+}
+.motion-v2 .page-progress,
+.motion-v2 .portfolio-progress{transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  .vt-page-transition{display:none!important}
+  html.motion-v2 *{scroll-behavior:auto!important}
+}
