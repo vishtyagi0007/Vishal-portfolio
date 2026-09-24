@@ -72,42 +72,105 @@
 :root[data-theme="dark"] .head-right .head-cta{border-color:#edf1ed}
 :root[data-theme="dark"] .brand-section .inline-link,:root[data-theme="dark"] .scroll-cue{color:#edf1ed}
 @media(max-width:760px){.head-right{gap:10px}.head-right .theme-switch{order:4}}
+
+/* Cinematic selected-work stack — viewport chapters instead of floating cards */
+.work-cinematic{padding:110px 0 0;background:#102f35;color:#f7f5f0;overflow:clip}
+.work-cinematic .work-heading{margin:0 var(--gutter) 78px;padding-bottom:34px}
+.work-cinematic .story-stack{padding:clamp(22px,3vw,54px) clamp(22px,3vw,54px) 13vh;background:#ebe8e2}
+.work-cinematic .scene{
+  position:sticky;top:clamp(18px,3vh,34px);z-index:1;
+  width:100%;height:min(860px,88svh);min-height:680px;
+  margin:0 auto 12svh;padding:0;display:block;overflow:visible;
+  background:transparent!important;color:inherit;box-shadow:none;border-radius:0;
+}
+.work-cinematic .scene:nth-child(1){z-index:1}.work-cinematic .scene:nth-child(2){z-index:2}.work-cinematic .scene:nth-child(3){z-index:3}.work-cinematic .scene:nth-child(4){z-index:4}.work-cinematic .scene:nth-child(5){z-index:5}
+.work-cinematic .scene:last-child{margin-bottom:0}
+.scene-surface{
+  height:100%;width:100%;overflow:hidden;position:relative;
+  padding:clamp(30px,4vw,70px);background:var(--scene-bg);color:var(--scene-fg);
+  display:grid;grid-template-rows:auto minmax(0,1fr);
+  box-shadow:0 18px 55px rgba(11,29,32,.15);
+  transform-origin:50% 0%;will-change:transform,filter,border-radius;
+}
+.scene-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:36px;align-items:start}
+.scene-title-group{min-width:0}
+.scene-type{display:block;margin-bottom:18px;font-size:9px;line-height:1;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.scene-title-group h3{margin:0;font-size:clamp(58px,6vw,116px);font-weight:500;line-height:.86;letter-spacing:-.085em;overflow-wrap:break-word}
+.scene-number{font-size:clamp(34px,4.6vw,76px);line-height:.9;letter-spacing:-.065em;font-weight:500;white-space:nowrap}
+.scene-body{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:clamp(36px,6vw,100px);align-items:end;min-height:0}
+.work-cinematic .scene-copy{display:block;grid-column:auto;grid-row:auto;padding:0 0 clamp(42px,7vh,88px);align-self:end}
+.work-cinematic .scene-kicker{display:block;margin-bottom:18px;font-size:9px;letter-spacing:.14em;font-weight:800;text-transform:uppercase;opacity:.72}
+.work-cinematic .scene-copy p{max-width:430px;margin:0 0 15px;font-size:clamp(17px,1.45vw,24px);line-height:1.35}
+.work-cinematic .scene-copy small{display:block;max-width:400px;margin-bottom:34px;font-size:10px;line-height:1.45;letter-spacing:.06em;text-transform:uppercase;opacity:.68}
+.work-cinematic .scene-link{gap:24px;font-size:10px;padding-bottom:10px}
+.work-cinematic .scene-art{grid-column:auto;grid-row:auto;align-self:end;justify-self:stretch;height:min(51vh,500px);min-height:310px;padding:0;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.work-cinematic .scene-art img{width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;transform-origin:50% 65%;will-change:transform}
+.work-cinematic .logo-art img{width:72%;height:72%;max-width:560px}
+.work-cinematic .campaign-art img{filter:drop-shadow(0 20px 28px rgba(0,0,0,.13))}
+.work-cinematic .see-all{margin:0;padding:80px var(--gutter) 100px;border-top:0;background:#102f35}
+@media(max-width:900px){
+  .work-cinematic .story-stack{padding-inline:18px}
+  .work-cinematic .scene{height:82svh;min-height:650px;top:18px;margin-bottom:9svh}
+  .scene-title-group h3{font-size:clamp(50px,8vw,84px)}
+  .scene-body{grid-template-columns:minmax(210px,.78fr) minmax(0,1.22fr);gap:28px}
+  .work-cinematic .scene-art{height:min(43vh,410px);min-height:250px}
+}
+@media(max-width:640px){
+  .work-cinematic .work-heading{margin-bottom:45px}
+  .work-cinematic .story-stack{padding:12px;background:#e7e4de}
+  .work-cinematic .scene{position:relative;top:auto;height:auto;min-height:680px;margin-bottom:12px}
+  .scene-surface{min-height:680px;padding:28px 22px;display:flex;flex-direction:column}
+  .scene-top{gap:15px}.scene-type{margin-bottom:12px}
+  .scene-title-group h3{font-size:clamp(46px,13vw,66px);line-height:.9}
+  .scene-number{font-size:30px}
+  .scene-body{display:flex;flex-direction:column;flex:1;gap:28px;align-items:stretch}
+  .work-cinematic .scene-copy{order:2;padding:0}
+  .work-cinematic .scene-art{order:1;width:100%;height:310px;min-height:0;margin-top:auto}
+  .work-cinematic .logo-art img{width:78%;height:78%}
+  .work-cinematic .scene-copy p{font-size:18px}.work-cinematic .scene-copy small{margin-bottom:24px}
+}
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js"></script></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true">◐</span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume ↓</a><a class="head-cta" href="#contact">LET'S TALK <span aria-hidden="true">↗</span></a></nav></header>
 <main id="main"><section class="hero" id="home"><div><div class="hero-kicker"><span class="tiny-rose"></span> INDEPENDENT CREATIVE / INDIA</div><h1 class="hero-title"><span class="title-line"><span>Design</span></span><span class="title-line"><span>in <em>motion.</em></span></span></h1><div class="hero-mark" id="heroMark"><img src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/></div></div><div class="hero-bottom"><div class="micro">VISHAL TYAGI<br/>GRAPHIC & MOTION DESIGNER</div><p>Identities, digital campaigns and moving images. 8+ years across client campaigns, logos, interfaces and motion.</p><a class="scroll-cue" href="#about">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a></div></section>
 <div class="marquee" aria-label="Identity, campaigns, digital design and motion"><div class="marquee-inner" aria-hidden="true"><span>IDENTITY <b>✳</b> CAMPAIGNS <b>✳</b> DIGITAL DESIGN <b>✳</b> MOTION <b>✳</b></span><span>IDENTITY <b>✳</b> CAMPAIGNS <b>✳</b> DIGITAL DESIGN <b>✳</b> MOTION <b>✳</b></span></div></div>
 <section class="intro" id="about"><div class="micro reveal">01 / A LITTLE ABOUT ME</div><h2 class="reveal">I make things <span class="serif">look right.</span> Then I make them <span class="serif">work.</span></h2><div class="intro-foot reveal"><p>I'm Vishal, a graphic and motion designer working across identity, marketing campaigns, website interfaces and video. This is a selection of work from client projects and my own design practice.</p><div style="display:flex;gap:18px;flex-wrap:wrap"><a class="inline-link" href="#work">SEE WHAT I'VE MADE ↗</a><a class="inline-link resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>DOWNLOAD RESUME ↓</a></div></div></section>
-<section class="brand-section" id="brands" aria-labelledby="brandsTitle"><div class="brand-top"><div><div class="brand-kicker">SELECTED CLIENT / PROPERTY WORK</div><h2 id="brandsTitle">The names behind the briefs.</h2></div><a class="inline-link" href="portfolio/">EXPLORE CLIENT WORK ↗</a></div><div class="brand-grid"><a class="brand-logo-card" href="portfolio/#pride" aria-label="View Pride Hotels & Resorts projects"><img src="portfolio/assets/021-website-logo-01.webp" loading="lazy" decoding="async" alt="Pride Hotels & Resorts brand logo"/><span>Pride Hotels & Resorts</span></a><a class="brand-logo-card" href="portfolio/#ginger" aria-label="View Ginger Srinagar projects"><img src="portfolio/assets/030-website-logo-02.webp" loading="lazy" decoding="async" alt="Ginger Srinagar brand logo"/><span>Ginger Srinagar</span></a><a class="brand-logo-card" href="portfolio/#hyatt" aria-label="View Hyatt Regency Kolkata projects"><img src="portfolio/assets/037-website-logo-03.webp" loading="lazy" decoding="async" alt="Hyatt Regency Kolkata brand logo"/><span>Hyatt Regency Kolkata</span></a><a class="brand-logo-card" href="portfolio/#radisson-mumbai" aria-label="View Radisson Blu Mumbai projects"><img src="portfolio/assets/042-website-logo-04.webp" loading="lazy" decoding="async" alt="Radisson Blu Mumbai brand logo"/><span>Radisson Blu Mumbai</span></a><a class="brand-logo-card" href="portfolio/#citadines" aria-label="View Citadines OMR Chennai projects"><img src="portfolio/assets/044-website-logo-06.webp" loading="lazy" decoding="async" alt="Citadines OMR Chennai brand logo"/><span>Citadines OMR Chennai</span></a><a class="brand-logo-card" href="portfolio/#namah" aria-label="View Namah projects"><img src="portfolio/assets/048-website-logo-07.webp" loading="lazy" decoding="async" alt="Namah brand logo"/><span>Namah</span></a><a class="brand-logo-card" href="portfolio/#oakwood" aria-label="View Oakwood Residence Kapil Hyderabad projects"><img src="portfolio/assets/051-website-logo-08.webp" loading="lazy" decoding="async" alt="Oakwood Residence Kapil Hyderabad brand logo"/><span>Oakwood Residence Kapil Hyderabad</span></a><a class="brand-logo-card" href="portfolio/#ascott" aria-label="View The Ascott Limited projects"><img src="portfolio/assets/007-website-logo-09.webp" loading="lazy" decoding="async" alt="The Ascott Limited brand logo"/><span>The Ascott Limited</span></a><a class="brand-logo-card" href="portfolio/#signum" aria-label="View Signum projects"><img src="portfolio/assets/053-website-logo-10.webp" loading="lazy" decoding="async" alt="Signum brand logo"/><span>Signum</span></a><a class="brand-logo-card" href="portfolio/#rcz" aria-label="View Radisson Chandigarh Zirakpur projects"><img src="portfolio/assets/026-rcz-logo.webp" loading="lazy" decoding="async" alt="Radisson Chandigarh Zirakpur brand logo"/><span>Radisson Chandigarh Zirakpur</span></a></div></section><section class="work" id="work"><div class="work-heading reveal"><div><div class="micro"><span class="count">02 /</span> PROJECTS WORTH A CLOSER LOOK</div><h2>Selected<br/>work<span class="count">.</span></h2></div><div class="section-small">Five projects, five different briefs. Scroll through each one, then explore the full client-wise archive.</div></div><div class="story"><article class="scene" id="scene-resultbull" style="--scene-bg:#f0ede5;--scene-fg:#153a42">
- <div class="scene-meta"><span>01 / 05</span><span>IDENTITY / WEB UI</span></div>
- <div class="scene-copy"><span class="scene-kicker">SELECTED WORK — 01</span><h3>Resultbull.ai<span class="scene-period">.</span></h3><p>Product identity and interface</p><a class="scene-link" href="https://resultbull.ai/" target="_blank" rel="noopener noreferrer">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div>
- <div class="scene-art logo-art"><img loading="lazy" decoding="async" src="portfolio/assets/resultbull.svg" alt="Resultbull.ai — Logo + website UI · Live website"/></div>
- <div class="scene-bottom"><span>Logo + website UI · Live website</span><span>VT / 01</span></div>
- </article>
-<article class="scene" id="scene-gtm" style="--scene-bg:#efece5;--scene-fg:#174e55">
- <div class="scene-meta"><span>02 / 05</span><span>IDENTITY</span></div>
- <div class="scene-copy"><span class="scene-kicker">SELECTED WORK — 02</span><h3>GTM Leads<span class="scene-period">.</span></h3><p>B2B platform identity</p><a class="scene-link" href="portfolio/#gtm" >EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div>
- <div class="scene-art logo-art"><img loading="lazy" decoding="async" src="portfolio/assets/gtm.svg" alt="GTM Leads — Logo design"/></div>
- <div class="scene-bottom"><span>Logo design</span><span>VT / 02</span></div>
- </article>
-<article class="scene" id="scene-ascott" style="--scene-bg:#65a9d4;--scene-fg:#142e36">
- <div class="scene-meta"><span>03 / 05</span><span>CAMPAIGN / HOSPITALITY</span></div>
- <div class="scene-copy"><span class="scene-kicker">SELECTED WORK — 03</span><h3>Discover ASR<span class="scene-period">.</span></h3><p>Travel, told in bright colour.</p><a class="scene-link" href="portfolio/#ascott" >EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div>
- <div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/002-ascott-discover-asr-india-02.webp" alt="Discover ASR — The Ascott Limited · Campaign artwork"/></div>
- <div class="scene-bottom"><span>The Ascott Limited · Campaign artwork</span><span>VT / 03</span></div>
- </article>
-<article class="scene" id="scene-pride" style="--scene-bg:#dcc9ad;--scene-fg:#253337">
- <div class="scene-meta"><span>04 / 05</span><span>CAMPAIGN / HOSPITALITY</span></div>
- <div class="scene-copy"><span class="scene-kicker">SELECTED WORK — 04</span><h3>Pride Hotels<span class="scene-period">.</span></h3><p>The feeling of getting away.</p><a class="scene-link" href="portfolio/#pride" >EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div>
- <div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp" alt="Pride Hotels — Pride Hotels &amp; Resorts · Campaign artwork"/></div>
- <div class="scene-bottom"><span>Pride Hotels &amp; Resorts · Campaign artwork</span><span>VT / 04</span></div>
- </article>
-<article class="scene" id="scene-rcz" style="--scene-bg:#f1c743;--scene-fg:#152f34">
- <div class="scene-meta"><span>05 / 05</span><span>CAMPAIGN / HOSPITALITY</span></div>
- <div class="scene-copy"><span class="scene-kicker">SELECTED WORK — 05</span><h3>Radisson Chandigarh<span class="scene-period">.</span></h3><p>An invitation to the weekend.</p><a class="scene-link" href="portfolio/#rcz" >EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div>
- <div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/022-rcz-weekend-buffet-carnival-1.webp" alt="Radisson Chandigarh — Radisson Chandigarh Zirakpur · Campaign artwork"/></div>
- <div class="scene-bottom"><span>Radisson Chandigarh Zirakpur · Campaign artwork</span><span>VT / 05</span></div>
- </article></div><a class="see-all" href="portfolio/"><span>See the full portfolio.</span><span aria-hidden="true">↗</span></a></section>
+<section class="brand-section" id="brands" aria-labelledby="brandsTitle"><div class="brand-top"><div><div class="brand-kicker">SELECTED CLIENT / PROPERTY WORK</div><h2 id="brandsTitle">The names behind the briefs.</h2></div><a class="inline-link" href="portfolio/">EXPLORE CLIENT WORK ↗</a></div><div class="brand-grid"><a class="brand-logo-card" href="portfolio/#pride" aria-label="View Pride Hotels & Resorts projects"><img src="portfolio/assets/021-website-logo-01.webp" loading="lazy" decoding="async" alt="Pride Hotels & Resorts brand logo"/><span>Pride Hotels & Resorts</span></a><a class="brand-logo-card" href="portfolio/#ginger" aria-label="View Ginger Srinagar projects"><img src="portfolio/assets/030-website-logo-02.webp" loading="lazy" decoding="async" alt="Ginger Srinagar brand logo"/><span>Ginger Srinagar</span></a><a class="brand-logo-card" href="portfolio/#hyatt" aria-label="View Hyatt Regency Kolkata projects"><img src="portfolio/assets/037-website-logo-03.webp" loading="lazy" decoding="async" alt="Hyatt Regency Kolkata brand logo"/><span>Hyatt Regency Kolkata</span></a><a class="brand-logo-card" href="portfolio/#radisson-mumbai" aria-label="View Radisson Blu Mumbai projects"><img src="portfolio/assets/042-website-logo-04.webp" loading="lazy" decoding="async" alt="Radisson Blu Mumbai brand logo"/><span>Radisson Blu Mumbai</span></a><a class="brand-logo-card" href="portfolio/#citadines" aria-label="View Citadines OMR Chennai projects"><img src="portfolio/assets/044-website-logo-06.webp" loading="lazy" decoding="async" alt="Citadines OMR Chennai brand logo"/><span>Citadines OMR Chennai</span></a><a class="brand-logo-card" href="portfolio/#namah" aria-label="View Namah projects"><img src="portfolio/assets/048-website-logo-07.webp" loading="lazy" decoding="async" alt="Namah brand logo"/><span>Namah</span></a><a class="brand-logo-card" href="portfolio/#oakwood" aria-label="View Oakwood Residence Kapil Hyderabad projects"><img src="portfolio/assets/051-website-logo-08.webp" loading="lazy" decoding="async" alt="Oakwood Residence Kapil Hyderabad brand logo"/><span>Oakwood Residence Kapil Hyderabad</span></a><a class="brand-logo-card" href="portfolio/#ascott" aria-label="View The Ascott Limited projects"><img src="portfolio/assets/007-website-logo-09.webp" loading="lazy" decoding="async" alt="The Ascott Limited brand logo"/><span>The Ascott Limited</span></a><a class="brand-logo-card" href="portfolio/#signum" aria-label="View Signum projects"><img src="portfolio/assets/053-website-logo-10.webp" loading="lazy" decoding="async" alt="Signum brand logo"/><span>Signum</span></a><a class="brand-logo-card" href="portfolio/#rcz" aria-label="View Radisson Chandigarh Zirakpur projects"><img src="portfolio/assets/026-rcz-logo.webp" loading="lazy" decoding="async" alt="Radisson Chandigarh Zirakpur brand logo"/><span>Radisson Chandigarh Zirakpur</span></a></div></section><section class="work work-cinematic" id="work">
+  <div class="work-heading reveal"><div><div class="micro"><span class="count">02 /</span> PROJECTS WORTH A CLOSER LOOK</div><h2>Selected<br/>work<span class="count">.</span></h2></div><div class="section-small">Five projects, five different briefs. Scroll through each one, then explore the full client-wise archive.</div></div>
+  <div class="story story-stack">
+    <article class="scene" id="scene-resultbull" style="--scene-bg:#f0ede5;--scene-fg:#153a42">
+      <div class="scene-surface">
+        <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Identity / Web UI</span><h3>Resultbull.ai<span class="scene-period">.</span></h3></div><span class="scene-number">(01)</span></div>
+        <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 01</span><p>Product identity and interface.</p><small>Logo + website UI · Live website</small><a class="scene-link" href="https://resultbull.ai/" target="_blank" rel="noopener noreferrer">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art logo-art"><img loading="lazy" decoding="async" src="portfolio/assets/resultbull.svg" alt="Resultbull.ai — Logo + website UI · Live website"/></div></div>
+      </div>
+    </article>
+    <article class="scene" id="scene-gtm" style="--scene-bg:#efece5;--scene-fg:#174e55">
+      <div class="scene-surface">
+        <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Identity</span><h3>GTM Leads<span class="scene-period">.</span></h3></div><span class="scene-number">(02)</span></div>
+        <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 02</span><p>B2B platform identity.</p><small>Logo design</small><a class="scene-link" href="portfolio/#gtm">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art logo-art"><img loading="lazy" decoding="async" src="portfolio/assets/gtm.svg" alt="GTM Leads — Logo design"/></div></div>
+      </div>
+    </article>
+    <article class="scene" id="scene-ascott" style="--scene-bg:#65a9d4;--scene-fg:#142e36">
+      <div class="scene-surface">
+        <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Campaign / Hospitality</span><h3>Discover ASR<span class="scene-period">.</span></h3></div><span class="scene-number">(03)</span></div>
+        <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 03</span><p>Travel, told in bright colour.</p><small>The Ascott Limited · Campaign artwork</small><a class="scene-link" href="portfolio/#ascott">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/002-ascott-discover-asr-india-02.webp" alt="Discover ASR — The Ascott Limited campaign artwork"/></div></div>
+      </div>
+    </article>
+    <article class="scene" id="scene-pride" style="--scene-bg:#dcc9ad;--scene-fg:#253337">
+      <div class="scene-surface">
+        <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Campaign / Hospitality</span><h3>Pride Hotels<span class="scene-period">.</span></h3></div><span class="scene-number">(04)</span></div>
+        <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 04</span><p>The feeling of getting away.</p><small>Pride Hotels &amp; Resorts · Campaign artwork</small><a class="scene-link" href="portfolio/#pride">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp" alt="Pride Hotels & Resorts campaign artwork"/></div></div>
+      </div>
+    </article>
+    <article class="scene" id="scene-rcz" style="--scene-bg:#f1c743;--scene-fg:#152f34">
+      <div class="scene-surface">
+        <div class="scene-top"><div class="scene-title-group"><span class="scene-type">Campaign / Hospitality</span><h3>Radisson Chandigarh<span class="scene-period">.</span></h3></div><span class="scene-number">(05)</span></div>
+        <div class="scene-body"><div class="scene-copy"><span class="scene-kicker">Selected work — 05</span><p>An invitation to the weekend.</p><small>Radisson Chandigarh Zirakpur · Campaign artwork</small><a class="scene-link" href="portfolio/#rcz">EXPLORE PROJECT <span aria-hidden="true">↗</span></a></div><div class="scene-art campaign-art"><img loading="lazy" decoding="async" src="portfolio/assets/022-rcz-weekend-buffet-carnival-1.webp" alt="Radisson Chandigarh Zirakpur campaign artwork"/></div></div>
+      </div>
+    </article>
+  </div>
+  <a class="see-all" href="portfolio/"><span>See the full portfolio.</span><span aria-hidden="true">↗</span></a>
+</section>
 <section class="services" id="services"><div class="services-head reveal"><div><div class="micro">03 / WHAT I DO</div><h2>My work<span style="color:var(--rose)">.</span></h2></div><p>Different formats. Same attention to concept, typography, composition and detail.</p></div><div class="service-row reveal"><span class="number">01</span><h3>Identity & branding</h3><p>Marks, systems and brand assets that hold together.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">02</span><h3>Campaign design</h3><p>Social, digital and print artwork made for real briefs.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">03</span><h3>Web & UI design</h3><p>Clear screens, purposeful hierarchy and practical handoff.</p><span class="arrow" aria-hidden="true">↗</span></div><div class="service-row reveal"><span class="number">04</span><h3>Motion & video</h3><p>Editing, motion graphics and visual storytelling.</p><span class="arrow" aria-hidden="true">↗</span></div></section>
 <section class="motion" id="motion"><div class="motion-head reveal"><div><div class="micro">04 / MOTION IN PRACTICE</div><h2>In motion<span style="color:var(--rose)">.</span></h2></div><p>Original video material from my uploaded work. Press play to view with sound.</p></div><div class="motion-frame reveal"><video controls preload="none" playsinline poster="portfolio/assets/motion-vertical.jpg" aria-label="Selected motion design video"><source src="portfolio/assets/motion-vertical.mp4" type="video/mp4"/>Your browser cannot play this video.</video></div><div class="motion-note"><span>MOTION / SELECTED VIDEO</span><a href="portfolio/#motion">VIEW MORE ↗</a></div></section>
 <section class="contact" id="contact"><div class="contact-top"><span>05 / CONTACT</span><span>JOB OPPORTUNITIES & FREELANCE ENQUIRIES</span></div><h2 class="reveal">Have an<br/><em>idea?</em></h2><div class="contact-actions reveal"><a href="https://wa.me/917409219402" target="_blank" rel="noopener noreferrer">Let's make it happen.</a><a class="contact-circle" href="https://wa.me/917409219402" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">↗</a></div><div class="contact-foot"><span>© 2026 VISHAL TYAGI</span><div class="links"><a href="tel:+917409219402">CALL +91 74092 19402</a><a href="https://www.linkedin.com/in/vishal-tyagi-graphic-designer/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>RESUME ↓</a><a href="portfolio/">ALL WORK ↗</a></div><a href="#home">BACK TO TOP ↑</a></div></section></main>
