@@ -28,9 +28,9 @@
   if(!reduce&&window.Lenis){
     try{
       lenis=new Lenis({
-        lerp:.105,
+        lerp:.14,
         smoothWheel:true,
-        wheelMultiplier:.82,
+        wheelMultiplier:.9,
         touchMultiplier:1,
         syncTouch:false,
         anchors:{offset:-92},
@@ -49,10 +49,10 @@
   }
 
 
-  // QA v12 — smoothed single-stage project stack.
-  // Scroll position creates a target; visual progress eases toward it every frame.
-  // This removes wheel-step jerk while keeping the card and artwork mechanically connected.
-  (function initProjectStackV12(){
+  // QA v13 — single-source smooth stack.
+  // Lenis owns scroll smoothing. This engine maps Lenis' animated scroll directly to transforms.
+  // No second easing loop = no catch-up lag.
+  (function initProjectStackV13(){
     if(innerWidth<=640) return;
 
     var story=document.querySelector('.story-stack');
@@ -66,144 +66,151 @@
     if(surfaces.some(function(x){return !x})) return;
 
     story.classList.add('stack-enhanced');
-    story.style.setProperty('--stack-height',(100+(scenes.length-1)*132)+'svh');
 
+    // 4 project-to-project transitions + a dedicated final-project exit tail.
+    var transitionUnits=scenes.length-1;
+    var tailUnits=.72;
+    var totalUnits=transitionUnits+tailUnits;
+    story.style.setProperty('--stack-height',(100+transitionUnits*118+82)+'svh');
+
+    var storyTop=0;
+    var storyTravel=1;
+    var pendingScroll=window.scrollY||0;
     var ticking=false;
-    var visualProgress=0;
-    var targetProgress=0;
-    var firstPaint=true;
 
-    var scaleEnd=reduce?.94:.885;
-    var rotateEnd=reduce?.65:1.95;
-    var yEnd=reduce?-4:-10;
+    var scaleEnd=reduce?.95:.89;
+    var rotateEnd=reduce?.55:1.85;
+    var yEnd=reduce?-3:-9;
 
     function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
     function mix(a,b,t){return a+(b-a)*t}
     function smooth(t){return t*t*(3-2*t)}
 
-    function readTarget(){
-      var rect=story.getBoundingClientRect();
-      var vh=innerHeight||1;
-      var travel=Math.max(1,rect.height-vh);
-      targetProgress=clamp((-rect.top)/travel,0,1);
-      if(firstPaint){
-        visualProgress=targetProgress;
-        firstPaint=false;
-      }
+    function measure(){
+      var r=story.getBoundingClientRect();
+      storyTop=r.top+(window.scrollY||0);
+      storyTravel=Math.max(1,story.offsetHeight-innerHeight);
     }
 
     function setSceneY(scene,value){
       scene.style.setProperty('--scene-y',value.toFixed(3)+'%');
     }
 
-    function setCard(surface,p){
-      surface.style.setProperty('--card-scale',mix(1,scaleEnd,p).toFixed(4));
-      surface.style.setProperty('--card-rotate',mix(0,rotateEnd,p).toFixed(3)+'deg');
-      surface.style.setProperty('--card-y',mix(0,yEnd,p).toFixed(2)+'px');
-      surface.style.setProperty('--card-brightness',mix(1,.965,p).toFixed(4));
-      surface.style.setProperty('--card-radius',mix(0,4,p).toFixed(2)+'px');
-      surface.style.setProperty('--card-shadow',mix(0,.20,p).toFixed(3));
+    function setCard(surface,p,tail){
+      var scale=tail!=null?mix(1,.968,tail):mix(1,scaleEnd,p);
+      var rotate=tail!=null?mix(0,.55,tail):mix(0,rotateEnd,p);
+      var y=tail!=null?mix(0,-7,tail):mix(0,yEnd,p);
+
+      surface.style.setProperty('--card-scale',scale.toFixed(4));
+      surface.style.setProperty('--card-rotate',rotate.toFixed(3)+'deg');
+      surface.style.setProperty('--card-y',y.toFixed(2)+'px');
     }
 
-    function setImage(image,outgoing,incoming){
+    function setImage(image,outgoing,incoming,tail){
       if(!image)return;
 
-      // Outgoing: image stays at the exact same card angle because it is a child
-      // of the rotating surface, while its content slowly pushes forward.
-      var scale=1 + outgoing*.055 - incoming*.018;
-      var y=-outgoing*2.2 + (1-incoming)*3.0;
-      if(incoming<=0.001)y=-outgoing*2.2;
+      var scale;
+      var y;
+
+      if(tail!=null){
+        scale=mix(1,1.025,tail);
+        y=mix(0,-1.5,tail);
+      }else{
+        // Image inherits the exact card angle from its parent.
+        // Inside that angle it has a subtle push/parallax only.
+        scale=1 + outgoing*.045 + (1-incoming)*.022;
+        y=-outgoing*2.0 + (1-incoming)*2.6;
+      }
 
       image.style.setProperty('--image-scale',scale.toFixed(4));
       image.style.setProperty('--image-y',y.toFixed(3)+'%');
-      image.style.setProperty('--image-sat',mix(1,1.035,outgoing).toFixed(3));
-      image.style.setProperty('--image-contrast',mix(1,1.025,outgoing).toFixed(3));
     }
 
-    function paint(progress){
-      var segments=scenes.length-1;
-      var position=progress*segments;
-      var current=Math.min(segments,Math.floor(position));
-      var local=current>=segments?1:position-current;
+    function paintFromScroll(scroll){
+      var progress=clamp((scroll-storyTop)/storyTravel,0,1);
+      var units=progress*totalUnits;
 
-      // Reference-like choreography:
-      // 0–28%  : full-screen hold
-      // 28–58% : back card visibly shrinks + tilts
-      // 46–100%: next card rises, giving a long overlap
-      var shrink=smooth(clamp((local-.28)/.30,0,1));
-      var incoming=smooth(clamp((local-.46)/.54,0,1));
+      // Final Project 5 tail: hold -> subtle recede -> sticky stage releases naturally.
+      if(units>=transitionUnits){
+        var tailLocal=clamp((units-transitionUnits)/tailUnits,0,1);
+        var tail=smooth(clamp((tailLocal-.48)/.52,0,1));
+
+        scenes.forEach(function(scene,i){
+          setSceneY(scene,i<=transitionUnits?0:100);
+          setCard(surfaces[i],i===transitionUnits?0:1,null);
+          setImage(images[i],i<transitionUnits?1:0,1,null);
+        });
+
+        setSceneY(scenes[transitionUnits],0);
+        setCard(surfaces[transitionUnits],0,tail);
+        setImage(images[transitionUnits],0,1,tail);
+        return;
+      }
+
+      var current=Math.floor(units);
+      var local=units-current;
+
+      // Full-screen hold first, then shrink/tilt, then the next project rises.
+      var shrink=smooth(clamp((local-.24)/.30,0,1));
+      var incoming=smooth(clamp((local-.43)/.57,0,1));
 
       scenes.forEach(function(scene,i){
-        var surface=surfaces[i];
-
         if(i<current){
           setSceneY(scene,0);
-          setCard(surface,1);
-          setImage(images[i],1,1);
+          setCard(surfaces[i],1,null);
+          setImage(images[i],1,1,null);
         }else if(i===current){
           setSceneY(scene,0);
-          var out=current===segments?0:shrink;
-          setCard(surface,out);
-          setImage(images[i],out,1);
+          setCard(surfaces[i],shrink,null);
+          setImage(images[i],shrink,1,null);
         }else if(i===current+1){
           setSceneY(scene,mix(100,0,incoming));
-          setCard(surface,0);
-          setImage(images[i],0,incoming);
+          setCard(surfaces[i],0,null);
+          setImage(images[i],0,incoming,null);
         }else{
           setSceneY(scene,100);
-          setCard(surface,0);
-          setImage(images[i],0,0);
+          setCard(surfaces[i],0,null);
+          setImage(images[i],0,0,null);
         }
       });
-
-      if(current===segments){
-        setCard(surfaces[segments],0);
-        setSceneY(scenes[segments],0);
-        setImage(images[segments],0,1);
-      }
     }
 
     function frame(){
       ticking=false;
-      readTarget();
-
-      // Frame interpolation is separate from Lenis, so even stepped mouse-wheel
-      // input produces a continuous premium visual transition.
-      var damping=reduce?.28:.115;
-      visualProgress += (targetProgress-visualProgress)*damping;
-
-      if(Math.abs(targetProgress-visualProgress)<0.00008){
-        visualProgress=targetProgress;
-      }
-
-      paint(visualProgress);
-
-      if(Math.abs(targetProgress-visualProgress)>=0.00008){
-        ticking=true;
-        requestAnimationFrame(frame);
-      }
+      paintFromScroll(pendingScroll);
     }
 
-    function requestRender(){
-      readTarget();
+    function requestRender(scroll){
+      if(typeof scroll==='number')pendingScroll=scroll;
+      else pendingScroll=window.scrollY||0;
       if(ticking)return;
       ticking=true;
       requestAnimationFrame(frame);
     }
 
-    window.addEventListener('scroll',requestRender,{passive:true});
-    window.addEventListener('resize',function(){
-      firstPaint=true;
-      requestRender();
-    },{passive:true});
-
-    if(window.__vtLenis&&window.__vtLenis.on){
-      try{window.__vtLenis.on('scroll',requestRender)}catch(e){}
+    function bind(){
+      if(window.__vtLenis&&window.__vtLenis.on){
+        // Animated Lenis position is already smooth: use it directly.
+        window.__vtLenis.on('scroll',function(e){
+          requestRender(typeof e.animatedScroll==='number'?e.animatedScroll:(window.scrollY||0));
+        });
+      }else{
+        // Native fallback only when Lenis is unavailable.
+        window.addEventListener('scroll',function(){
+          requestRender(window.scrollY||0);
+        },{passive:true});
+      }
     }
 
-    requestRender();
-    setTimeout(requestRender,100);
-    setTimeout(requestRender,500);
+    window.addEventListener('resize',function(){
+      measure();
+      requestRender(window.scrollY||0);
+    },{passive:true});
+
+    measure();
+    bind();
+    requestRender(window.scrollY||0);
+    setTimeout(function(){measure();requestRender(window.scrollY||0)},250);
   })();
 
   if(reduce) return;
