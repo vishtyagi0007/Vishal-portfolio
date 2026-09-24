@@ -141,82 +141,79 @@
     }
   });
 
-  // QA v4 — one pinned full-screen stage, each incoming panel physically covers the previous one.
+  // QA v7 — normal-flow sticky chapters. No project is hidden.
+  // Each incoming full-screen scene naturally covers the previous one while the previous shrinks and tilts.
   var story=document.querySelector('.story-stack');
   var stage=story&&story.querySelector('.story-stage');
   var scenes=stage?q('.story-stage .scene'):[];
   if(story&&stage&&scenes.length&&innerWidth>640){
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')||scene});
-    gsap.set(scenes,{position:'absolute',inset:0,yPercent:100,force3D:true});
-    gsap.set(scenes[0],{yPercent:0});
-    gsap.set(surfaces,{scale:1,rotation:0,yPercent:0,filter:'brightness(1)',transformOrigin:'50% 50%',force3D:true});
-    scenes.forEach(function(scene,i){gsap.set(scene,{zIndex:(i+1)*10})});
 
-    story.style.height=Math.round((scenes.length-1)*138 + 100)+'svh';
-    var stackTl=gsap.timeline({
-      scrollTrigger:{
-        trigger:story,
-        start:'top top',
-        end:'bottom bottom',
-        scrub:1.35,
-        invalidateOnRefresh:true
-      }
-    });
+    // Clear all old pinned-stage transforms.
+    gsap.set(scenes,{clearProps:'transform,position,inset'});
+    gsap.set(surfaces,{scale:1,rotation:0,y:0,filter:'brightness(1)',boxShadow:'none',transformOrigin:'50% 50%',force3D:true});
 
     scenes.forEach(function(scene,i){
-      if(i===scenes.length-1)return;
-      var current=surfaces[i];
-      var next=scenes[i+1];
-      var currentTitle=scene.querySelector('.scene-title-group h3');
-      var currentCopy=scene.querySelector('.scene-copy');
-      var currentArt=scene.querySelector('.scene-art');
-      var nextTitle=next.querySelector('.scene-title-group h3');
-      var nextNumber=next.querySelector('.scene-number');
-      var nextCopy=next.querySelector('.scene-copy');
-      var nextArt=next.querySelector('.scene-art');
-      var dir=1;
-
-      // Full-screen hold before anything changes.
-      stackTl.to({}, {duration:.34});
-
-      // Previous panel visibly becomes a smaller, tilted card first.
-      stackTl.to(current,{
-        scale:.89,
-        rotation:dir*1.8,
-        yPercent:-1.6,
-        filter:'brightness(.94)',
-        boxShadow:'0 34px 86px rgba(8,24,28,.20)',
-        duration:.52,
-        ease:'none'
-      },'>');
-
-      if(currentTitle) stackTl.to(currentTitle,{y:-18,opacity:.78,duration:.52,ease:'none'},'<');
-      if(currentCopy) stackTl.to(currentCopy,{y:-10,opacity:.66,duration:.52,ease:'none'},'<');
-      if(currentArt) stackTl.to(currentArt,{y:-12,scale:.982,opacity:.9,duration:.52,ease:'none'},'<');
-
-      // Incoming project starts only after shrink is already readable.
-      stackTl.fromTo(next,
-        {yPercent:100},
-        {yPercent:0,duration:.72,ease:'none'},
-        '>-0.12'
-      );
-
-      // Its content settles while the panel is travelling upward.
-      if(nextTitle) stackTl.fromTo(nextTitle,{y:44,opacity:.45},{y:0,opacity:1,duration:.55,ease:'none'},'<.08');
-      if(nextNumber) stackTl.fromTo(nextNumber,{y:28,opacity:.45},{y:0,opacity:1,duration:.5,ease:'none'},'<');
-      if(nextCopy) stackTl.fromTo(nextCopy,{y:30,opacity:.38},{y:0,opacity:1,duration:.55,ease:'none'},'<');
-      if(nextArt) stackTl.fromTo(nextArt,{y:42,scale:.975,opacity:.52},{y:0,scale:1,opacity:1,duration:.62,ease:'none'},'<');
-
-      // Small settle/hold at full screen before next transition.
-      stackTl.to({}, {duration:.26});
-    });
-
-    // Independent artwork drift inside each panel.
-    scenes.forEach(function(scene){
+      var surface=surfaces[i];
+      var title=scene.querySelector('.scene-title-group h3');
+      var number=scene.querySelector('.scene-number');
+      var copy=scene.querySelector('.scene-copy');
+      var art=scene.querySelector('.scene-art');
       var img=scene.querySelector('.scene-art img');
-      if(!img)return;
-      gsap.fromTo(img,{scale:1.055,yPercent:3.5},{scale:1.015,yPercent:-3.5,ease:'none',
-        scrollTrigger:{trigger:story,start:'top top',end:'bottom bottom',scrub:1.8}});
+
+      // Scene content resolves gently while the project reaches the viewport.
+      var enter=gsap.timeline({
+        scrollTrigger:{
+          trigger:scene,
+          start:'top 92%',
+          end:'top 24%',
+          scrub:1.05,
+          invalidateOnRefresh:true
+        }
+      });
+      if(title) enter.fromTo(title,{y:54,opacity:.34},{y:0,opacity:1,ease:'none'},0);
+      if(number) enter.fromTo(number,{y:30,opacity:.4},{y:0,opacity:1,ease:'none'},0);
+      if(copy) enter.fromTo(copy,{y:38,opacity:.34},{y:0,opacity:1,ease:'none'},.03);
+      if(art) enter.fromTo(art,{y:46,scale:.98,opacity:.48},{y:0,scale:1,opacity:1,ease:'none'},.02);
+
+      // Internal artwork parallax.
+      if(img){
+        gsap.fromTo(img,
+          {scale:1.055,yPercent:4},
+          {scale:1.015,yPercent:-4,ease:'none',
+           scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:1.55,invalidateOnRefresh:true}}
+        );
+      }
+
+      // When the next scene starts entering, this scene visibly shrinks/tilts first.
+      if(i<scenes.length-1){
+        var next=scenes[i+1];
+        var dir=1;
+        gsap.fromTo(surface,
+          {scale:1,rotation:0,y:0,filter:'brightness(1)',boxShadow:'none'},
+          {
+            scale:.89,
+            rotation:dir*1.8,
+            y:-14,
+            filter:'brightness(.94)',
+            boxShadow:'0 34px 86px rgba(8,24,28,.20)',
+            ease:'none',
+            scrollTrigger:{
+              trigger:next,
+              start:'top bottom',
+              end:'top 38%',
+              scrub:1.45,
+              invalidateOnRefresh:true
+            }
+          }
+        );
+        if(title) gsap.to(title,{y:-18,opacity:.76,ease:'none',
+          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
+        if(copy) gsap.to(copy,{y:-10,opacity:.64,ease:'none',
+          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
+        if(art) gsap.to(art,{y:-12,scale:.98,opacity:.88,ease:'none',
+          scrollTrigger:{trigger:next,start:'top bottom',end:'top 38%',scrub:1.35}});
+      }
     });
   }
 
