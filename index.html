@@ -130,542 +130,86 @@
   .work-cinematic .scene-copy p{font-size:18px}.work-cinematic .scene-copy small{margin-bottom:24px}
 }
 
-/* QA v3 — NBNZIA-like three-phase project stack:
-   enter full viewport -> pin/set -> shrink/tilt only as next scene covers */
-@media(min-width:641px){
-  .work-cinematic{overflow:visible}
-  .work-cinematic .story-stack{
+/* Selected Work V15 — one desktop stack layout; no v3–v14 overrides. */
+@media (min-width:641px){
+  .work-cinematic .story-stack.stack-enhanced{
     position:relative;
-    padding:0;
-    background:#f1efed;
-    overflow:visible;
-  }
-  .work-cinematic .scene{
-    position:relative;
-    top:auto;
-    width:100%;
-    height:230svh;
+    height:calc(100svh + 4 * 118svh + 82svh);
     min-height:0;
-    margin:0 0 -100svh;
     padding:0;
+    margin:0;
     overflow:visible;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
+    background:#eae7e3;
+    isolation:isolate;
   }
-  .work-cinematic .scene:last-child{
-    height:100svh;
-    margin-bottom:0;
-  }
-  .work-cinematic .scene-surface{
+  .work-cinematic .story-stack.stack-enhanced .story-stage{
     position:sticky;
     top:0;
+    inset-inline:0;
     width:100%;
     height:100svh;
-    min-height:680px;
+    min-height:0;
+    padding:0;
     margin:0;
+    overflow:hidden;
+    background:#eae7e3;
+  }
+  .work-cinematic .story-stack.stack-enhanced .scene{
+    position:absolute;
+    inset:0;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    min-height:0;
+    padding:0;
+    margin:0;
+    display:block;
+    overflow:visible;
+    border:0;
     border-radius:0;
-    box-shadow:0 22px 70px rgba(15,28,31,.12);
+    box-shadow:none;
+    background:transparent;
+    transform:none;
+  }
+  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(1){z-index:10}
+  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(2){z-index:20}
+  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(3){z-index:30}
+  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(4){z-index:40}
+  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(5){z-index:50}
+  .work-cinematic .story-stack.stack-enhanced .scene-surface{
+    position:absolute;
+    inset:0;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    min-height:0;
+    margin:0;
+    padding:clamp(30px,4vw,72px);
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr);
+    overflow:hidden;
+    background:var(--scene-bg);
+    color:var(--scene-fg);
     transform-origin:50% 50%;
-    will-change:transform,filter,border-radius;
+    border-radius:2px;
+    box-shadow:0 22px 55px rgba(8,24,28,.12);
+    filter:none;
     backface-visibility:hidden;
   }
-  .work-cinematic .scene-top{
-    padding-top:clamp(4px,1vh,10px);
-  }
-  .work-cinematic .scene-body{
-    min-height:0;
-    align-items:end;
-  }
-  .work-cinematic .scene-art{
+  .work-cinematic .story-stack.stack-enhanced .scene-art{
+    transform:none;
+    opacity:1;
+    overflow:hidden;
     height:min(56vh,560px);
   }
-  .work-cinematic .scene:nth-child(1){z-index:10}
-  .work-cinematic .scene:nth-child(2){z-index:20}
-  .work-cinematic .scene:nth-child(3){z-index:30}
-  .work-cinematic .scene:nth-child(4){z-index:40}
-  .work-cinematic .scene:nth-child(5){z-index:50}
-}
-
-/* QA v4 — real pinned stage timeline; no CSS sticky-card overlap */
-@media(min-width:641px){
-  .work-cinematic .story-stack{
-    position:relative;
-    height:auto;
-    padding:0;
-    background:#f1efed;
-    overflow:visible;
-  }
-  .work-cinematic .story-stage{
-    position:relative;
-    width:100%;
-    height:100svh;
-    overflow:hidden;
-    background:#f1efed;
-  }
-  .work-cinematic .scene{
-    position:absolute!important;
-    inset:0!important;
-    width:100%!important;
-    height:100%!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    overflow:visible!important;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
-  }
-  .work-cinematic .scene-surface{
-    position:absolute!important;
-    inset:0!important;
-    width:100%!important;
-    height:100%!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:clamp(34px,4vw,72px)!important;
-    border-radius:0;
-    box-shadow:none;
+  .work-cinematic .story-stack.stack-enhanced .scene-art img,
+  .work-cinematic .story-stack.stack-enhanced .scene-art:hover img{
+    transition:none;
+    filter:none;
     transform-origin:50% 50%;
     backface-visibility:hidden;
-    will-change:transform,filter;
-  }
-  .work-cinematic .scene-top{position:relative;z-index:2}
-  .work-cinematic .scene-body{position:relative;z-index:2}
-  .work-cinematic .scene-art{height:min(58vh,590px)}
-}
-@media(max-width:640px){
-  .work-cinematic .story-stage{display:block}
-}
-
-/* QA v5 — reliable scroll space + sticky stage.
-   Prevents the 5th slide from trapping the rest of the page. */
-@media(min-width:641px){
-  .work-cinematic .story-stack{
-    position:relative!important;
-    height:650svh!important;
-    min-height:5200px;
-    padding:0!important;
-    overflow:visible!important;
-    background:#f1efed;
-  }
-  .work-cinematic .story-stage{
-    position:sticky!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    overflow:hidden!important;
-    background:#f1efed;
-  }
-  .work-cinematic .scene{
-    position:absolute!important;
-    inset:0!important;
-    width:100%!important;
-    height:100%!important;
-    margin:0!important;
-  }
-  .work-cinematic .see-all{
-    position:relative;
-    z-index:2;
-  }
-  .services,.motion,.contact{
-    position:relative;
-    z-index:1;
-  }
-}
-
-/* QA v6 — deterministic initial slide state.
-   Slide 01 visible; slides 02–05 wait below viewport until GSAP brings them in. */
-@media(min-width:641px){
-  .work-cinematic .story-stage .scene{transform:translate3d(0,100%,0)}
-  .work-cinematic .story-stage .scene:first-child{transform:translate3d(0,0,0)}
-}
-
-/* QA v7 — all 5 projects remain in normal flow.
-   No slide is hidden. Each next full-screen project naturally rises over the current one. */
-@media(min-width:641px){
-  .work-cinematic .story-stack{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    padding:0!important;
-    overflow:visible!important;
-    background:#f1efed!important;
-  }
-  .work-cinematic .story-stage{
-    position:relative!important;
-    top:auto!important;
-    height:auto!important;
-    overflow:visible!important;
-    background:#f1efed!important;
-  }
-  .work-cinematic .story-stage .scene{
-    position:sticky!important;
-    inset:auto!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    min-height:680px!important;
-    margin:0!important;
-    padding:0!important;
-    transform:none!important;
-    overflow:visible!important;
-    background:transparent!important;
-  }
-  .work-cinematic .story-stage .scene:first-child{
-    transform:none!important;
-  }
-  .work-cinematic .scene-surface{
-    position:relative!important;
-    inset:auto!important;
-    width:100%!important;
-    height:100%!important;
-    min-height:680px!important;
-    margin:0!important;
-    transform-origin:50% 50%!important;
-  }
-  .work-cinematic .scene:nth-child(1){z-index:10!important}
-  .work-cinematic .scene:nth-child(2){z-index:20!important}
-  .work-cinematic .scene:nth-child(3){z-index:30!important}
-  .work-cinematic .scene:nth-child(4){z-index:40!important}
-  .work-cinematic .scene:nth-child(5){z-index:50!important}
-}
-
-/* QA v8 — reference-style stack:
-   scene wrapper = scroll space, scene-surface = sticky viewport, next wrapper overlaps late. */
-@media(min-width:641px){
-  .work-cinematic .story-stack,
-  .work-cinematic .story-stage{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    overflow:visible!important;
-    padding:0!important;
-    background:#f1efed!important;
-  }
-
-  .work-cinematic .story-stage .scene{
-    position:relative!important;
-    inset:auto!important;
-    top:auto!important;
-    width:100%!important;
-    height:168svh!important;
-    min-height:1180px!important;
-    margin:0!important;
-    padding:0!important;
-    transform:none!important;
-    overflow:visible!important;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
-  }
-
-  .work-cinematic .story-stage .scene + .scene{
-    margin-top:-38svh!important;
-  }
-
-  .work-cinematic .story-stage .scene:last-child{
-    height:130svh!important;
-  }
-
-  .work-cinematic .scene-surface{
-    position:sticky!important;
-    inset:auto!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    min-height:680px!important;
-    margin:0!important;
-    padding:clamp(34px,4vw,72px)!important;
-    transform-origin:50% 50%!important;
-    border-radius:0;
-    box-shadow:none;
-    overflow:hidden!important;
-    backface-visibility:hidden;
-    will-change:transform,filter,box-shadow;
-  }
-
-  .work-cinematic .scene:nth-child(1){z-index:10!important}
-  .work-cinematic .scene:nth-child(2){z-index:20!important}
-  .work-cinematic .scene:nth-child(3){z-index:30!important}
-  .work-cinematic .scene:nth-child(4){z-index:40!important}
-  .work-cinematic .scene:nth-child(5){z-index:50!important}
-
-  .work-cinematic .scene-top,
-  .work-cinematic .scene-body{position:relative;z-index:2}
-}
-
-/* QA v9 — calibrated reference choreography.
-   200svh wrapper: 0–55% hold, 55–80% shrink/tilt, 80% next panel begins entering.
-   20svh overlap keeps the shrunken card visible while the next panel is only a bottom strip. */
-@media(min-width:641px){
-  .work-cinematic .story-stack,
-  .work-cinematic .story-stage{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    overflow:visible!important;
-    padding:0!important;
-    background:#f1efed!important;
-  }
-
-  .work-cinematic .story-stage .scene{
-    position:relative!important;
-    inset:auto!important;
-    top:auto!important;
-    width:100%!important;
-    height:200svh!important;
-    min-height:1400px!important;
-    margin:0!important;
-    padding:0!important;
-    transform:none!important;
-    overflow:visible!important;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
-  }
-
-  .work-cinematic .story-stage .scene + .scene{
-    margin-top:-20svh!important;
-  }
-
-  .work-cinematic .story-stage .scene:last-child{
-    height:145svh!important;
-  }
-
-  .work-cinematic .scene-surface{
-    position:sticky!important;
-    inset:auto!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    min-height:680px!important;
-    margin:0!important;
-    padding:clamp(34px,4vw,72px)!important;
-    transform-origin:50% 50%!important;
-    border-radius:0;
-    box-shadow:none;
-    overflow:hidden!important;
-    backface-visibility:hidden;
-    will-change:transform,filter,box-shadow,border-radius;
-  }
-
-  .work-cinematic .scene:nth-child(1){z-index:10!important}
-  .work-cinematic .scene:nth-child(2){z-index:20!important}
-  .work-cinematic .scene:nth-child(3){z-index:30!important}
-  .work-cinematic .scene:nth-child(4){z-index:40!important}
-  .work-cinematic .scene:nth-child(5){z-index:50!important}
-
-  .work-cinematic .scene-top,
-  .work-cinematic .scene-body{position:relative;z-index:2}
-}
-
-/* QA v10 — deterministic stack geometry.
-   Current panel remains sticky while next panel rises for a long visible overlap window. */
-@media(min-width:641px){
-  .work-cinematic .story-stack,
-  .work-cinematic .story-stage{
-    position:relative!important;
-    height:auto!important;
-    min-height:0!important;
-    overflow:visible!important;
-    padding:0!important;
-    background:#f1efed!important;
-  }
-
-  .work-cinematic .story-stage .scene{
-    position:relative!important;
-    inset:auto!important;
-    top:auto!important;
-    width:100%!important;
-    height:180svh!important;
-    min-height:1260px!important;
-    margin:0!important;
-    padding:0!important;
-    transform:none!important;
-    overflow:visible!important;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
-  }
-
-  /* 60svh overlap = next project is visibly rising while previous is still pinned. */
-  .work-cinematic .story-stage .scene + .scene{
-    margin-top:-60svh!important;
-  }
-
-  .work-cinematic .story-stage .scene:last-child{
-    height:120svh!important;
-  }
-
-  .work-cinematic .scene-surface{
-    position:sticky!important;
-    inset:auto!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    min-height:680px!important;
-    margin:0!important;
-    padding:clamp(34px,4vw,72px)!important;
-    transform-origin:50% 50%!important;
-    transform:translate3d(0,0,0) scale(1) rotate(0deg);
-    border-radius:0;
-    box-shadow:none;
-    overflow:hidden!important;
-    backface-visibility:hidden;
-    will-change:transform,filter,box-shadow,border-radius;
-  }
-
-  .work-cinematic .scene:nth-child(1){z-index:10!important}
-  .work-cinematic .scene:nth-child(2){z-index:20!important}
-  .work-cinematic .scene:nth-child(3){z-index:30!important}
-  .work-cinematic .scene:nth-child(4){z-index:40!important}
-  .work-cinematic .scene:nth-child(5){z-index:50!important}
-}
-
-/* QA v11 — isolated single-stage stack.
-   These rules intentionally override every older experimental stack rule. */
-@media(min-width:641px){
-  .work-cinematic .story-stack.stack-enhanced{
-    position:relative!important;
-    height:var(--stack-height,640svh)!important;
-    min-height:0!important;
-    padding:0!important;
-    margin:0!important;
-    overflow:visible!important;
-    background:#f1efed!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .story-stage{
-    position:sticky!important;
-    inset:auto!important;
-    top:0!important;
-    width:100%!important;
-    height:100svh!important;
-    min-height:680px!important;
-    padding:0!important;
-    margin:0!important;
-    overflow:hidden!important;
-    background:#f1efed!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene{
-    position:absolute!important;
-    inset:0!important;
-    top:0!important;
-    left:0!important;
-    width:100%!important;
-    height:100%!important;
-    min-height:0!important;
-    padding:0!important;
-    margin:0!important;
-    overflow:visible!important;
-    background:transparent!important;
-    box-shadow:none!important;
-    border-radius:0!important;
-    transform:translate3d(0,var(--scene-y,100%),0)!important;
-    will-change:transform!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene:first-child{
-    --scene-y:0%;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene-surface{
-    position:absolute!important;
-    inset:0!important;
-    top:0!important;
-    left:0!important;
-    width:100%!important;
-    height:100%!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:clamp(34px,4vw,72px)!important;
-    overflow:hidden!important;
-    transform-origin:50% 50%!important;
-    transform:
-      translate3d(0,var(--card-y,0px),0)
-      scale(var(--card-scale,1))
-      rotate(var(--card-rotate,0deg))!important;
-    filter:brightness(var(--card-brightness,1))!important;
-    border-radius:var(--card-radius,0px)!important;
-    box-shadow:0 34px 90px rgba(8,24,28,var(--card-shadow,0))!important;
-    backface-visibility:hidden!important;
-    will-change:transform,filter,box-shadow!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(1){z-index:10!important}
-  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(2){z-index:20!important}
-  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(3){z-index:30!important}
-  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(4){z-index:40!important}
-  .work-cinematic .story-stack.stack-enhanced .scene:nth-child(5){z-index:50!important}
-}
-
-/* QA v12 — artwork is part of the tilting card, with its own subtle depth motion. */
-@media(min-width:641px){
-  .work-cinematic .story-stack.stack-enhanced .scene-art{
-    overflow:hidden!important;
-    transform:none!important;
-    opacity:1!important;
-    will-change:auto!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene-art img{
-    transition:none!important;
-    transform:
-      translate3d(0,var(--image-y,0%),0)
-      scale(var(--image-scale,1))!important;
-    transform-origin:50% 50%!important;
-    filter:
-      saturate(var(--image-sat,1))
-      contrast(var(--image-contrast,1))!important;
-    will-change:transform,filter!important;
-    backface-visibility:hidden!important;
-  }
-
-  /* No hover transform fighting with scroll-driven artwork motion. */
-  .work-cinematic .story-stack.stack-enhanced .scene-art:hover img{
-    transform:
-      translate3d(0,var(--image-y,0%),0)
-      scale(var(--image-scale,1))!important;
-  }
-}
-
-/* QA v13 — 60fps stack: transform-only animation.
-   No animated filter/shadow/contrast on full-screen layers. */
-@media(min-width:641px){
-  .work-cinematic .story-stack.stack-enhanced .scene-surface{
-    filter:none!important;
-    border-radius:2px!important;
-    box-shadow:0 28px 72px rgba(8,24,28,.16)!important;
-    contain:paint;
-    transform:
-      translate3d(0,var(--card-y,0px),0)
-      scale(var(--card-scale,1))
-      rotate(var(--card-rotate,0deg))!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene-art img{
-    filter:none!important;
-    transform:
-      translate3d(0,var(--image-y,0%),0)
-      scale(var(--image-scale,1))!important;
-  }
-
-  .work-cinematic .story-stack.stack-enhanced .scene-art:hover img{
-    transform:
-      translate3d(0,var(--image-y,0%),0)
-      scale(var(--image-scale,1))!important;
-  }
-}
-
-/* V14: Keep the five full-screen panels from needlessly reserving heavy
-   compositing layers. JS promotes only the currently transitioning panels. */
-@media (min-width:641px){
-  .work-cinematic .story-stack.stack-enhanced .scene,
-  .work-cinematic .story-stack.stack-enhanced .scene-surface,
-  .work-cinematic .story-stack.stack-enhanced .scene-art img {
-    will-change:auto!important;
   }
 }
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css?v=13.0"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js?v=14.0"></script></head><body>
