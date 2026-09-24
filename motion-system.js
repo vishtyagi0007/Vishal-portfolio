@@ -185,32 +185,33 @@
       gsap.fromTo(surface,
         {scale:1,rotation:0,y:0,filter:'brightness(1)',borderRadius:'0px'},
         {
-          scale:.935,
-          rotation:i%2===0?-1.35:1.35,
-          y:-24,
-          filter:'brightness(.78)',
-          borderRadius:'16px',
+          scale:.885,
+          rotation:i%2===0?-2.05:2.05,
+          y:-10,
+          filter:'brightness(.94)',
+          borderRadius:'2px',
+          boxShadow:'0 34px 86px rgba(8,24,28,.20)',
           ease:'none',
           scrollTrigger:{
             trigger:next,
             start:'top bottom',
-            end:'top 8%',
-            scrub:1.45,
+            end:'top 44%',
+            scrub:1.6,
             invalidateOnRefresh:true
           }
         }
       );
       if(title) gsap.to(title,{
         y:-22,opacity:.68,ease:'none',
-        scrollTrigger:{trigger:next,start:'top bottom',end:'top 18%',scrub:1.35}
+        scrollTrigger:{trigger:next,start:'top bottom',end:'top 44%',scrub:1.45}
       });
       if(copy) gsap.to(copy,{
         y:-12,opacity:.58,ease:'none',
-        scrollTrigger:{trigger:next,start:'top bottom',end:'top 18%',scrub:1.35}
+        scrollTrigger:{trigger:next,start:'top bottom',end:'top 44%',scrub:1.45}
       });
       if(art) gsap.to(art,{
         y:-15,scale:.975,opacity:.82,ease:'none',
-        scrollTrigger:{trigger:next,start:'top bottom',end:'top 12%',scrub:1.35}
+        scrollTrigger:{trigger:next,start:'top bottom',end:'top 44%',scrub:1.45}
       });
     }
   });
