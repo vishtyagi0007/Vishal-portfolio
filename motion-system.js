@@ -47,6 +47,91 @@
     }catch(e){}
   }
 
+
+  // QA v10 — critical project stack engine is library-independent.
+  // This runs even if GSAP/ScrollTrigger/CDN scripts fail.
+  (function initProjectStack(){
+    if(innerWidth<=640) return;
+    var scenes=[].slice.call(document.querySelectorAll('.story-stage .scene'));
+    if(!scenes.length) return;
+    var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')});
+    if(surfaces.some(function(x){return !x})) return;
+
+    var ticking=false;
+
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+    function mix(a,b,t){return a+(b-a)*t}
+    function ease(t){
+      // smoothstep: zero velocity at both ends, so scale/tilt never snaps.
+      return t*t*(3-2*t);
+    }
+
+    function render(){
+      ticking=false;
+      var vh=innerHeight||1;
+
+      scenes.forEach(function(scene,i){
+        var surface=surfaces[i];
+        var p=0;
+
+        if(i<scenes.length-1){
+          var nextRect=scenes[i+1].getBoundingClientRect();
+
+          // p=0 when next project just reaches viewport bottom.
+          // p=1 when next project's top reaches ~42% of viewport.
+          // During this interval the current full-screen panel visibly shrinks + tilts.
+          p=clamp((vh-nextRect.top)/(vh*.58),0,1);
+          p=ease(p);
+        }
+
+        var scale=mix(1,.89,p);
+        var rot=mix(0,1.9,p);
+        var y=mix(0,-10,p);
+        var radius=mix(0,4,p);
+        var bright=mix(1,.96,p);
+        var shadowAlpha=mix(0,.20,p);
+
+        surface.style.transform=
+          'translate3d(0,'+y.toFixed(2)+'px,0) scale('+scale.toFixed(4)+') rotate('+rot.toFixed(3)+'deg)';
+        surface.style.filter='brightness('+bright.toFixed(4)+')';
+        surface.style.borderRadius=radius.toFixed(2)+'px';
+        surface.style.boxShadow='0 34px 90px rgba(8,24,28,'+shadowAlpha.toFixed(3)+')';
+
+        // Internal content recedes slightly with the card, like the reference.
+        var title=scene.querySelector('.scene-title-group h3');
+        var copy=scene.querySelector('.scene-copy');
+        var art=scene.querySelector('.scene-art');
+        if(title){
+          title.style.transform='translate3d(0,'+mix(0,-12,p).toFixed(2)+'px,0)';
+          title.style.opacity=mix(1,.82,p).toFixed(3);
+        }
+        if(copy){
+          copy.style.transform='translate3d(0,'+mix(0,-6,p).toFixed(2)+'px,0)';
+          copy.style.opacity=mix(1,.72,p).toFixed(3);
+        }
+        if(art){
+          art.style.transform='translate3d(0,'+mix(0,-8,p).toFixed(2)+'px,0) scale('+mix(1,.985,p).toFixed(4)+')';
+          art.style.opacity=mix(1,.91,p).toFixed(3);
+        }
+      });
+    }
+
+    function requestRender(){
+      if(ticking) return;
+      ticking=true;
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener('scroll',requestRender,{passive:true});
+    window.addEventListener('resize',requestRender,{passive:true});
+    if(window.__vtLenis&&window.__vtLenis.on){
+      try{window.__vtLenis.on('scroll',requestRender)}catch(e){}
+    }
+    requestRender();
+    setTimeout(requestRender,120);
+    setTimeout(requestRender,600);
+  })();
+
   if(!window.gsap||!window.ScrollTrigger) return;
 
   var q=gsap.utils.toArray;
@@ -141,122 +226,7 @@
     }
   });
 
-  // QA v9 — calibrated full-screen hold -> shrink/tilt -> next-panel cover.
-  // No project is hidden. The next scene enters naturally from normal document flow.
-  var story=document.querySelector('.story-stack');
-  var stage=story&&story.querySelector('.story-stage');
-  var scenes=stage?q('.story-stage .scene'):[];
-  if(story&&stage&&scenes.length&&innerWidth>640){
-    var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')||scene});
-
-    gsap.set(scenes,{clearProps:'transform,position,inset'});
-    gsap.set(surfaces,{
-      scale:1,
-      rotation:0,
-      x:0,
-      y:0,
-      filter:'brightness(1)',
-      boxShadow:'none',
-      borderRadius:'0px',
-      transformOrigin:'50% 50%',
-      force3D:true
-    });
-
-    scenes.forEach(function(scene,i){
-      var surface=surfaces[i];
-      var title=scene.querySelector('.scene-title-group h3');
-      var number=scene.querySelector('.scene-number');
-      var copy=scene.querySelector('.scene-copy');
-      var art=scene.querySelector('.scene-art');
-      var img=scene.querySelector('.scene-art img');
-
-      // Incoming content resolves as the full-size panel rises toward the top.
-      var enter=gsap.timeline({
-        scrollTrigger:{
-          trigger:scene,
-          start:'top 96%',
-          end:'top 28%',
-          scrub:1.1,
-          invalidateOnRefresh:true
-        }
-      });
-      if(title) enter.fromTo(title,{y:42,opacity:.42},{y:0,opacity:1,ease:'none'},0);
-      if(number) enter.fromTo(number,{y:24,opacity:.48},{y:0,opacity:1,ease:'none'},0);
-      if(copy) enter.fromTo(copy,{y:30,opacity:.42},{y:0,opacity:1,ease:'none'},.03);
-      if(art) enter.fromTo(art,{y:34,scale:.985,opacity:.55},{y:0,scale:1,opacity:1,ease:'none'},.02);
-
-      // Subtle internal image drift — slower than the panel itself.
-      if(img){
-        gsap.fromTo(img,
-          {scale:1.045,yPercent:3},
-          {scale:1.012,yPercent:-3,ease:'none',
-           scrollTrigger:{
-             trigger:scene,
-             start:'top bottom',
-             end:'bottom top',
-             scrub:1.8,
-             invalidateOnRefresh:true
-           }}
-        );
-      }
-
-      if(i<scenes.length-1){
-        // Scene wrapper is 200svh. Sticky travel = 100svh.
-        // Timeline mapping:
-        // 0–55%  = full-screen hold
-        // 55–80% = shrink + tilt
-        // 80–100%= hold shrunken while next panel starts appearing at the bottom.
-        var tl=gsap.timeline({
-          scrollTrigger:{
-            trigger:scene,
-            start:'top top',
-            end:'bottom bottom',
-            scrub:1.45,
-            invalidateOnRefresh:true
-          }
-        });
-
-        tl.to({}, {duration:.55})
-          .to(surface,{
-            scale:.89,
-            rotation:1.85,
-            y:-8,
-            filter:'brightness(.965)',
-            boxShadow:'0 34px 88px rgba(8,24,28,.20)',
-            borderRadius:'3px',
-            duration:.25,
-            ease:'none'
-          })
-          .to({}, {duration:.20});
-
-        if(title){
-          gsap.timeline({
-            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
-          }).to({}, {duration:.55})
-            .to(title,{y:-12,opacity:.84,duration:.25,ease:'none'})
-            .to({}, {duration:.20});
-        }
-
-        if(copy){
-          gsap.timeline({
-            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
-          }).to({}, {duration:.55})
-            .to(copy,{y:-6,opacity:.74,duration:.25,ease:'none'})
-            .to({}, {duration:.20});
-        }
-
-        if(art){
-          gsap.timeline({
-            scrollTrigger:{trigger:scene,start:'top top',end:'bottom bottom',scrub:1.45}
-          }).to({}, {duration:.55})
-            .to(art,{y:-8,scale:.985,opacity:.92,duration:.25,ease:'none'})
-            .to({}, {duration:.20});
-        }
-      }
-    });
-  }
-
-  q('.showreel-card,.motion-frame').forEach(function(box){
+  // Project-stack transform is handled by the library-independent QA v10 engine above.\n  q('.showreel-card,.motion-frame').forEach(function(box){
     gsap.fromTo(box,{clipPath:'inset(8% 5% 8% 5% round 12px)',scale:.985},
       {clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1,ease:'none',
        scrollTrigger:{trigger:box,start:'top 88%',end:'top 48%',scrub:1.05}});
