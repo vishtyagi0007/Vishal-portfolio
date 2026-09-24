@@ -28,10 +28,11 @@
   if(!reduce&&window.Lenis){
     try{
       lenis=new Lenis({
-        lerp:.072,
+        lerp:.105,
         smoothWheel:true,
-        wheelMultiplier:.86,
+        wheelMultiplier:.82,
         touchMultiplier:1,
+        syncTouch:false,
         anchors:{offset:-92},
         stopInertiaOnNavigate:true,
         respectReducedMotion:true
@@ -48,9 +49,10 @@
   }
 
 
-  // QA v11 — deterministic single-stage project stack.
-  // CSS variables + !important transforms prevent legacy rules from cancelling the effect.
-  (function initProjectStackV11(){
+  // QA v12 — smoothed single-stage project stack.
+  // Scroll position creates a target; visual progress eases toward it every frame.
+  // This removes wheel-step jerk while keeping the card and artwork mechanically connected.
+  (function initProjectStackV12(){
     if(innerWidth<=640) return;
 
     var story=document.querySelector('.story-stack');
@@ -60,12 +62,17 @@
     if(!stage||scenes.length<2) return;
 
     var surfaces=scenes.map(function(scene){return scene.querySelector('.scene-surface')});
+    var images=scenes.map(function(scene){return scene.querySelector('.scene-art img')});
     if(surfaces.some(function(x){return !x})) return;
 
     story.classList.add('stack-enhanced');
     story.style.setProperty('--stack-height',(100+(scenes.length-1)*132)+'svh');
 
     var ticking=false;
+    var visualProgress=0;
+    var targetProgress=0;
+    var firstPaint=true;
+
     var scaleEnd=reduce?.94:.885;
     var rotateEnd=reduce?.65:1.95;
     var yEnd=reduce?-4:-10;
@@ -74,8 +81,19 @@
     function mix(a,b,t){return a+(b-a)*t}
     function smooth(t){return t*t*(3-2*t)}
 
+    function readTarget(){
+      var rect=story.getBoundingClientRect();
+      var vh=innerHeight||1;
+      var travel=Math.max(1,rect.height-vh);
+      targetProgress=clamp((-rect.top)/travel,0,1);
+      if(firstPaint){
+        visualProgress=targetProgress;
+        firstPaint=false;
+      }
+    }
+
     function setSceneY(scene,value){
-      scene.style.setProperty('--scene-y',value+'%');
+      scene.style.setProperty('--scene-y',value.toFixed(3)+'%');
     }
 
     function setCard(surface,p){
@@ -87,23 +105,33 @@
       surface.style.setProperty('--card-shadow',mix(0,.20,p).toFixed(3));
     }
 
-    function render(){
-      ticking=false;
-      var rect=story.getBoundingClientRect();
-      var vh=innerHeight||1;
-      var travel=Math.max(1,rect.height-vh);
-      var progress=clamp((-rect.top)/travel,0,1);
+    function setImage(image,outgoing,incoming){
+      if(!image)return;
+
+      // Outgoing: image stays at the exact same card angle because it is a child
+      // of the rotating surface, while its content slowly pushes forward.
+      var scale=1 + outgoing*.055 - incoming*.018;
+      var y=-outgoing*2.2 + (1-incoming)*3.0;
+      if(incoming<=0.001)y=-outgoing*2.2;
+
+      image.style.setProperty('--image-scale',scale.toFixed(4));
+      image.style.setProperty('--image-y',y.toFixed(3)+'%');
+      image.style.setProperty('--image-sat',mix(1,1.035,outgoing).toFixed(3));
+      image.style.setProperty('--image-contrast',mix(1,1.025,outgoing).toFixed(3));
+    }
+
+    function paint(progress){
       var segments=scenes.length-1;
       var position=progress*segments;
       var current=Math.min(segments,Math.floor(position));
       var local=current>=segments?1:position-current;
 
-      // Reference choreography inside every transition:
-      // 0–30%: current project holds full screen.
-      // 30–58%: current project visibly shrinks + tilts.
-      // 50–100%: next full-screen panel rises from the bottom and covers it.
-      var shrink=smooth(clamp((local-.30)/.28,0,1));
-      var incoming=smooth(clamp((local-.50)/.50,0,1));
+      // Reference-like choreography:
+      // 0–28%  : full-screen hold
+      // 28–58% : back card visibly shrinks + tilts
+      // 46–100%: next card rises, giving a long overlap
+      var shrink=smooth(clamp((local-.28)/.30,0,1));
+      var incoming=smooth(clamp((local-.46)/.54,0,1));
 
       scenes.forEach(function(scene,i){
         var surface=surfaces[i];
@@ -111,33 +139,64 @@
         if(i<current){
           setSceneY(scene,0);
           setCard(surface,1);
+          setImage(images[i],1,1);
         }else if(i===current){
           setSceneY(scene,0);
-          setCard(surface,current===segments?0:shrink);
+          var out=current===segments?0:shrink;
+          setCard(surface,out);
+          setImage(images[i],out,1);
         }else if(i===current+1){
           setSceneY(scene,mix(100,0,incoming));
           setCard(surface,0);
+          setImage(images[i],0,incoming);
         }else{
           setSceneY(scene,100);
           setCard(surface,0);
+          setImage(images[i],0,0);
         }
       });
 
-      // On the final project there is no outgoing shrink.
       if(current===segments){
         setCard(surfaces[segments],0);
         setSceneY(scenes[segments],0);
+        setImage(images[segments],0,1);
+      }
+    }
+
+    function frame(){
+      ticking=false;
+      readTarget();
+
+      // Frame interpolation is separate from Lenis, so even stepped mouse-wheel
+      // input produces a continuous premium visual transition.
+      var damping=reduce?.28:.115;
+      visualProgress += (targetProgress-visualProgress)*damping;
+
+      if(Math.abs(targetProgress-visualProgress)<0.00008){
+        visualProgress=targetProgress;
+      }
+
+      paint(visualProgress);
+
+      if(Math.abs(targetProgress-visualProgress)>=0.00008){
+        ticking=true;
+        requestAnimationFrame(frame);
       }
     }
 
     function requestRender(){
+      readTarget();
       if(ticking)return;
       ticking=true;
-      requestAnimationFrame(render);
+      requestAnimationFrame(frame);
     }
 
     window.addEventListener('scroll',requestRender,{passive:true});
-    window.addEventListener('resize',requestRender,{passive:true});
+    window.addEventListener('resize',function(){
+      firstPaint=true;
+      requestRender();
+    },{passive:true});
+
     if(window.__vtLenis&&window.__vtLenis.on){
       try{window.__vtLenis.on('scroll',requestRender)}catch(e){}
     }
