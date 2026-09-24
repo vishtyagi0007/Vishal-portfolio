@@ -152,15 +152,13 @@
     gsap.set(surfaces,{scale:1,rotation:0,yPercent:0,filter:'brightness(1)',transformOrigin:'50% 50%',force3D:true});
     scenes.forEach(function(scene,i){gsap.set(scene,{zIndex:(i+1)*10})});
 
+    story.style.height=Math.round((scenes.length-1)*138 + 100)+'svh';
     var stackTl=gsap.timeline({
       scrollTrigger:{
         trigger:story,
         start:'top top',
-        end:function(){return '+=' + Math.round((scenes.length-1)*innerHeight*1.38 + innerHeight*.42)},
-        pin:stage,
-        pinSpacing:true,
+        end:'bottom bottom',
         scrub:1.35,
-        anticipatePin:1,
         invalidateOnRefresh:true
       }
     });
