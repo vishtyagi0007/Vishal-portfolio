@@ -48,8 +48,7 @@
   }
 
 
-  // QA v10 — critical project stack engine is library-independent.
-  // This runs even if GSAP/ScrollTrigger/CDN scripts fail.
+  // QA v10 — project stack motion does not depend on GSAP.
   (function initProjectStack(){
     if(innerWidth<=640) return;
     var scenes=[].slice.call(document.querySelectorAll('.story-stage .scene'));
@@ -58,13 +57,9 @@
     if(surfaces.some(function(x){return !x})) return;
 
     var ticking=false;
-
     function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
     function mix(a,b,t){return a+(b-a)*t}
-    function ease(t){
-      // smoothstep: zero velocity at both ends, so scale/tilt never snaps.
-      return t*t*(3-2*t);
-    }
+    function ease(t){return t*t*(3-2*t)}
 
     function render(){
       ticking=false;
@@ -75,12 +70,8 @@
         var p=0;
 
         if(i<scenes.length-1){
-          var nextRect=scenes[i+1].getBoundingClientRect();
-
-          // p=0 when next project just reaches viewport bottom.
-          // p=1 when next project's top reaches ~42% of viewport.
-          // During this interval the current full-screen panel visibly shrinks + tilts.
-          p=clamp((vh-nextRect.top)/(vh*.58),0,1);
+          var nextTop=scenes[i+1].getBoundingClientRect().top;
+          p=clamp((vh-nextTop)/(vh*.58),0,1);
           p=ease(p);
         }
 
@@ -91,16 +82,15 @@
         var bright=mix(1,.96,p);
         var shadowAlpha=mix(0,.20,p);
 
-        surface.style.transform=
-          'translate3d(0,'+y.toFixed(2)+'px,0) scale('+scale.toFixed(4)+') rotate('+rot.toFixed(3)+'deg)';
+        surface.style.transform='translate3d(0,'+y.toFixed(2)+'px,0) scale('+scale.toFixed(4)+') rotate('+rot.toFixed(3)+'deg)';
         surface.style.filter='brightness('+bright.toFixed(4)+')';
         surface.style.borderRadius=radius.toFixed(2)+'px';
         surface.style.boxShadow='0 34px 90px rgba(8,24,28,'+shadowAlpha.toFixed(3)+')';
 
-        // Internal content recedes slightly with the card, like the reference.
         var title=scene.querySelector('.scene-title-group h3');
         var copy=scene.querySelector('.scene-copy');
         var art=scene.querySelector('.scene-art');
+
         if(title){
           title.style.transform='translate3d(0,'+mix(0,-12,p).toFixed(2)+'px,0)';
           title.style.opacity=mix(1,.82,p).toFixed(3);
@@ -226,7 +216,8 @@
     }
   });
 
-  // Project-stack transform is handled by the library-independent QA v10 engine above.\n  q('.showreel-card,.motion-frame').forEach(function(box){
+  // Project stack handled by QA v10 engine above.
+  q('.showreel-card,.motion-frame').forEach(function(box){
     gsap.fromTo(box,{clipPath:'inset(8% 5% 8% 5% round 12px)',scale:.985},
       {clipPath:'inset(0% 0% 0% 0% round 0px)',scale:1,ease:'none',
        scrollTrigger:{trigger:box,start:'top 88%',end:'top 48%',scrub:1.05}});
