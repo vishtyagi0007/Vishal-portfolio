@@ -1,0 +1,16 @@
+{
+  "name": "Vishal Tyagi — Graphic & Motion Designer",
+  "short_name": "Vishal Tyagi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#176B74",
+  "icons": [
+    {
+      "src": "/portfolio/assets/vishal-tyagi-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
