@@ -141,13 +141,52 @@
     }
   });
 
-  // Homepage work cards feel attached to scroll rather than reacting in steps.
-  q('.scene').forEach(function(scene){
-    gsap.fromTo(scene,{scale:.965,y:34},{scale:1,y:0,ease:'none',
-      scrollTrigger:{trigger:scene,start:'top 95%',end:'top 22%',scrub:1.15}});
-    var img=scene.querySelector('.scene-image img');
-    if(img) gsap.fromTo(img,{scale:1.035,yPercent:3},{scale:1.035,yPercent:-3,ease:'none',
-      scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:1.4}});
+  // Cinematic stacked work chapters: the incoming panel covers the previous one smoothly.
+  var scenes=q('.story-stack .scene');
+  scenes.forEach(function(scene,i){
+    var surface=scene.querySelector('.scene-surface')||scene;
+    var title=scene.querySelector('.scene-title-group h3');
+    var number=scene.querySelector('.scene-number');
+    var copy=scene.querySelector('.scene-copy');
+    var art=scene.querySelector('.scene-art');
+    var img=scene.querySelector('.scene-art img');
+
+    gsap.set(scene,{zIndex:i+1});
+    gsap.fromTo(surface,
+      {y:74,scale:.988,rotation:i%2?.35:-.35},
+      {y:0,scale:1,rotation:0,ease:'none',
+       scrollTrigger:{trigger:scene,start:'top 97%',end:'top 16%',scrub:1.25}}
+    );
+
+    var enter=gsap.timeline({
+      scrollTrigger:{trigger:scene,start:'top 86%',toggleActions:'play none none none'}
+    });
+    if(title) enter.fromTo(title,{y:34,opacity:0},{y:0,opacity:1,duration:.9,ease:'power4.out'});
+    if(number) enter.fromTo(number,{y:22,opacity:0},{y:0,opacity:1,duration:.75,ease:'power4.out'},'-=.68');
+    if(copy) enter.fromTo(copy,{y:26,opacity:0},{y:0,opacity:1,duration:.78,ease:'power4.out'},'-=.58');
+    if(art) enter.fromTo(art,{y:34,opacity:0,scale:.985},{y:0,opacity:1,scale:1,duration:.95,ease:'power4.out'},'-=.72');
+
+    if(img){
+      gsap.fromTo(img,{scale:1.055,yPercent:3.5},{scale:1.018,yPercent:-3.5,ease:'none',
+        scrollTrigger:{trigger:scene,start:'top bottom',end:'bottom top',scrub:1.45}});
+    }
+
+    if(i<scenes.length-1){
+      var next=scenes[i+1];
+      gsap.to(surface,{
+        scale:.952,
+        y:-30,
+        rotation:i%2?-.65:.65,
+        filter:'brightness(.86)',
+        borderRadius:'10px',
+        ease:'none',
+        scrollTrigger:{trigger:next,start:'top 96%',end:'top 5%',scrub:1.35}
+      });
+      if(copy) gsap.to(copy,{y:-12,opacity:.58,ease:'none',
+        scrollTrigger:{trigger:next,start:'top 96%',end:'top 18%',scrub:1.2}});
+      if(art) gsap.to(art,{y:-8,scale:.988,opacity:.88,ease:'none',
+        scrollTrigger:{trigger:next,start:'top 96%',end:'top 12%',scrub:1.2}});
+    }
   });
 
   q('.showreel-card,.motion-frame').forEach(function(box){
