@@ -129,6 +129,63 @@
   .work-cinematic .logo-art img{width:78%;height:78%}
   .work-cinematic .scene-copy p{font-size:18px}.work-cinematic .scene-copy small{margin-bottom:24px}
 }
+
+/* QA v3 — NBNZIA-like three-phase project stack:
+   enter full viewport -> pin/set -> shrink/tilt only as next scene covers */
+@media(min-width:641px){
+  .work-cinematic{overflow:visible}
+  .work-cinematic .story-stack{
+    position:relative;
+    padding:0;
+    background:#ebe8e2;
+    overflow:visible;
+  }
+  .work-cinematic .scene{
+    position:relative;
+    top:auto;
+    width:100%;
+    height:200svh;
+    min-height:0;
+    margin:0 0 -100svh;
+    padding:0;
+    overflow:visible;
+    background:transparent!important;
+    box-shadow:none!important;
+    border-radius:0!important;
+  }
+  .work-cinematic .scene:last-child{
+    height:100svh;
+    margin-bottom:0;
+  }
+  .work-cinematic .scene-surface{
+    position:sticky;
+    top:0;
+    width:100%;
+    height:100svh;
+    min-height:680px;
+    margin:0;
+    border-radius:0;
+    box-shadow:none;
+    transform-origin:50% 50%;
+    will-change:transform,filter,border-radius;
+    backface-visibility:hidden;
+  }
+  .work-cinematic .scene-top{
+    padding-top:clamp(4px,1vh,10px);
+  }
+  .work-cinematic .scene-body{
+    min-height:0;
+    align-items:end;
+  }
+  .work-cinematic .scene-art{
+    height:min(56vh,560px);
+  }
+  .work-cinematic .scene:nth-child(1){z-index:10}
+  .work-cinematic .scene:nth-child(2){z-index:20}
+  .work-cinematic .scene:nth-child(3){z-index:30}
+  .work-cinematic .scene:nth-child(4){z-index:40}
+  .work-cinematic .scene:nth-child(5){z-index:50}
+}
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js"></script></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true">◐</span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume ↓</a><a class="head-cta" href="#contact">LET'S TALK <span aria-hidden="true">↗</span></a></nav></header>
