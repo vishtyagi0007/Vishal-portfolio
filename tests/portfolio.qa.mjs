@@ -147,7 +147,7 @@ await check('Contact final act renders dark navy and readable light form text',a
   const field=getComputedStyle(document.querySelector('#filmBriefForm input[name="contact_name"]')).color;
   return {bg,field};
  });
- const rgb=str=>(str.match(/[\\d.]+/g)||[]).slice(0,3).map(Number);
+ const rgb=str=>(str.match(/[0-9.]+/g)||[]).slice(0,3).map(Number);
  const [r,g,b]=rgb(colors.bg);
  const [fr,fg,fb]=rgb(colors.field);
  assert(r<45&&g<45&&b<55,JSON.stringify(colors));
