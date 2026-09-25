@@ -932,6 +932,13 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  :root.reference-film .scroll-cue{font-size:8px!important}
 }
 @media(prefers-reduced-motion:reduce){:root.reference-film .hero-title .title-line>span{animation:none!important;transform:none!important}}
+</style><style id="ref-intro-morph-style">
+#filmIntroLoader[hidden]{display:none!important}
+:root.reference-film .film-intro-loader{background:#fffdf8;transition:opacity .6s cubic-bezier(.22,1,.36,1)!important}
+:root.reference-film .film-intro-loader.ref-intro-exiting{transform:none!important;opacity:0;transition:opacity .42s .08s ease!important}
+:root.reference-film .hero-title .title-line>span{animation-play-state:paused}
+:root.reference-film.ref-intro-complete .hero-title .title-line>span{animation-play-state:running}
+@media(prefers-reduced-motion:reduce){:root.reference-film .hero-title .title-line>span{animation:none!important;opacity:1!important;transform:none!important}}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden><a href="#about">ABOUT</a><a href="#work">SELECTED WORK</a><a href="portfolio/">ALL PROJECTS</a><a href="portfolio/assets/Vishal-Tyagi-Resume.pdf" class="resume-link" download>DOWNLOAD RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="#contact">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></nav></header>
@@ -1133,7 +1140,46 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
   try{if(window.va)window.va("event",{name:"PortfolioBriefWhatsApp",data:{kind:kind}})}catch(_){}
  });
 })();
-</script><!-- motion-stack-v4 --><script id="film-loader-control">(function(){var panel=document.getElementById("filmIntroLoader");if(!panel)return;try{if(matchMedia("(prefers-reduced-motion:reduce)").matches||sessionStorage.getItem("vt-intro-seen-v1"))return;sessionStorage.setItem("vt-intro-seen-v1","1")}catch(_){}panel.hidden=false;var exited=false;function close(){if(exited)return;exited=true;panel.classList.add("is-exiting");panel.addEventListener("transitionend",function(){panel.hidden=true},{once:true});setTimeout(function(){panel.hidden=true},1000)}window.addEventListener("scroll",close,{once:true,passive:true});setTimeout(close,1050)})();</script><script id="mobile-services-interaction">
+</script><!-- motion-stack-v4 --><script id="film-loader-control">
+(function(){
+ var loader=document.getElementById('filmIntroLoader');
+ var startImage=loader&&loader.querySelector('.film-intro-image img');
+ var heroImage=document.querySelector('.hero-portrait img');
+ if(!loader||!startImage||!heroImage)return;
+ var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,seen=false;
+ try{seen=!!sessionStorage.getItem('vt-intro-seen-v2')}catch(_){}
+ if(reduce||seen){loader.hidden=true;return}
+ try{sessionStorage.setItem('vt-intro-seen-v2','1')}catch(_){}
+ loader.hidden=false;
+ var finished=false,clone;
+ function finish(){
+  if(finished)return;finished=true;
+  loader.classList.add('ref-intro-fade');loader.hidden=true;
+  if(clone)clone.remove();
+  document.documentElement.classList.add('ref-intro-complete');
+ }
+ function begin(){
+  if(finished)return;
+  var from=startImage.getBoundingClientRect(),to=heroImage.getBoundingClientRect();
+  if(from.width<1||to.width<1||typeof startImage.animate!=='function'){finish();return}
+  clone=document.createElement('img');clone.src=startImage.currentSrc||startImage.src;clone.alt='';
+  clone.setAttribute('aria-hidden','true');clone.className='ref-morph-portrait';
+  Object.assign(clone.style,{position:'fixed',left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px',objectFit:'cover',objectPosition:'center 19%',zIndex:'10001',pointerEvents:'none',filter:'brightness(.8) sepia(.12)',willChange:'transform,clip-path',transformOrigin:'top left'});
+  document.body.appendChild(clone);
+  var dx=to.left-from.left,dy=to.top-from.top,sx=to.width/from.width,sy=to.height/from.height;
+  var animation=clone.animate([{transform:'translate(0,0) scale(1,1)',borderRadius:'1px',opacity:1},{transform:'translate('+dx+'px,'+dy+'px) scale('+sx+','+sy+')',borderRadius:'0px',opacity:.88}],{duration:1050,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+  loader.classList.add('ref-intro-exiting');
+  animation.finished.then(finish).catch(finish);
+ }
+ var timeout=setTimeout(finish,2200);
+ function end(){clearTimeout(timeout);finish()}
+ window.addEventListener('wheel',end,{once:true,passive:true});
+ window.addEventListener('touchstart',end,{once:true,passive:true});
+ window.addEventListener('keydown',e=>{if(['Escape','PageDown','ArrowDown'].includes(e.key))end()},{once:true});
+ if(document.readyState==='complete')setTimeout(begin,410);
+ else window.addEventListener('load',()=>setTimeout(begin,410),{once:true});
+})();
+</script><script id="mobile-services-interaction">
 (function(){
  var section=document.querySelector('.services'), rows=[].slice.call(document.querySelectorAll('.services .service-row'));
  if(!section||!rows.length)return;
