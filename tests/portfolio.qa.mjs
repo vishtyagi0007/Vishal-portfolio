@@ -154,5 +154,89 @@ await check('Contact final act renders dark navy and readable light form text',a
  assert(fr>180&&fg>180&&fb>175,JSON.stringify(colors));
  return JSON.stringify(colors);
 });
+
+// Video-reference functional acceptance checks (desktop + phone).
+const film=await browser.newPage({viewport:{width:1440,height:900}});
+await film.goto(BASE+'/',{waitUntil:'load'});
+await film.waitForTimeout(2500);
+await check('Reference hero: portrait and four theatrical text lines',async()=>{
+  const lines=film.locator('.hero-title .title-line');
+  assert.equal(await lines.count(),4);
+  const portrait=await film.locator('.hero-portrait').boundingBox();
+  const title=await film.locator('.hero-title').boundingBox();
+  assert(portrait.width>400 && title.width>700,JSON.stringify({portrait,title}));
+  assert(portrait.x<title.x+title.width && portrait.x+portrait.width>title.x,'portrait and type do not share frame');
+  return 'hero portrait and typography overlap within one composition';
+});
+await check('Opening sequence is dismissible and removed after completion',async()=>{
+ assert.equal(await film.locator('#filmIntroLoader').evaluate(x=>x.hidden),true);
+ assert.equal(await film.locator('.ref-morph-portrait').count(),0);
+ return 'loader exits, no blocking overlay remains';
+});
+await film.screenshot({path:'qa-screenshots/reference-rebuild-hero.png',animations:'disabled'});
+await film.locator('#services').scrollIntoViewIfNeeded();
+await check('Desktop services expand on click with artwork integrated',async()=>{
+ const rows=film.locator('.services .service-row');
+ await rows.nth(2).click();
+ const active=rows.nth(2);
+ assert.equal(await active.getAttribute('aria-expanded'),'true');
+ assert.equal(await rows.first().getAttribute('aria-expanded'),'false');
+ const preview=active.locator('.film-service-preview');
+ assert(await preview.isVisible(),'no project preview');
+ const rect=await preview.boundingBox();
+ assert(rect.height>100,'preview image not expanded '+JSON.stringify(rect));
+ return 'desktop accordion text + art revealed';
+});
+await film.screenshot({path:'qa-screenshots/reference-rebuild-services.png'});
+await check('Kinetic interlude exists without scroll interception',async()=>{
+ const section=film.locator('#typeInterlude');
+ await section.scrollIntoViewIfNeeded();
+ await film.waitForTimeout(180);
+ assert(await section.locator('textPath').count()===1);
+ const value=await section.evaluate(el=>el.style.getPropertyValue('--type-travel'));
+ assert(value.includes('%'),'kinetic scroll state missing');
+ return value;
+});
+await film.screenshot({path:'qa-screenshots/reference-rebuild-kinetic.png'});
+const phone=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+await phone.goto(BASE+'/',{waitUntil:'load'});
+await phone.waitForTimeout(2300);
+await check('Phone hero has photographic first-screen composition without horizontal overflow',async()=>{
+ const d=await phone.evaluate(()=>({vw:innerWidth,w:document.documentElement.scrollWidth,portrait:document.querySelector('.hero-portrait').getBoundingClientRect().height,title:document.querySelector('.hero-title').getBoundingClientRect().height}));
+ assert(d.w<=d.vw+3,JSON.stringify(d));
+ assert(d.portrait>d.title,'portrait not meaningful');
+ return JSON.stringify(d);
+});
+await phone.screenshot({path:'qa-screenshots/reference-rebuild-phone-hero.png'});
+await check('Phone navigation becomes a fullscreen overlay and closes',async()=>{
+ await phone.locator('.mobile-nav-toggle').click();
+ await phone.waitForTimeout(80);
+ let data=await phone.locator('#mobileNav').evaluate(el=>({hidden:el.hidden,h:el.getBoundingClientRect().height,screen:innerHeight}));
+ assert(!data.hidden&&data.h>=data.screen*.9,JSON.stringify(data));
+ await phone.keyboard.press('Escape');
+ assert.equal(await phone.locator('#mobileNav').evaluate(el=>el.hidden),true);
+ return 'full-screen menu visible and Escape closes';
+});
+await phone.locator('.mobile-nav-toggle').click();
+await phone.screenshot({path:'qa-screenshots/reference-rebuild-phone-menu.png'});
+await phone.keyboard.press('Escape');
+await check('Phone projects are stacked, readable and scroll naturally',async()=>{
+ await phone.locator('#work').scrollIntoViewIfNeeded();
+ const scenes=await phone.locator('.story-stage .scene').evaluateAll(nodes=>nodes.map(n=>({position:getComputedStyle(n).position,y:n.getBoundingClientRect().top,h:n.getBoundingClientRect().height})));
+ assert(scenes.length===5 && scenes.every(x=>x.position!=='absolute'),JSON.stringify(scenes));
+ return 'all selected projects remain in document flow';
+});
+await phone.screenshot({path:'qa-screenshots/reference-rebuild-phone-projects.png'});
+const archivePhone=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+await archivePhone.goto(BASE+'/portfolio/',{waitUntil:'domcontentloaded'});
+await check('Portfolio archive has full-screen touch menu',async()=>{
+ await archivePhone.locator('.archive-menu-toggle').click();
+ const v=await archivePhone.locator('#archiveMobileMenu').evaluate(el=>({hidden:el.hidden,h:el.getBoundingClientRect().height,vh:innerHeight}));
+ assert(!v.hidden && v.h>=v.vh*.9,JSON.stringify(v));
+ await archivePhone.locator('#archiveMobileMenu a[href="#work"]').click();
+ assert.equal(await archivePhone.locator('#archiveMobileMenu').evaluate(el=>el.hidden),true);
+ return 'menu opens, navigates, closes';
+});
+await archivePhone.screenshot({path:'qa-screenshots/reference-rebuild-phone-archive.png'});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
