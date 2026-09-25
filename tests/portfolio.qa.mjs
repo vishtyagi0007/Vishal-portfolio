@@ -358,5 +358,20 @@ await check('Motion work remains reachable from the simplified filmed homepage',
  await archive.close();
  return 'real motion section accessible from about';
 });
+await check('Filmed phone process handoff is compact and expandable without losing steps',async()=>{
+ await phone.locator('#process').scrollIntoViewIfNeeded();
+ const button=phone.locator('.mobile-process-toggle');
+ assert(await button.isVisible(),'process disclosure missing');
+ assert.equal(await button.getAttribute('aria-expanded'),'false');
+ const folded=await phone.locator('#process').boundingBox();
+ assert(folded.height<=350,'reference mobile process interlude is too tall '+folded.height);
+ await phone.screenshot({path:'qa-screenshots/video-mobile-process-collapsed.png'});
+ await button.click();
+ assert.equal(await button.getAttribute('aria-expanded'),'true');
+ assert(await phone.locator('#processSteps .film-process-step').first().isVisible());
+ await phone.screenshot({path:'qa-screenshots/video-mobile-process-expanded.png'});
+ await button.click();
+ return 'compact light handoff and optional 3-stage process';
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
