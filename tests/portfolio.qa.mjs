@@ -108,5 +108,38 @@ try{
  }
  console.log('REFERENCE visual captures completed at several time/scroll states. They require manual comparison.');
 }catch(e){console.log('REFERENCE capture unavailable: '+String(e).slice(0,140))}
+await check('Mobile services accordion expands on touch and exposes an actual preview',async()=>{
+ await mobile.evaluate(()=>document.getElementById('services').scrollIntoView({behavior:'instant'}));
+ const row=mobile.locator('.services .service-row').nth(1);
+ await row.click();await mobile.waitForTimeout(180);
+ assert.equal(await row.getAttribute('aria-expanded'),'true');
+ assert.equal(await mobile.locator('.services .service-row').first().getAttribute('aria-expanded'),'false');
+ let vis=await row.locator('p').isVisible();
+ assert(vis,'selected description not visible');
+ let img=await row.locator('.film-service-preview').isVisible();
+ assert(img,'selected portfolio preview not visible');
+ return 'touch accordion and visual preview work';
+});
+await check('Inactive desktop project links are not keyboard focusable',async()=>{
+ await page.setViewportSize({width:1440,height:900});
+ await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+ await page.evaluate(()=>document.querySelector('.story-stack').scrollIntoView({behavior:'instant'}));
+ await page.waitForTimeout(600);
+ const states=await page.locator('.story-stage article.scene').evaluateAll(els=>els.map(e=>({hidden:e.getAttribute('aria-hidden'),inert:e.inert})));
+ assert.equal(states.length,5);
+ assert(states.filter(e=>e.hidden==='true').every(e=>e.inert),JSON.stringify(states));
+ return JSON.stringify(states);
+});
+await check('Public website content has no reference or demo copy',async()=>{
+ const content=await page.locator('main').innerText();
+ assert(!/NBNZIA|inspired by|demo v3/i.test(content));
+ return 'original Vishal portfolio copy';
+});
+await check('Archive artwork attribution does not claim unverified client credits',async()=>{
+ const text=await archive.locator('body').innerText();
+ assert(!text.includes('client credit unverified'),'unreviewed label visible');
+ assert(text.includes('no client relationship claimed'),'clarifying label missing');
+ return 'unattributed artwork labelled separately';
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
