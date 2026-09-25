@@ -493,6 +493,143 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 .reference-film .work-cinematic .logo-art img{width:74%!important;height:74%!important}
 @media(max-width:1160px), (hover:none), (prefers-reduced-motion:reduce){
 .reference-film .film-service-preview{display:none!important}}
+
+/* SMOOTH-STAGE-QA-V2. Native browser wheel with a single, measured pinned timeline.
+   Fail-safe baseline: no JS or reduced motion = every project visible in normal flow. */
+:root.reference-film{scroll-padding-top:94px}
+.reference-film .work-cinematic{isolation:isolate}
+.reference-film .film-stage-ui{display:none}
+@media(min-width:761px){
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stack{height:auto!important;min-height:0!important;padding:clamp(15px,2.8vw,40px)!important}
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stage{position:relative!important;display:flex!important;flex-direction:column;gap:clamp(20px,3vw,48px);overflow:visible!important}
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene,
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene+.scene,
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene:last-child{
+  position:relative!important;inset:auto!important;top:auto!important;display:block!important;
+  height:auto!important;min-height:0!important;margin:0!important;transform:none!important;
+ }
+ .reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene .scene-surface{
+  position:relative!important;inset:auto!important;height:auto!important;min-height:clamp(550px,75svh,760px)!important;
+  max-height:none!important;transform:none!important;contain:none!important;border-radius:5px!important;
+ }
+}
+@media(min-width:1024px) and (min-height:690px) and (prefers-reduced-motion:no-preference){
+ .reference-film .work-cinematic.film-enhanced .story-stack{
+  display:block!important;position:relative!important;height:var(--film-height,620svh)!important;min-height:0!important;
+  padding:0!important;margin:0!important;overflow:visible!important;isolation:isolate;
+ }
+ .reference-film .work-cinematic.film-enhanced .story-stage{
+  display:block!important;position:sticky!important;top:0!important;width:100%!important;
+  height:100svh!important;min-height:0!important;max-height:100svh!important;overflow:clip!important;
+  isolation:isolate;background:#e6e4dd!important;
+ }
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene,
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene+.scene,
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:last-child{
+  display:block!important;position:absolute!important;inset:0!important;top:0!important;left:0!important;
+  width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;
+  border-radius:0!important;overflow:visible!important;
+  transform:translate3d(0,var(--film-enter,100%),0)!important;
+  pointer-events:none;backface-visibility:hidden;will-change:transform!important;
+ }
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:first-of-type{--film-enter:0%}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene[aria-hidden="false"]{pointer-events:auto}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene .scene-surface{
+  display:grid!important;position:absolute!important;inset:0!important;top:0!important;
+  width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;
+  padding:clamp(30px,3.6vw,62px)!important;grid-template-rows:auto minmax(0,1fr)!important;
+  overflow:hidden!important;contain:paint!important;backface-visibility:hidden;
+  transform:translate3d(0,var(--film-ty,0px),0) scale(var(--film-scale,1)) rotate(var(--film-rotate,0deg))!important;
+  transform-origin:center 42%!important;border-radius:var(--film-radius,0px)!important;
+  transition:none!important;box-shadow:0 12px 44px rgba(8,26,26,.16)!important;will-change:transform!important;
+ }
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:nth-of-type(1){z-index:10}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:nth-of-type(2){z-index:20}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:nth-of-type(3){z-index:30}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:nth-of-type(4){z-index:40}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene:nth-of-type(5){z-index:50}
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene-title-group h3{font-size:clamp(51px,6.4vw,111px);line-height:.88}
+ .reference-film .work-cinematic.film-enhanced .scene-body{
+  grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);gap:clamp(24px,4vw,72px);align-items:end;min-height:0;
+ }
+ .reference-film .work-cinematic.film-enhanced .scene-art{height:min(47svh,520px);min-height:0}
+ .reference-film .work-cinematic.film-enhanced .scene-art img{transform:translate3d(0,var(--film-img,0%),0)!important;backface-visibility:hidden}
+ .reference-film .work-cinematic.film-enhanced .film-stage-ui{
+  display:grid;grid-template-columns:auto auto minmax(80px,130px);align-items:center;column-gap:17px;
+  position:absolute;z-index:70;bottom:clamp(18px,2.5vw,34px);right:clamp(26px,3.6vw,62px);
+  padding:12px 15px;color:#ecf3e5;background:rgba(20,33,37,.88);backdrop-filter:blur(9px);
+  border:1px solid rgba(255,255,255,.2);border-radius:100px;pointer-events:none;
+  font:800 9px/1 Arial,Helvetica,sans-serif;letter-spacing:.15em;
+ }
+ .reference-film .film-stage-counter{white-space:nowrap;font-size:13px;letter-spacing:.02em}
+ .reference-film .film-stage-counter b{color:#dce4a0;font-weight:800}
+ .reference-film .film-stage-meter{display:block;width:100%;height:2px;background:rgba(255,255,255,.28);overflow:hidden;border-radius:4px}
+ .reference-film .film-stage-meter i{display:block;background:#dce4a0;width:100%;height:100%;transform:scaleX(0);transform-origin:left}
+ .reference-film body.film-work-active .head{transform:translateY(-110%);pointer-events:none}
+ .reference-film .head{transition:transform .3s ease,background .3s ease,padding .3s ease}
+}
+@media(max-width:1260px) and (min-width:1024px) and (min-height:690px){
+ .reference-film .work-cinematic.film-enhanced .story-stage .scene-title-group h3{font-size:clamp(46px,5.8vw,88px)}
+ .reference-film .work-cinematic.film-enhanced .scene-art{height:43svh}
+ .reference-film .work-cinematic.film-enhanced .scene-copy p{font-size:17px;margin-bottom:15px}
+ .reference-film .work-cinematic.film-enhanced .scene-copy small{margin-bottom:17px}
+}
+@media(max-width:760px){.reference-film .film-stage-ui{display:none!important}}
+/* Reference-level handoff: layered, intentional rhythm and legible form details. */
+.reference-film .film-brief{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+ gap:clamp(25px,6vw,120px);border-top:1px solid rgba(20,33,37,.4);border-bottom:1px solid rgba(20,33,37,.4);
+ margin:clamp(70px,10vw,150px) 0 55px;padding:clamp(45px,5vw,88px) 0}
+.reference-film .film-brief-heading>span{display:block;font:800 10px/1.3 Arial,sans-serif;letter-spacing:.2em}
+.reference-film .film-brief-heading h3{font-size:clamp(50px,5vw,100px);letter-spacing:-.085em;line-height:.91;font-weight:500;
+ margin:45px 0 24px}
+.reference-film .film-brief-heading h3 em{font:italic 400 1em Georgia,serif;color:#557b60}
+.reference-film .film-brief-heading p{font-size:clamp(15px,1.25vw,19px);line-height:1.5;max-width:430px}
+.reference-film .film-brief-form{display:grid;gap:25px;align-self:center;min-width:0}
+.reference-film .film-form-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.reference-film .film-brief-form label{display:flex;flex-direction:column;gap:8px;font:800 11px/1.3 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;min-width:0}
+.reference-film .film-brief-form input:not([type="hidden"]),.reference-film .film-brief-form select,.reference-film .film-brief-form textarea{
+ font:500 clamp(16px,1.2vw,20px)/1.4 Arial,Helvetica,sans-serif;letter-spacing:normal;color:#142125;
+ min-height:49px;border:0;border-bottom:1px solid rgba(20,33,37,.42);border-radius:0;
+ background:transparent;outline:none;padding:8px 0;width:100%;transition:border-color .2s ease}
+.reference-film .film-brief-form textarea{min-height:115px;resize:vertical}
+.reference-film .film-brief-form input::placeholder,.reference-film .film-brief-form textarea::placeholder{color:#62765e}
+.reference-film .film-brief-form input:focus-visible,.reference-film .film-brief-form select:focus-visible,
+.reference-film .film-brief-form textarea:focus-visible{outline:2px solid #172629;outline-offset:3px;border-color:#142125}
+.reference-film .film-form-footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:center}
+.reference-film .film-form-footer>span{font:800 9px/1.4 Arial,sans-serif;letter-spacing:.13em}
+.reference-film .film-form-footer button{display:inline-flex;align-items:center;gap:20px;background:#142125;color:#f8faf1;
+ border:1px solid #142125;padding:16px 20px;border-radius:0;font:800 11px/1 Arial,sans-serif;letter-spacing:.13em;cursor:pointer;
+ transition:background .24s ease,color .24s ease,transform .24s ease}
+.reference-film .film-form-footer button:hover{background:transparent;color:#142125;transform:translateY(-2px)}
+.reference-film .film-form-footer button:focus-visible{outline:3px solid #142125;outline-offset:4px}
+.reference-film .film-process-step:nth-child(2){transition-delay:.12s}
+.reference-film .film-process-step:nth-child(3){transition-delay:.24s}
+.reference-film .hero-quick{animation:film-entrance .86s .55s both cubic-bezier(.2,.75,.26,1)}
+.reference-film .hero-portrait{animation:film-portrait .98s .25s both cubic-bezier(.2,.75,.26,1)}
+@keyframes film-entrance{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes film-portrait{from{opacity:0;transform:translate3d(0,25px,0) scale(1.035)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@view-transition{navigation:auto}
+@keyframes film-page-in{from{opacity:0;transform:translate3d(0,15px,0)}to{opacity:1;transform:none}}
+@keyframes film-page-out{from{opacity:1}to{opacity:0}}
+::view-transition-old(root){animation:.2s ease-in both film-page-out}
+::view-transition-new(root){animation:.42s cubic-bezier(.2,.75,.26,1) both film-page-in}
+@media(max-width:1050px){
+ .reference-film .film-brief{grid-template-columns:1fr;gap:35px}
+ .reference-film .film-brief-heading h3{max-width:780px;margin:22px 0 13px}
+ .reference-film .film-brief-form{max-width:900px;width:100%}
+}
+@media(max-width:580px){
+ .reference-film .film-form-pair{grid-template-columns:1fr;gap:25px}
+ .reference-film .film-form-footer{flex-direction:column;align-items:stretch}
+ .reference-film .film-form-footer button{justify-content:space-between;min-height:52px}
+ .reference-film .film-stage-ui{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .reference-film .hero-quick,.reference-film .hero-portrait{animation:none!important}
+ .reference-film .film-process-step:nth-child(2),.reference-film .film-process-step:nth-child(3){transition-delay:0s}
+ ::view-transition-old(root),::view-transition-new(root){animation:none!important}
+}
+
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script></head><body class="reference-film-page">
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden><a href="#about">ABOUT</a><a href="#work">SELECTED WORK</a><a href="portfolio/">ALL PROJECTS</a><a href="portfolio/assets/Vishal-Tyagi-Resume.pdf" class="resume-link" download>DOWNLOAD RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="#contact">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></nav></header>
