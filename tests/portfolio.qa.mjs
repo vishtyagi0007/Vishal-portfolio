@@ -34,8 +34,8 @@ await check('Keyboard scroll works within stage',async()=>{
 });
 await check('Page reaches contact after entire stage',async()=>{
  await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(250);
- let v=await page.evaluate(()=>({y:scrollY,top:document.getElementById('contact').getBoundingClientRect().top,max:document.documentElement.scrollHeight-innerHeight}));
- assert(Math.abs(v.max-v.y)<5,JSON.stringify(v));assert(v.top<innerHeight,JSON.stringify(v));return JSON.stringify(v);
+ let v=await page.evaluate(()=>({y:scrollY,top:document.getElementById('contact').getBoundingClientRect().top,max:document.documentElement.scrollHeight-innerHeight,vh:innerHeight}));
+ assert(Math.abs(v.max-v.y)<5,JSON.stringify(v));assert(v.top<v.vh,JSON.stringify(v));return JSON.stringify(v);
 });
 await page.screenshot({path:'qa-screenshots/contact-desktop.png'});
 await check('WhatsApp brief builds actual message without redirecting QA browser',async()=>{
@@ -44,7 +44,10 @@ await check('WhatsApp brief builds actual message without redirecting QA browser
  await page.locator('#filmBriefForm button[type="submit"]').click();let text=await page.locator('#filmBriefText').inputValue();
  assert(text.includes('Test Person')&&text.includes('qa@example.com')&&text.includes('identity and motion'));return 'required fields included in message';
 });
-await page.screenshot({path:'qa-screenshots/hero-desktop.png',animations:'disabled'}); // Captures current page; named for baseline only.
+await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(1550);
+await page.screenshot({path:'qa-screenshots/hero-desktop.png',animations:'disabled'});
+await page.evaluate(()=>document.getElementById('services').scrollIntoView({behavior:'instant'}));await page.waitForTimeout(900);
+await page.screenshot({path:'qa-screenshots/services-desktop.png'});
 await check('Desktop 1366x768: stage and project sections',async()=>{
  await page.setViewportSize({width:1366,height:768});await page.waitForTimeout(160);assert.equal(await page.locator('#work').evaluate(el=>el.classList.contains('film-enhanced')),true);
  assert.equal(await page.locator('.story-stage article.scene').count(),5);
@@ -65,7 +68,7 @@ await check('Mobile: no scroll-hijacking/pinned stage',async()=>{
 await check('Mobile: no unexpected sideways scrolling',async()=>{
  const dim=await mobile.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:innerWidth}));assert(dim.page<=dim.viewport+3,JSON.stringify(dim));return JSON.stringify(dim);
 });
-await mobile.screenshot({path:'qa-screenshots/home-mobile.png',fullPage:false});
+await mobile.waitForTimeout(1700);await mobile.screenshot({path:'qa-screenshots/home-mobile.png',fullPage:false});
 await check('Mobile scrolling reaches contact',async()=>{
  await mobile.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));await mobile.waitForTimeout(120);
  let d=await mobile.evaluate(()=>({y:scrollY,max:document.documentElement.scrollHeight-innerHeight}));assert(Math.abs(d.max-d.y)<6,JSON.stringify(d));return 'contact reachable';
@@ -85,6 +88,16 @@ await check('Full portfolio remains navigable',async()=>{
 await archive.screenshot({path:'qa-screenshots/archive-desktop.png'});
 await check('Page JavaScript has no runtime exceptions',async()=>assert.equal(errors.length,0,JSON.stringify(errors)));
 const ref=await browser.newPage({viewport:{width:1440,height:900}});
-try{await ref.goto('https://www.nbnzia.com/',{waitUntil:'domcontentloaded',timeout:25000});await ref.waitForTimeout(1800);await ref.screenshot({path:'qa-screenshots/reference-desktop.png'});console.log('REFERENCE screenshot captured; compare art direction manually, not as an automated equivalence verdict.')}catch(e){console.log('REFERENCE capture unavailable: '+String(e).slice(0,140))}
+try{
+ await ref.goto('https://www.nbnzia.com/',{waitUntil:'domcontentloaded',timeout:25000});
+ await ref.waitForTimeout(1800);await ref.screenshot({path:'qa-screenshots/reference-loading.png'});
+ await ref.waitForTimeout(5800);await ref.screenshot({path:'qa-screenshots/reference-hero.png'});
+ await ref.waitForTimeout(3300);await ref.screenshot({path:'qa-screenshots/reference-hero-late.png'});
+ for(let j=0;j<4;j++){
+   await ref.mouse.move(600,470);await ref.mouse.wheel(0,850);await ref.waitForTimeout(1700);
+   await ref.screenshot({path:'qa-screenshots/reference-scroll-'+(j+1)+'.png'});
+ }
+ console.log('REFERENCE visual captures completed at several time/scroll states. They require manual comparison.');
+}catch(e){console.log('REFERENCE capture unavailable: '+String(e).slice(0,140))}
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
