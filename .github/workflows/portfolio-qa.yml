@@ -1,0 +1,41 @@
+name: Portfolio browser QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - index.html
+      - portfolio/index.html
+      - tests/**
+      - .github/workflows/portfolio-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium QA environment
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Test desktop wheel, cinematic transitions, mobile, forms and archive
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/portfolio-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/portfolio.qa.mjs
+      - name: Save visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-qa-screenshots
+          path: qa-screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
