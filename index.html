@@ -668,21 +668,21 @@
     will-change:auto!important;
   }
 }
-/* Hero QA v3 — transparent cutout; no rectangular image backdrop in either theme. */
+/* Hero QA v4 — portrait closer to title, bottom aligned to divider. */
 .hero{isolation:isolate;min-height:100svh}
 .hero>div:first-child{position:static}
 .hero-kicker{z-index:3}
-.hero-title{z-index:3;max-width:68%;font-size:clamp(76px,10.8vw,195px);pointer-events:none}
+.hero-title{z-index:3;max-width:66%;font-size:clamp(76px,10.8vw,195px);pointer-events:none}
 .hero-title .title-line:nth-child(2){text-align:left;padding-left:clamp(20px,7vw,125px);padding-right:0}
-.hero-portrait{position:absolute;z-index:1;top:clamp(140px,18vh,195px);right:2.5%;bottom:clamp(70px,10vh,115px);width:min(42vw,730px);height:auto;pointer-events:none;overflow:visible;opacity:1;mask-image:none;filter:none;mix-blend-mode:normal}
-.hero-portrait:before{content:"";position:absolute;inset:8% 2% 16% 1%;border-radius:50%;background:radial-gradient(circle at 50% 43%,rgba(176,105,128,.24),rgba(176,105,128,.10) 48%,transparent 72%);z-index:0}
+.hero-portrait{position:absolute;z-index:1;top:clamp(140px,18vh,195px);right:15%;bottom:clamp(130px,17vh,185px);width:min(40vw,700px);height:auto;pointer-events:none;overflow:visible;opacity:1;mask-image:none;filter:none;mix-blend-mode:normal}
+.hero-portrait:before{content:"";position:absolute;inset:8% 2% 16% 1%;border-radius:50%;background:radial-gradient(circle at 50% 43%,rgba(176,105,128,.22),rgba(176,105,128,.08) 48%,transparent 72%);z-index:0}
 .hero-portrait img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:none;mix-blend-mode:normal}
 .hero-portrait-halo{display:none}
-.hero-mark{z-index:0;top:24%;right:6%;opacity:.09}
+.hero-mark{z-index:0;top:24%;right:15%;opacity:.09}
 .hero-bottom{z-index:4}
 :root[data-theme="light"] .hero-portrait{opacity:1;filter:none;mix-blend-mode:normal}
-@media(max-width:1100px){.hero-title{max-width:72%;font-size:clamp(72px,10.8vw,145px)}.hero-portrait{right:0;width:44vw;top:21vh;bottom:12vh}}
-@media(max-width:640px){.hero{min-height:100svh}.hero-title{max-width:100%;font-size:clamp(58px,16vw,96px)}.hero-title .title-line:nth-child(2){padding-left:0}.hero-portrait{top:40vh;right:-7%;width:79vw;bottom:15vh;opacity:.66}.hero-bottom{position:relative;z-index:4}:root[data-theme="light"] .hero-portrait{opacity:.66}}
+@media(max-width:1250px){.hero-title{max-width:68%;font-size:clamp(72px,10.2vw,145px)}.hero-portrait{right:7%;width:43vw;top:21vh;bottom:clamp(120px,16vh,170px)}}
+@media(max-width:760px){.hero-title{max-width:100%;font-size:clamp(58px,14vw,96px)}.hero-title .title-line:nth-child(2){padding-left:0}.hero-portrait{top:42vh;right:-4%;width:76vw;bottom:17vh;opacity:.72}.hero-bottom{position:relative;z-index:4}:root[data-theme="light"] .hero-portrait{opacity:.72}}
 @media(prefers-reduced-motion:reduce){.hero-portrait{transform:none!important}}
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css?v=13.0"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js?v=14.0"></script></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
