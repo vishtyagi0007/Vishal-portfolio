@@ -53,7 +53,7 @@
   // Lenis owns scroll smoothing. This engine maps Lenis' animated scroll directly to transforms.
   // No second easing loop = no catch-up lag.
   (function initProjectStackV13(){
-    if(innerWidth<=640) return;
+    if(innerWidth<=760) return;
 
     var story=document.querySelector('.story-stack');
     if(!story) return;
