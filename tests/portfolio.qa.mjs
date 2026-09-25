@@ -373,5 +373,16 @@ await check('Filmed phone process handoff is compact and expandable without losi
  await button.click();
  return 'compact light handoff and optional 3-stage process';
 });
+await check('Reference contact opening is correctly positioned and only uses the inline portrait',async()=>{
+ await film.evaluate(()=>{const el=document.querySelector('#contact');window.scrollTo({top:el.getBoundingClientRect().top+scrollY,behavior:'instant'})});
+ await film.waitForTimeout(300);
+ const state=await film.evaluate(()=>{
+  const c=document.querySelector('#contact'),headline=c.querySelector('.reference-contact-title'),inline=c.querySelector('.contact-photo-mark img');
+  return {sectionTop:c.getBoundingClientRect().top,titleTop:headline.getBoundingClientRect().top,titleBottom:headline.getBoundingClientRect().bottom,portraitVisible:inline.getBoundingClientRect().height>35,ghost:getComputedStyle(c,'::before').display};
+ });
+ assert(state.titleTop>40 && state.titleTop<420 && state.portraitVisible && state.ghost==='none',JSON.stringify(state));
+ await film.screenshot({path:'qa-screenshots/filmed-contact-at-section-entry.png'});
+ return JSON.stringify(state);
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
