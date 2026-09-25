@@ -1073,6 +1073,48 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 @media(prefers-reduced-motion:reduce){
  :root.reference-film .hero-title .letter{animation:none!important;opacity:1!important;transform:none!important}
 }
+</style><style id="mobile-project-visibility-fix">
+/* Filmed mobile layout: show title, copy and the actual artwork in each coloured chapter — no 700px empty card. */
+@media(max-width:760px){
+ :root.reference-film .work-cinematic:not(.film-enhanced) .story-stack{padding:0!important;gap:0!important;display:block!important;height:auto!important}
+ :root.reference-film .work-cinematic:not(.film-enhanced) .story-stage{position:relative!important;display:flex!important;flex-direction:column!important;gap:0!important;height:auto!important;overflow:visible!important}
+ :root.reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene,
+ :root.reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene+.scene,
+ :root.reference-film .work-cinematic:not(.film-enhanced) .story-stage .scene:last-child{
+   position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;inset:auto!important;
+   width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;
+   padding:0!important;border-radius:0!important;transform:none!important;overflow:visible!important;
+ }
+ :root.reference-film .work-cinematic .story-stage .scene .scene-surface{
+   position:relative!important;display:flex!important;flex-direction:column!important;gap:clamp(16px,4vw,28px)!important;
+   width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;
+   margin:0!important;padding:clamp(22px,6.5vw,36px)!important;
+   box-shadow:none!important;border-radius:0!important;transform:none!important;overflow:visible!important;
+ }
+ :root.reference-film .work-cinematic .scene-top{display:flex!important;flex-direction:row;gap:8px!important;align-items:start!important}
+ :root.reference-film .work-cinematic .scene-top .scene-title-group{min-width:0;max-width:calc(100% - 50px)}
+ :root.reference-film .work-cinematic .scene-title-group h3{font-size:clamp(37px,10.6vw,59px)!important;line-height:.94!important;letter-spacing:-.067em!important}
+ :root.reference-film .work-cinematic .scene-number{font-size:clamp(24px,8vw,36px)!important;white-space:nowrap}
+ :root.reference-film .work-cinematic .scene-body{display:flex!important;flex-direction:column!important;gap:14px!important;height:auto!important;min-height:0!important;flex:0 0 auto!important;align-items:stretch!important}
+ :root.reference-film .work-cinematic .scene-body .scene-copy{
+   display:flex!important;flex-direction:column!important;order:1!important;align-self:stretch!important;
+   flex:0 0 auto!important;margin:0!important;padding:0!important;gap:5px!important
+ }
+ :root.reference-film .work-cinematic .scene-copy p{font-size:16px!important;line-height:1.45!important;max-width:32ch!important;margin:8px 0 0!important}
+ :root.reference-film .work-cinematic .scene-copy small{font-size:10px!important;line-height:1.5!important;margin:0!important}
+ :root.reference-film .work-cinematic .scene-copy .scene-link{margin:14px 0 2px!important;padding-bottom:8px!important;align-self:flex-start!important}
+ :root.reference-film .work-cinematic .scene-body .scene-art{display:grid!important;order:2!important;position:relative!important;
+    flex:0 0 auto!important;align-self:stretch!important;justify-self:stretch!important;
+    width:100%!important;height:clamp(170px,59vw,310px)!important;min-height:0!important;max-height:330px!important;
+    margin:12px 0 0!important;padding:0!important;overflow:hidden!important;place-items:center!important;
+ }
+ :root.reference-film .work-cinematic .scene-body .scene-art img{
+    display:block!important;width:100%!important;height:100%!important;
+    min-width:0!important;max-width:100%!important;min-height:0!important;
+    object-fit:contain!important;object-position:center center!important;opacity:1!important;transform:none!important;
+ }
+ :root.reference-film .work-cinematic .scene-body .campaign-art img{object-fit:cover!important}
+}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
