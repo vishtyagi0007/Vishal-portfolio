@@ -250,5 +250,65 @@ await check('Portfolio archive has full-screen touch menu',async()=>{
  return 'menu opens, navigates, closes';
 });
 await archivePhone.screenshot({path:'qa-screenshots/reference-rebuild-phone-archive.png'});
+
+await check('Intro: same-tab reload keeps the hero visible',async()=>{
+ const fresh=await browser.newPage({viewport:{width:1440,height:900}});
+ await fresh.goto(BASE+'/',{waitUntil:'load'});
+ await fresh.waitForTimeout(2600);
+ const first=await fresh.evaluate(()=>({hidden:document.querySelector('#filmIntroLoader').hidden,done:document.documentElement.classList.contains('ref-intro-complete')}));
+ assert(first.hidden&&first.done,JSON.stringify(first));
+ await fresh.reload({waitUntil:'load'});
+ await fresh.waitForTimeout(380);
+ const state=await fresh.evaluate(()=>({
+  hidden:document.querySelector('#filmIntroLoader').hidden,
+  done:document.documentElement.classList.contains('ref-intro-complete'),
+  play:getComputedStyle(document.querySelector('.hero-title .title-line>span')).animationPlayState,
+  opacity:getComputedStyle(document.querySelector('.hero-title .title-line>span')).opacity
+ }));
+ assert(state.hidden&&state.done&&state.play!=='paused',JSON.stringify(state));
+ await fresh.screenshot({path:'qa-screenshots/repeat-visit-desktop.png'});
+ await fresh.close();
+ return JSON.stringify(state);
+});
+await check('Mobile opener has independently animated accessible character spans',async()=>{
+ const title=phone.locator('.hero-title');
+ const state=await title.evaluate(el=>({
+  aria:el.getAttribute('aria-label'),
+  letters:el.querySelectorAll('.letter').length,
+  lineCount:el.querySelectorAll('.title-line').length,
+  screenWidth:el.getBoundingClientRect().width,
+  page:document.documentElement.scrollWidth
+ }));
+ assert(state.letters>35&&state.aria?.length>20&&state.lineCount===4,JSON.stringify(state));
+ assert(state.page<=393,JSON.stringify(state));
+ return JSON.stringify(state);
+});
+await check('Mobile selected projects load real artwork, and images appear inside each card',async()=>{
+ const selected=phone.locator('#work .scene');
+ const report=[];
+ for(let i=0;i<await selected.count();i++){
+  const scene=selected.nth(i);
+  await scene.scrollIntoViewIfNeeded();
+  await phone.waitForTimeout(160);
+  const v=await scene.evaluate(el=>{
+   const art=el.querySelector('.scene-art'),img=art&&art.querySelector('img');
+   const a=art?.getBoundingClientRect(),b=img?.getBoundingClientRect(),box=el.getBoundingClientRect();
+   return {name:el.id,imgLoaded:!!img?.complete&&img?.naturalWidth>0,artH:a?.height||0,imgH:b?.height||0,sceneH:box.height,scenePosition:getComputedStyle(el).position};
+  });
+  assert(v.imgLoaded&&v.artH>150&&v.imgH>100&&v.sceneH<1200,JSON.stringify(v));
+  report.push(v);
+ }
+ await selected.nth(2).scrollIntoViewIfNeeded();
+ await phone.waitForTimeout(300);
+ await phone.screenshot({path:'qa-screenshots/reference-mobile-project-real-images.png'});
+ return JSON.stringify(report);
+});
+await check('Reduced-motion mobile text remains legible without kinetic animation',async()=>{
+ const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+ const page=await ctx.newPage();await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+ const result=await page.evaluate(()=>({title:document.querySelector('.hero-title')?.textContent?.trim(),loaderHidden:document.querySelector('#filmIntroLoader')?.hidden}));
+ assert(result.title&&result.title.includes('STORY')&&result.loaderHidden,JSON.stringify(result));
+ await ctx.close();return 'reduced motion has text and no loader';
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
