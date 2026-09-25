@@ -1043,6 +1043,36 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 :root.reference-film .contact-photo-mark img{height:1.50em!important;width:auto!important;object-position:top center!important;align-self:flex-start!important;transform:translateY(-.025em)!important}
 :root.reference-film .reference-contact-title{font-size:clamp(54px,7vw,132px)!important}
 @media(max-width:760px){:root.reference-film .reference-contact-title{font-size:clamp(36px,9.5vw,60px)!important}}
+</style><style id="video-fidelity-phase-a">
+/* Source QA fix: first/repeat visits consistently resume the cinematic headline. */
+:root.reference-film:not(.ref-intro-complete) .hero-title .title-line>span{animation-play-state:paused}
+:root.reference-film.ref-intro-complete .hero-title .title-line>span{animation-play-state:running}
+@media(max-width:760px){
+ /* Reference mobile opener: silhouette leads, letter fragments travel individually. */
+ :root.reference-film .hero{min-height:100svh!important}
+ :root.reference-film .hero-portrait{height:93svh!important;width:min(126vw,570px)!important;bottom:-2svh!important;filter:brightness(.39) sepia(.3) saturate(.6)!important}
+ :root.reference-film .hero-title{top:63%!important;font-size:clamp(36px,10.5vw,54px)!important;line-height:.97!important;width:99%!important;text-shadow:none!important}
+ :root.reference-film .hero-title .title-line{display:block!important;overflow:visible!important;margin:0!important}
+ :root.reference-film .hero-title .title-line:nth-child(4){font-size:.66em!important;line-height:1.1!important}
+ :root.reference-film .hero-title .letter{display:inline-block!important;white-space:pre!important;will-change:transform,opacity;animation:mobile-letters-assemble 1.45s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(0.28s + var(--letter-delay) * 35ms)!important}
+ :root.reference-film:not(.ref-intro-complete) .hero-title .letter{animation-play-state:paused!important}
+ :root.reference-film.ref-intro-complete .hero-title .letter{animation-play-state:running!important}
+ :root.reference-film .hero-quick{position:absolute!important;bottom:4.5svh!important;left:18px!important;right:18px!important;z-index:12!important}
+ :root.reference-film .hero-quick p{display:none!important}
+ :root.reference-film .hero-quick .hero-quick-actions{justify-content:center!important;gap:10px!important}
+ :root.reference-film .hero-quick .hero-action{font-size:9px!important;min-height:44px!important;background:rgba(9,12,14,.75)!important;color:white!important;border:1px solid rgba(255,255,255,.7)!important;backdrop-filter:blur(8px)}
+ :root.reference-film .hero-quick .hero-action-fill{background:rgba(9,12,14,.75)!important;color:white!important}
+ :root.reference-film .hero-bottom{display:none!important}
+ :root.reference-film .hero .hero-kicker{font-size:9px!important;top:103px!important}
+}
+@keyframes mobile-letters-assemble{
+  0%{opacity:.83;transform:translate(var(--letter-x),var(--letter-y)) rotate(var(--letter-angle)) scale(.94)}
+  40%{opacity:1}
+  100%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+ :root.reference-film .hero-title .letter{animation:none!important;opacity:1!important;transform:none!important}
+}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
@@ -1299,7 +1329,7 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  if(!loader||!startImage||!heroImage)return;
  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,seen=false;
  try{seen=!!sessionStorage.getItem('vt-intro-seen-v2')}catch(_){}
- if(reduce||seen){loader.hidden=true;return}
+ if(reduce||seen){loader.hidden=true;document.documentElement.classList.add('ref-intro-complete');return}
  try{sessionStorage.setItem('vt-intro-seen-v2','1')}catch(_){}
  loader.hidden=false;
  var finished=false,clone;
@@ -1329,6 +1359,8 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  window.addEventListener('keydown',e=>{if(['Escape','PageDown','ArrowDown'].includes(e.key))end()},{once:true});
  if(document.readyState==='complete')setTimeout(begin,410);
  else window.addEventListener('load',()=>setTimeout(begin,410),{once:true});
+ // Last-resort unblock: slow media or a rejected image must never hide the main site.
+ setTimeout(()=>{if(!finished)finish()},2700);
 })();
 </script><script id="mobile-services-interaction">
 (function(){
@@ -1373,5 +1405,26 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  }
  function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}}
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});update();
+})();
+</script><script id="mobile-character-sequence">
+(function(){
+ var title=document.querySelector('.hero-title');
+ if(!title||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ var lines=title.querySelectorAll('.title-line>span');
+ lines.forEach(function(line,li){
+  var nodes=[],text=line.textContent.trim();
+  // Keep authored semantic headline through its aria-label, characters are decorative.
+  line.setAttribute('aria-hidden','true');
+  Array.from(text).forEach(function(ch,i){
+   var node=document.createElement('span');node.className='letter';
+   node.textContent=ch===' '?String.fromCharCode(160):ch;
+   node.style.setProperty('--letter-delay',String((i*3+li*5)%19));
+   node.style.setProperty('--letter-x',(((i*13+li*7)%7)-3)*17+'px');
+   node.style.setProperty('--letter-y',(((i*11+li*3)%9)-4)*31+'px');
+   node.style.setProperty('--letter-angle',((((i*7+li*3)%7)-3)*9)+'deg');
+   nodes.push(node);
+  });
+  line.replaceChildren(...nodes);
+ });
 })();
 </script></body></html>
