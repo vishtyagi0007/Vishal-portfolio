@@ -174,6 +174,10 @@ await check('Opening sequence is dismissible and removed after completion',async
  return 'loader exits, no blocking overlay remains';
 });
 await film.screenshot({path:'qa-screenshots/reference-rebuild-hero.png',animations:'disabled'});
+await film.locator('#contact').scrollIntoViewIfNeeded();
+await film.waitForTimeout(350);
+await film.screenshot({path:'qa-screenshots/reference-rebuild-contact-heading.png',animations:'disabled'});
+
 await film.locator('#services').scrollIntoViewIfNeeded();
 await check('Desktop services expand on click with artwork integrated',async()=>{
  const rows=film.locator('.services .service-row');
@@ -214,8 +218,15 @@ await check('Phone navigation becomes a fullscreen overlay and closes',async()=>
  await phone.waitForTimeout(80);
  let data=await phone.locator('#mobileNav').evaluate(el=>({hidden:el.hidden,h:el.getBoundingClientRect().height,screen:innerHeight}));
  assert(!data.hidden&&data.h>=data.screen*.9,JSON.stringify(data));
+ const mainInert=await phone.locator('#main').evaluate(el=>el.inert);
+ assert(mainInert,'background stays keyboard focusable when menu is open');
+ const names=await phone.locator('#mobileNav > a').allTextContents();
+ assert.deepEqual(names.map(n=>n.trim()),['About','Services','Work','Process']);
+
  await phone.keyboard.press('Escape');
  assert.equal(await phone.locator('#mobileNav').evaluate(el=>el.hidden),true);
+ assert.equal(await phone.locator('#main').evaluate(el=>el.inert),false);
+
  return 'full-screen menu visible and Escape closes';
 });
 await phone.locator('.mobile-nav-toggle').click();
