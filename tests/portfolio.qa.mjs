@@ -322,5 +322,41 @@ await check('Reduced-motion mobile text remains legible without kinetic animatio
  assert(result.title&&result.title.includes('STORY')&&result.loaderHidden,JSON.stringify(result));
  await ctx.close();return 'reduced motion has text and no loader';
 });
+
+await check('Recorded visual chapter order is preserved on desktop and mobile',async()=>{
+ const result=await film.evaluate(()=>[...document.querySelector('main').querySelectorAll(':scope > section')].map(el=>el.id||el.className.split(' ')[0]));
+ const expected=['home','about','services','process','typeInterlude','work','typeOutro','contact'];
+ assert.deepEqual(result,expected,JSON.stringify(result));
+ return result.join(' → ');
+});
+await check('Phone services match recorded image-first editorial rows',async()=>{
+ await phone.locator('#services').scrollIntoViewIfNeeded();
+ const rows=phone.locator('.services .service-row');
+ const items=[];
+ for(let i=0;i<await rows.count();i++){
+  const item=rows.nth(i);
+  await item.scrollIntoViewIfNeeded();
+  await phone.waitForTimeout(90);
+  const v=await item.evaluate(el=>{
+   const img=el.querySelector('.film-service-preview img'),wrapper=el.querySelector('.film-service-preview'),heading=el.querySelector('h3');
+   const a=wrapper.getBoundingClientRect(),b=heading.getBoundingClientRect();
+   return {imageFirst:a.bottom<=b.top+1,visible:a.height>130,width:a.width,imageLoaded:!!img?.complete&&img?.naturalWidth>0};
+  });
+  assert(v.imageFirst&&v.visible&&v.imageLoaded,JSON.stringify({i,...v}));
+  items.push(v);
+ }
+ await rows.nth(1).scrollIntoViewIfNeeded();
+ await phone.screenshot({path:'qa-screenshots/recorded-mobile-image-first-services.png'});
+ return JSON.stringify(items);
+});
+await check('Motion work remains reachable from the simplified filmed homepage',async()=>{
+ const a=film.locator('#about a[href="portfolio/#motion"]');
+ assert(await a.isVisible());
+ const archive=await browser.newPage();
+ await archive.goto(BASE+'/portfolio/#motion',{waitUntil:'domcontentloaded'});
+ assert.equal(await archive.locator('#motion').count(),1);
+ await archive.close();
+ return 'real motion section accessible from about';
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
