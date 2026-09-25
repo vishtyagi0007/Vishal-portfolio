@@ -1054,7 +1054,7 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  :root.reference-film .hero-title{top:63%!important;font-size:clamp(36px,10.5vw,54px)!important;line-height:.97!important;width:99%!important;text-shadow:none!important}
  :root.reference-film .hero-title .title-line{display:block!important;overflow:visible!important;margin:0!important}
  :root.reference-film .hero-title .title-line:nth-child(4){font-size:.66em!important;line-height:1.1!important}
- :root.reference-film .hero-title .letter{display:inline-block!important;white-space:pre!important;will-change:transform,opacity;animation:mobile-letters-assemble 1.45s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(0.28s + var(--letter-delay) * 35ms)!important}
+ :root.reference-film .hero-title .letter{display:inline-block!important;white-space:pre!important;will-change:transform,opacity;animation:mobile-letters-assemble .96s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(0.11s + var(--letter-delay) * 18ms)!important}
  :root.reference-film:not(.ref-intro-complete) .hero-title .letter{animation-play-state:paused!important}
  :root.reference-film.ref-intro-complete .hero-title .letter{animation-play-state:running!important}
  :root.reference-film .hero-quick{position:absolute!important;bottom:4.5svh!important;left:18px!important;right:18px!important;z-index:12!important}
@@ -1114,6 +1114,16 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
     object-fit:contain!important;object-position:center center!important;opacity:1!important;transform:none!important;
  }
  :root.reference-film .work-cinematic .scene-body .campaign-art img{object-fit:cover!important}
+}
+</style><style id="filmed-hero-image-composition">
+/* Reference frame correction: light cinematic set; no rectangular pseudo-gradient framing the cutout. */
+:root.reference-film .hero{background:linear-gradient(106deg,#e9dcae 0%,#f6df9d 49%,#dfbd78 100%)!important}
+:root.reference-film .hero-portrait::before,:root.reference-film .hero-portrait::after{display:none!important;content:none!important}
+:root.reference-film .hero-portrait{filter:brightness(.52) sepia(.2) saturate(.7)!important}
+@media(max-width:760px){
+ :root.reference-film .hero{background:radial-gradient(circle at 52% 22%,#f9e8a5 0%,#f6dd98 45%,#c79e65 100%)!important}
+ :root.reference-film .hero-portrait{filter:brightness(.44) sepia(.24) saturate(.6)!important}
+ :root.reference-film .hero-title{top:63%!important}
 }
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
