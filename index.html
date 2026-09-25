@@ -1153,6 +1153,21 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  :root.reference-film .services.reference-services .service-row p{grid-row:3!important;grid-column:2/4!important}
  :root.reference-film .services.reference-services .service-row[aria-expanded=true] p{margin-top:14px!important;margin-bottom:4px!important}
 }
+</style><style id="filmed-mobile-process-gate">
+.mobile-process-toggle{display:none}
+@media(max-width:760px){
+ :root.reference-film .film-process{position:relative!important;min-height:250px!important;background:#faf9f5!important;color:#172338!important;padding:52px 20px 45px!important}
+ :root.reference-film .film-process-top{display:flex!important;align-items:center!important;justify-content:space-between!important;font-size:8px!important;letter-spacing:.1em!important;color:#172338!important}
+ :root.reference-film .film-process-top span:last-child{display:none}
+ :root.reference-film .film-process-head h2{font:800 11px/1.4 Arial,sans-serif!important;text-align:center!important;text-transform:uppercase!important;letter-spacing:.18em!important;margin:62px 0 22px!important}
+ :root.reference-film .film-process-head h2 br,:root.reference-film .film-process-head h2 em{display:none!important}
+ :root.reference-film .film-process-head h2:after{content:" ✦";display:block;font:400 19px Georgia,serif!important;margin:12px 0 0}
+ :root.reference-film .film-process-head>p{display:none!important}
+ :root.reference-film .film-process .mobile-process-toggle{display:block!important;margin:0 auto!important;background:transparent!important;color:#172338!important;border:0!important;border-bottom:1px solid #a4a3a0!important;padding:10px 8px!important;min-height:44px!important;letter-spacing:.14em!important;font:800 9px Arial,sans-serif!important}
+ :root.reference-film .film-process .mobile-process-toggle span{font-size:14px;margin-left:12px}
+ :root.reference-film .film-process-grid{display:none!important}
+ :root.reference-film .film-process.mobile-open .film-process-grid{display:grid!important;grid-template-columns:1fr!important;gap:15px!important;margin-top:35px!important}
+}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
@@ -1166,7 +1181,8 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 
 <section class="film-process" id="process" aria-labelledby="process-title">
  <div class="film-process-head reveal"><div class="film-process-top"><span>03 / BEHIND THE WORK</span><span>AN IDEA IS ONLY THE START.</span></div><h2 id="process-title">The thinking<br>behind <em>the making.</em></h2><p>From the first question to the final detail, the work needs to look compelling and communicate clearly.</p></div>
- <div class="film-process-grid">
+ <button class="mobile-process-toggle" type="button" aria-expanded="false" aria-controls="processSteps">VIEW PROCESS <span aria-hidden="true">+</span></button>
+<div class="film-process-grid" id="processSteps">
  <article class="film-process-step reveal"><div class="film-step-header"><span>01 / DISCOVER</span><svg class="ui-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><div><span class="film-step-number" aria-hidden="true">01</span><h3>Find the<br><em>real brief.</em></h3><p>Understand the audience, the objective, and what the design needs people to feel or do.</p></div></article>
  <article class="film-process-step reveal"><div class="film-step-header"><span>02 / CREATE</span><svg class="ui-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><div><span class="film-step-number" aria-hidden="true">02</span><h3>Give it<br><em>a point of view.</em></h3><p>Explore concepts, shape the typography and art direction, and build a consistent visual language.</p></div></article>
  <article class="film-process-step reveal"><div class="film-step-header"><span>03 / DELIVER</span><svg class="ui-icon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><div><span class="film-step-number" aria-hidden="true">03</span><h3>Make every<br><em>detail count.</em></h3><p>Refine and adapt the final artwork, from campaign assets to motion, for the platform where it will live.</p></div></article>
@@ -1530,5 +1546,16 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  }
  function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(update)}}
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});update();
+})();
+</script><script id="mobile-process-disclosure">
+(function(){
+ const section=document.getElementById('process'),toggle=section&&section.querySelector('.mobile-process-toggle');
+ if(!toggle)return;
+ function set(open){
+   section.classList.toggle('mobile-open',open);
+   toggle.setAttribute('aria-expanded',String(open));
+   toggle.querySelector('span').textContent=open?'−':'+';
+ }
+ toggle.addEventListener('click',()=>set(!section.classList.contains('mobile-open')));
 })();
 </script></body></html>
