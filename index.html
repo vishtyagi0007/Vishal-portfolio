@@ -939,6 +939,32 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 :root.reference-film .hero-title .title-line>span{animation-play-state:paused}
 :root.reference-film.ref-intro-complete .hero-title .title-line>span{animation-play-state:running}
 @media(prefers-reduced-motion:reduce){:root.reference-film .hero-title .title-line>span{animation:none!important;opacity:1!important;transform:none!important}}
+</style><style id="reference-service-editorial">
+:root.reference-film .services.reference-services{background:#111318!important;color:#f8f3e9!important}
+:root.reference-film .services.reference-services .services-head h2{font-size:clamp(72px,10vw,166px)!important;letter-spacing:-.085em!important}
+:root.reference-film .services.reference-services .service-row{position:relative!important;display:grid!important;grid-template-columns:56px minmax(0,1.2fr) minmax(260px,.73fr) 38px!important;grid-template-rows:auto auto!important;column-gap:20px!important;align-items:center!important;min-height:0!important;padding:clamp(22px,2.4vw,40px) 2px!important;outline-offset:3px;color:#faf7ed!important;transition:color .3s ease,background .3s ease!important}
+:root.reference-film .services.reference-services .service-row .number{grid-column:1;grid-row:1;color:#d4af81!important}
+:root.reference-film .services.reference-services .service-row h3{grid-column:2/4;grid-row:1;font-size:clamp(33px,4.35vw,70px)!important;line-height:.98!important;letter-spacing:-.07em!important;transition:color .35s ease}
+:root.reference-film .services.reference-services .service-row .arrow{grid-column:4;grid-row:1;transform:rotate(0);transition:transform .4s cubic-bezier(.22,1,.36,1);color:#d4af81!important}
+:root.reference-film .services.reference-services .service-row p{grid-column:2;grid-row:2;max-width:680px!important;margin:0!important;font-size:clamp(16px,1.45vw,22px)!important;line-height:1.5!important;color:#e5dfd4!important;display:block!important;overflow:hidden;max-height:0;opacity:0;transition:max-height .5s ease,opacity .4s ease,margin .45s ease!important}
+:root.reference-film .services.reference-services .service-row .film-service-preview{position:relative!important;grid-column:3/5;grid-row:2;display:block!important;inset:auto!important;width:100%!important;height:0!important;min-height:0!important;opacity:0!important;visibility:hidden;transform:translateY(22px)!important;border:0;border-radius:2px;overflow:hidden!important;margin:0!important;box-shadow:none!important;transition:opacity .4s,transform .5s,height .5s!important}
+:root.reference-film .services.reference-services .service-row[aria-expanded=true] .film-service-preview{height:clamp(150px,17vw,260px)!important;visibility:visible;opacity:1!important;transform:translateY(0)!important;margin-top:24px!important}
+:root.reference-film .services.reference-services .service-row .film-service-preview img{height:100%!important;width:100%!important;object-fit:cover!important}
+:root.reference-film .services.reference-services .service-row[aria-expanded=true] p{max-height:370px;opacity:1;margin-top:22px!important}
+:root.reference-film .services.reference-services .service-row[aria-expanded=true] h3,:root.reference-film .services.reference-services .service-row:hover h3{color:#f0c9a4!important;transform:none!important}
+:root.reference-film .services.reference-services .service-row[aria-expanded=true] .arrow{transform:rotate(45deg)!important}
+:root.reference-film .services.reference-services .service-row:hover{padding-left:2px!important;background:transparent!important}
+:root.reference-film .services.reference-services .service-row:focus-visible{outline:3px solid #e5b483!important}
+@media(max-width:760px){
+ :root.reference-film .services.reference-services .service-row{grid-template-columns:36px minmax(0,1fr) 26px!important;gap:12px!important;padding:22px 0!important}
+ :root.reference-film .services.reference-services .service-row h3{grid-column:2!important;font-size:clamp(27px,8vw,39px)!important}
+ :root.reference-film .services.reference-services .service-row .arrow{grid-column:3!important}
+ :root.reference-film .services.reference-services .service-row p{grid-column:2/4!important;grid-row:2;font-size:15px!important;line-height:1.55!important}
+ :root.reference-film .services.reference-services .service-row .film-service-preview{grid-column:2/4!important;grid-row:3!important}
+ :root.reference-film .services.reference-services .service-row[aria-expanded=true] .film-service-preview{height:clamp(150px,48vw,240px)!important;margin-top:16px!important}
+ :root.reference-film .services.reference-services .services-head h2{font-size:clamp(52px,13vw,72px)!important}
+}
+@media(prefers-reduced-motion:reduce){:root.reference-film .services.reference-services .service-row p,:root.reference-film .services.reference-services .service-row .film-service-preview{transition:none!important}}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden><a href="#about">ABOUT</a><a href="#work">SELECTED WORK</a><a href="portfolio/">ALL PROJECTS</a><a href="portfolio/assets/Vishal-Tyagi-Resume.pdf" class="resume-link" download>DOWNLOAD RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="#contact">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></nav></header>
@@ -1181,28 +1207,30 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
 })();
 </script><script id="mobile-services-interaction">
 (function(){
- var section=document.querySelector('.services'), rows=[].slice.call(document.querySelectorAll('.services .service-row'));
+ var section=document.querySelector('.services'),rows=[].slice.call(document.querySelectorAll('.services .service-row'));
  if(!section||!rows.length)return;
- var mobile=window.matchMedia('(max-width:760px)');
- function select(index){
+ section.classList.add('service-accordion-ready','reference-services');
+ var current=0;
+ function open(index,keepFocus){
+  if(index<0||index>=rows.length)return; current=index;
   rows.forEach(function(row,i){
-   var opened=i===index;
-   row.setAttribute('aria-expanded',String(opened));
-   if(row.querySelector('p'))row.querySelector('p').setAttribute('aria-hidden',String(!opened));
+   var expanded=i===index;
+   row.setAttribute('aria-expanded',String(expanded));
+   row.querySelector('p')?.setAttribute('aria-hidden',String(!expanded));
+   row.querySelector('.film-service-preview')?.setAttribute('aria-hidden',String(!expanded));
+   if(keepFocus&&expanded)row.focus({preventScroll:true});
   });
  }
- function activate(){
-  section.classList.toggle('service-accordion-ready',mobile.matches);
-  if(mobile.matches){rows.forEach(function(row){
-    row.setAttribute('role','button');row.setAttribute('tabindex','0');
-  });select(0)}
-  else{rows.forEach(function(row){row.removeAttribute('role');row.removeAttribute('tabindex');row.removeAttribute('aria-expanded');var p=row.querySelector('p');if(p)p.removeAttribute('aria-hidden')})}
- }
- rows.forEach(function(row,index){
-  row.addEventListener('click',function(){if(mobile.matches)select(index)});
-  row.addEventListener('keydown',function(e){if(mobile.matches&&(e.key==='Enter'||e.key===' ')){e.preventDefault();select(index)}});
+ rows.forEach(function(row,i){
+  row.setAttribute('role','button');row.setAttribute('tabindex','0');
+  row.setAttribute('aria-label',row.querySelector('h3')?.textContent||'Service');
+  row.addEventListener('click',()=>open(i,false));
+  row.addEventListener('keydown',function(e){
+   if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i,true)}
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();open((i+(e.key==='ArrowDown'?1:-1)+rows.length)%rows.length,true)}
+  });
  });
- activate();if(mobile.addEventListener)mobile.addEventListener('change',activate);
+ open(0,false);
 })();
 </script><script id="ref-fidelity-menu-scroll">
 (function(){
