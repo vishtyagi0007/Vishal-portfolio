@@ -818,7 +818,71 @@ html,body{overflow-y:auto}
    height:100svh!important;min-height:0!important;max-height:100svh!important;
  }
 }
-</style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"/><link rel="stylesheet" href="/motion-system.css?v=13.0"/><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script><script defer src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script><script defer src="/motion-system.js?v=15.2"></script></head><body>
+
+/* SCROLL RELIABILITY HOTFIX. Native browser scrolling with no JS scroll engine.
+   Previous stacked project rules were experimental and could capture scroll. */
+html{height:auto!important;overflow-x:clip!important;overflow-y:visible!important;scroll-behavior:auto!important}
+body{height:auto!important;min-height:100vh!important;overflow-x:clip!important;overflow-y:visible!important;position:relative}
+body.no-scroll{overflow-y:visible!important}
+main{height:auto;overflow:visible}
+.work-cinematic{overflow:visible!important}
+@media(min-width:761px){
+  .work-cinematic .story-stack,
+  .work-cinematic .story-stack.stack-enhanced{
+    display:block!important;position:relative!important;height:auto!important;
+    min-height:0!important;max-height:none!important;overflow:visible!important;
+    padding:clamp(16px,3vw,44px)!important;margin:0!important;
+  }
+  .work-cinematic .story-stage,
+  .work-cinematic .story-stack.stack-enhanced .story-stage{
+    display:block!important;position:relative!important;inset:auto!important;
+    top:auto!important;left:auto!important;right:auto!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    overflow:visible!important;
+  }
+  .work-cinematic .story-stage .scene,
+  .work-cinematic .story-stack.stack-enhanced .scene{
+    display:block!important;position:relative!important;inset:auto!important;
+    top:auto!important;left:auto!important;right:auto!important;
+    width:100%!important;height:auto!important;min-height:0!important;
+    max-height:none!important;margin:0 0 clamp(22px,4vw,60px)!important;
+    padding:0!important;transform:none!important;will-change:auto!important;
+  }
+  .work-cinematic .story-stage .scene:last-child{margin-bottom:0!important}
+  .work-cinematic .story-stage .scene-surface,
+  .work-cinematic .story-stack.stack-enhanced .scene-surface{
+    display:grid!important;position:relative!important;inset:auto!important;
+    top:auto!important;left:auto!important;width:100%!important;height:auto!important;
+    min-height:clamp(550px,76svh,760px)!important;max-height:none!important;
+    padding:clamp(24px,4vw,66px)!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    overflow:hidden!important;transform:none!important;will-change:auto!important;
+    border-radius:6px!important;box-shadow:0 18px 48px rgba(11,29,32,.13)!important;
+    transition:box-shadow .28s ease;
+  }
+  .work-cinematic .scene-body{
+    display:grid!important;grid-template-columns:minmax(210px,.78fr) minmax(0,1.22fr)!important;
+    gap:clamp(20px,3.5vw,55px);min-width:0;align-items:center!important;
+  }
+  .work-cinematic .scene-copy{padding:0!important;align-self:center!important;min-width:0}
+  .work-cinematic .scene-art{display:grid!important;place-items:center!important;
+    width:100%!important;height:clamp(280px,48svh,520px)!important;min-height:0!important;
+    margin:0!important;overflow:hidden!important;transform:none!important}
+  .work-cinematic .scene-art img{width:100%!important;height:100%!important;
+    max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+    transform:none!important}
+}
+@media(min-width:761px) and (max-width:980px){
+  .work-cinematic .scene-title-group h3{font-size:clamp(38px,6.8vw,68px)}
+  .work-cinematic .scene-body{grid-template-columns:minmax(170px,.8fr) minmax(0,1.2fr)!important}
+}
+@media(hover:hover) and (pointer:fine){
+  .work-cinematic .story-stage .scene-surface:hover{box-shadow:0 26px 66px rgba(11,29,32,.20)!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .work-cinematic .story-stage .scene-surface{transition:none!important}
+}
+</style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden><a href="#about">ABOUT</a><a href="#work">SELECTED WORK</a><a href="portfolio/">ALL PROJECTS</a><a href="portfolio/assets/Vishal-Tyagi-Resume.pdf" class="resume-link" download>DOWNLOAD RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="#contact">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></nav></header>
 <main id="main"><section class="hero" id="home"><div><div class="hero-kicker"><span class="tiny-rose"></span> INDEPENDENT CREATIVE / INDIA</div><h1 class="hero-title"><span class="title-line"><span>Design</span></span><span class="title-line"><span>in <em>motion.</em></span></span></h1><div class="hero-portrait" aria-label="Vishal Tyagi portrait"><div class="hero-portrait-halo" aria-hidden="true"></div><img src="/portfolio/assets/vishal-hero-new-portrait.png" onerror="this.onerror=null;this.src='/portfolio/assets/vishal-tyagi.png'" alt="Vishal Tyagi, graphic and motion designer" loading="eager" fetchpriority="high"/></div><div class="hero-quick"><p>Senior Graphic &amp; Motion Designer · Available for full-time roles &amp; freelance projects.</p><div class="hero-quick-actions"><a href="#work" class="hero-action hero-action-outline">VIEW WORK <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5l14 14M8 19h11V8"/></svg></a><a href="#contact" class="hero-action hero-action-fill">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div></div></div><div class="hero-bottom"><div class="micro">VISHAL TYAGI<br/>GRAPHIC & MOTION DESIGNER</div><p>Identities, digital campaigns and moving images. 8+ years across client campaigns, logos, interfaces and motion.</p><a class="scroll-cue" href="#about">SCROLL TO EXPLORE <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></span></a></div></section>
