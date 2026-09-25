@@ -25,7 +25,7 @@
   }
 
   var lenis=null;
-  if(!reduce&&window.Lenis){
+  if(!reduce&&window.Lenis&&!document.querySelector('.story-stack')){
     try{
       lenis=new Lenis({
         lerp:.19,
@@ -205,17 +205,11 @@
     }
 
     function bind(){
-      if(window.__vtLenis&&window.__vtLenis.on){
-        // Animated Lenis position is already smooth: use it directly.
-        window.__vtLenis.on('scroll',function(e){
-          requestRender(typeof e.animatedScroll==='number'?e.animatedScroll:(window.scrollY||0));
-        });
-      }else{
-        // Native fallback only when Lenis is unavailable.
-        window.addEventListener('scroll',function(){
-          requestRender(window.scrollY||0);
-        },{passive:true});
-      }
+      // Native scroll is the reliable source for desktop project-stack motion.
+      // Do not depend on Lenis: if its RAF stalls, the whole page can appear frozen.
+      window.addEventListener('scroll',function(){
+        requestRender(window.scrollY||0);
+      },{passive:true});
     }
 
     window.addEventListener('resize',function(){
