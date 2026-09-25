@@ -1412,7 +1412,7 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  if(!title||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
  var lines=title.querySelectorAll('.title-line>span');
  lines.forEach(function(line,li){
-  var nodes=[],text=line.textContent.trim();
+  var italic=!!line.querySelector('em');var nodes=[],text=line.textContent.trim();
   // Keep authored semantic headline through its aria-label, characters are decorative.
   line.setAttribute('aria-hidden','true');
   Array.from(text).forEach(function(ch,i){
@@ -1424,7 +1424,7 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
    node.style.setProperty('--letter-angle',((((i*7+li*3)%7)-3)*9)+'deg');
    nodes.push(node);
   });
-  line.replaceChildren(...nodes);
+  if(italic){var em=document.createElement('em');em.append(...nodes);line.replaceChildren(em)}else line.replaceChildren(...nodes);
  });
 })();
 </script></body></html>
