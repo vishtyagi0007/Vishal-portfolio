@@ -386,5 +386,29 @@ await check('Reference contact opening is correctly positioned and only uses the
  await film.screenshot({path:'qa-screenshots/filmed-contact-at-section-entry.png'});
  return JSON.stringify(state);
 });
+await check('Small phones and tablet: no horizontal overflow, visible hero and reachable footer',async()=>{
+ const sizes=[{w:320,h:740},{w:360,h:780},{w:430,h:932},{w:768,h:1024}];
+ const findings=[];
+ for(const d of sizes){
+  const p=await browser.newPage({viewport:{width:d.w,height:d.h},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  await p.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+  await p.waitForTimeout(180);
+  const a=await p.evaluate(()=>({
+   page:document.documentElement.scrollWidth,
+   viewport:innerWidth,
+   portrait:document.querySelector('.hero-portrait').getBoundingClientRect().width,
+   title:document.querySelector('.hero-title').getBoundingClientRect().width
+  }));
+  assert(a.page<=a.viewport+3,JSON.stringify({d,a}));
+  assert(a.portrait>Math.min(260,d.w*.65),JSON.stringify({d,a}));
+  await p.evaluate(()=>{const c=document.querySelector('#contact');scrollTo({top:c.getBoundingClientRect().top+scrollY,behavior:'instant'})});
+  await p.waitForTimeout(160);
+  assert(await p.locator('#filmBriefForm').count()===1,'contact form missing at '+d.w);
+  if(d.w===320)await p.screenshot({path:'qa-screenshots/mobile-320-hero-and-layout.png'});
+  findings.push({width:d.w,...a});
+  await p.close();
+ }
+ return JSON.stringify(findings);
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
