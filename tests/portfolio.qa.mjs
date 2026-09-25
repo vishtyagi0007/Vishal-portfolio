@@ -65,6 +65,15 @@ await check('Mobile: no scroll-hijacking/pinned stage',async()=>{
  const tops=await mobile.locator('.story-stage article.scene').evaluateAll(xs=>xs.map(x=>x.getBoundingClientRect().top));
  assert(tops[1]>tops[0],JSON.stringify(tops));return 'natural project flow';
 });
+await check('Mobile hero portrait is centered and meaningfully visible',async()=>{
+ const v=await mobile.locator('.hero-portrait').evaluate(el=>{
+  const r=el.getBoundingClientRect(), vp=innerWidth;
+  return {x:r.x,right:r.right,width:r.width,viewport:vp,center:r.x+r.width/2};
+ });
+ assert(v.x>=-8&&v.right<=v.viewport+8,JSON.stringify(v));
+ assert(Math.abs(v.center-v.viewport/2)<v.viewport*.2,JSON.stringify(v));
+ return JSON.stringify(v);
+});
 await check('Mobile: no unexpected sideways scrolling',async()=>{
  const dim=await mobile.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:innerWidth}));assert(dim.page<=dim.viewport+3,JSON.stringify(dim));return JSON.stringify(dim);
 });
