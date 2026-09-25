@@ -141,5 +141,18 @@ await check('Archive artwork attribution does not claim unverified client credit
  assert(text.includes('no client relationship claimed'),'clarifying label missing');
  return 'unattributed artwork labelled separately';
 });
+await check('Contact final act renders dark navy and readable light form text',async()=>{
+ const colors=await page.evaluate(()=>{
+  const bg=getComputedStyle(document.querySelector('#contact')).backgroundColor;
+  const field=getComputedStyle(document.querySelector('#filmBriefForm input[name="contact_name"]')).color;
+  return {bg,field};
+ });
+ const rgb=str=>(str.match(/[\\d.]+/g)||[]).slice(0,3).map(Number);
+ const [r,g,b]=rgb(colors.bg);
+ const [fr,fg,fb]=rgb(colors.field);
+ assert(r<45&&g<45&&b<55,JSON.stringify(colors));
+ assert(fr>180&&fg>180&&fb>175,JSON.stringify(colors));
+ return JSON.stringify(colors);
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);
