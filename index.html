@@ -1117,7 +1117,42 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
    <div class="film-form-footer"><span>NO SPAM. JUST YOUR BRIEF.</span><button type="submit">OPEN WHATSAPP <svg class="ui-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></button></div>
   </form>
 </div><div class="contact-foot"><span>© 2026 VISHAL TYAGI</span><div class="links"><a href="tel:+917409219402">CALL +91 74092 19402</a><a href="https://www.linkedin.com/in/vishal-tyagi-graphic-designer/" target="_blank" rel="noopener noreferrer">LINKEDIN <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="portfolio/">ALL WORK <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div><a href="#home">BACK TO TOP <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4m-7 7 7-7 7 7"/></svg></a></div></section></main>
-<script>(function(){var toggle=document.querySelector('.mobile-nav-toggle');var nav=document.getElementById('mobileNav');if(!toggle||!nav)return;function close(){nav.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open mobile navigation')}toggle.addEventListener('click',function(){var open=nav.hidden;nav.hidden=!open;toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close mobile navigation':'Open mobile navigation')});nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});window.addEventListener('resize',function(){if(window.innerWidth>760)close()})})();</script>
+<script id="accessible-mobile-menu">
+(function(){
+ var toggle=document.querySelector('.mobile-nav-toggle');
+ var nav=document.getElementById('mobileNav');
+ var main=document.getElementById('main');
+ if(!toggle||!nav||!main)return;
+ function close(refocus){
+  nav.hidden=true;toggle.setAttribute('aria-expanded','false');
+  toggle.setAttribute('aria-label','Open mobile navigation');
+  document.body.classList.remove('ref-menu-open');
+  document.body.style.overflow='';
+  main.inert=false;
+  if(refocus)toggle.focus({preventScroll:true});
+ }
+ function open(){
+  nav.hidden=false;toggle.setAttribute('aria-expanded','true');
+  toggle.setAttribute('aria-label','Close mobile navigation');
+  document.body.classList.add('ref-menu-open');
+  document.body.style.overflow='hidden';
+  main.inert=true;
+  nav.querySelector('a')?.focus({preventScroll:true});
+ }
+ toggle.addEventListener('click',()=>nav.hidden?open():close(false));
+ nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>close(false)));
+ document.addEventListener('keydown',function(e){
+  if(nav.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();close(true);return}
+  if(e.key!=='Tab')return;
+  var focusable=[toggle,...nav.querySelectorAll('a')];
+  var current=focusable.indexOf(document.activeElement);
+  var next=e.shiftKey?(current-1+focusable.length)%focusable.length:(current+1)%focusable.length;
+  e.preventDefault();focusable[next].focus();
+ });
+ window.addEventListener('resize',()=>{if(innerWidth>760&&!nav.hidden)close(false)},{passive:true});
+})();
+</script>
 <script>
 (()=>{const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;const progress=document.getElementById('pageProgress');let scheduled=false;function update(){scheduled=false;const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);progress.style.transform='scaleX('+Math.min(1,scrollY/max)+')'}window.addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(update)}},{passive:true});window.addEventListener('resize',update);update();const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -20px 0px'});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el))})();
 </script><script>(function(){function track(name,data){try{if(window.va)window.va('event',{name:name,data:data||{}})}catch(e){}}document.querySelectorAll('.resume-link').forEach(function(a){a.addEventListener('click',function(){track('ResumeDownload',{location:'home'})})});document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){a.addEventListener('click',function(){track('WhatsAppClick',{location:'home'})})});document.querySelectorAll('a[href^="tel:"]').forEach(function(a){a.addEventListener('click',function(){track('CallClick',{location:'home'})})});document.querySelectorAll('a[href*="linkedin.com"]').forEach(function(a){a.addEventListener('click',function(){track('LinkedInClick',{location:'home'})})});document.querySelectorAll('.scene-link,.see-all,.brand-logo-card').forEach(function(a){a.addEventListener('click',function(){track('ProjectView',{target:a.getAttribute('href')||''})})});var mv=document.querySelector('.motion-frame video');if(mv){mv.addEventListener('play',function(){track('MotionPlay',{location:'home'})},{once:true})}})();</script><script>(function(){var b=document.getElementById('themeSwitch');if(!b)return;function paint(){var dark=document.documentElement.dataset.theme==='dark';b.setAttribute('aria-pressed',String(dark));b.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');b.querySelector('.theme-label').textContent=dark?'Light mode':'Dark mode';b.querySelector('.symbol').innerHTML=dark?"<svg class=\"ui-icon theme-glyph\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42\"/></svg>":"<svg class=\"ui-icon theme-glyph\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.65\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z\"/></svg>";}paint();b.addEventListener('click',function(){var next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('vt-theme',next)}catch(e){}paint()});})();</script>
@@ -1316,16 +1351,6 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
   });
  });
  open(0,false);
-})();
-</script><script id="ref-fidelity-menu-scroll">
-(function(){
- const nav=document.querySelector('#mobileNav'),btn=document.querySelector('.mobile-nav-toggle');
- if(!nav||!btn)return;
- const set=()=>{const open=!nav.hidden;document.body.classList.toggle('ref-menu-open',open);document.body.style.overflow=open?'hidden':'';};
- btn.addEventListener('click',()=>requestAnimationFrame(set));
- nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>requestAnimationFrame(set)));
- document.addEventListener('keydown',e=>{if(e.key==='Escape')requestAnimationFrame(set)});
- window.addEventListener('resize',()=>requestAnimationFrame(set));
 })();
 </script><script id="kinetic-scroll-interlude">
 (function(){
