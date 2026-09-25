@@ -831,6 +831,20 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  :root.reference-film .hero-title{justify-self:center!important;text-align:center!important;max-width:100%!important}
  :root.reference-film .hero-bottom{justify-content:space-between}
 }
+
+/* REFERENCE-QA-POLISH-V4 — uninterrupted dark services and readable active imagery. */
+@media(min-width:761px){
+ :root.reference-film .head{transition:transform .36s cubic-bezier(.22,1,.36,1),background .3s ease,padding .3s ease}
+ :root.reference-film body.film-nav-hidden .head{transform:translateY(-110%);pointer-events:none}
+ :root.reference-film .head:focus-within{transform:none!important;pointer-events:auto!important}
+}
+@media(min-width:1161px) and (hover:hover) and (pointer:fine){
+ :root.reference-film .service-row{grid-template-columns:65px minmax(0,1.22fr) minmax(220px,.8fr) 220px}
+ :root.reference-film .service-row p{max-width:330px}
+ :root.reference-film .service-row .film-service-preview{right:0;top:50%;width:200px;height:125px;transform:translate(0,-43%) rotate(-3deg) scale(.93);border:2px solid rgba(255,255,255,.72)}
+ :root.reference-film .service-row:hover .film-service-preview{transform:translate(0,-50%) rotate(0deg) scale(1)}
+ :root.reference-film .service-row:hover .arrow{opacity:0}
+}
 </style><script>(function(){try{var saved=localStorage.getItem('vt-theme');var dark=saved==='dark'||(!saved&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';}catch(e){document.documentElement.dataset.theme='light'}})();</script><script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="https://cdn.vercel-insights.com/v1/script.js"></script><script>window.si=window.si||function(){(window.siq=window.siq||[]).push(arguments);};</script><script defer src="/_vercel/speed-insights/script.js"></script></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden><a href="#about">ABOUT</a><a href="#work">SELECTED WORK</a><a href="portfolio/">ALL PROJECTS</a><a href="portfolio/assets/Vishal-Tyagi-Resume.pdf" class="resume-link" download>DOWNLOAD RESUME <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a href="#contact">HIRE / COLLABORATE <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></a></nav></header>
@@ -916,6 +930,8 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  var reduce=window.matchMedia("(prefers-reduced-motion:reduce)");
  if(!work||!stack||scenes.length<2)return;
  var enabled=false,raf=0,display=0,hold=0,step=0,entry=0,total=0,vh=0,last=0,active=-1;
+ var navLastY=window.scrollY,navHidden=false;
+ var heroEl=document.getElementById("home");
  var clamp=function(v,lo,hi){return Math.max(lo,Math.min(hi,v));};
  var easing=function(t){return t*t*(3-2*t);};
  function refreshChrome(){
@@ -981,6 +997,14 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
   if(Math.abs(target-display)>.23)raf=requestAnimationFrame(tick);
  }
  function schedule(){
+  var y=window.scrollY,dy=y-navLastY;
+  if(heroEl&&window.innerWidth>760){
+    if(y<heroEl.offsetHeight-90){navHidden=false}
+    else if(dy>5){navHidden=true}
+    else if(dy< -5){navHidden=false}
+    document.body.classList.toggle("film-nav-hidden",navHidden);
+  }else{navHidden=false;document.body.classList.remove("film-nav-hidden")}
+  navLastY=y;
   if(!enabled){refreshChrome();return}
   if(!raf)raf=requestAnimationFrame(tick);
  }
