@@ -213,6 +213,17 @@ await check('Phone hero has photographic first-screen composition without horizo
  return JSON.stringify(d);
 });
 await phone.screenshot({path:'qa-screenshots/reference-rebuild-phone-hero.png'});
+await phone.waitForTimeout(1900);
+await check('Filmed mobile hero letters assemble and become readable within 4 seconds',async()=>{
+ const result=await phone.locator('.hero-title').evaluate(el=>{
+  const letters=[...el.querySelectorAll('.letter')];
+  return {count:letters.length,done:document.documentElement.classList.contains('ref-intro-complete'),running:letters.filter(x=>getComputedStyle(x).animationPlayState==='running').length,opacity:Math.min(...letters.map(x=>parseFloat(getComputedStyle(x).opacity)))};
+ });
+ assert(result.done && result.count>30&&result.opacity>.99,JSON.stringify(result));
+ return JSON.stringify(result);
+});
+await phone.screenshot({path:'qa-screenshots/reference-mobile-hero-assembled.png'});
+
 await check('Phone navigation becomes a fullscreen overlay and closes',async()=>{
  await phone.locator('.mobile-nav-toggle').click();
  await phone.waitForTimeout(80);
@@ -266,6 +277,7 @@ await check('Intro: same-tab reload keeps the hero visible',async()=>{
   opacity:getComputedStyle(document.querySelector('.hero-title .title-line>span')).opacity
  }));
  assert(state.hidden&&state.done&&state.play!=='paused',JSON.stringify(state));
+ await fresh.waitForTimeout(1300);const opacity=await fresh.locator('.hero-title .title-line>span').first().evaluate(el=>parseFloat(getComputedStyle(el).opacity));assert(opacity>.99,'repeat visitor heading remains obscured: '+opacity);
  await fresh.screenshot({path:'qa-screenshots/repeat-visit-desktop.png'});
  await fresh.close();
  return JSON.stringify(state);
