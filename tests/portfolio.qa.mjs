@@ -178,6 +178,7 @@ await film.locator('#services').scrollIntoViewIfNeeded();
 await check('Desktop services expand on click with artwork integrated',async()=>{
  const rows=film.locator('.services .service-row');
  await rows.nth(2).click();
+ await film.waitForTimeout(650); // Wait for the intentional expansion animation before visual assertion.
  const active=rows.nth(2);
  assert.equal(await active.getAttribute('aria-expanded'),'true');
  assert.equal(await rows.first().getAttribute('aria-expanded'),'false');
