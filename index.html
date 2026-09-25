@@ -1125,6 +1125,34 @@ html.reference-film body{overflow-y:visible!important;background:var(--fm-paper)
  :root.reference-film .hero-portrait{filter:brightness(.44) sepia(.24) saturate(.6)!important}
  :root.reference-film .hero-title{top:63%!important}
 }
+</style><style id="video-mobile-service-stack">
+/* Reference video mobile frames: every service has its own editorial image above the numbered title. */
+@media(max-width:760px){
+ :root.reference-film .services.reference-services .service-row{
+   display:grid!important;grid-template-columns:39px minmax(0,1fr) 26px!important;
+   grid-template-rows:auto auto auto!important;column-gap:10px!important;row-gap:0!important;
+   width:100%!important;padding:16px 0 22px!important;
+ }
+ :root.reference-film .services.reference-services .service-row .film-service-preview,
+ :root.reference-film .services.reference-services .service-row[aria-expanded=true] .film-service-preview{
+   grid-column:1/4!important;grid-row:1!important;position:relative!important;inset:auto!important;
+   height:clamp(150px,53vw,245px)!important;max-height:245px!important;min-height:0!important;
+   display:block!important;visibility:visible!important;opacity:1!important;
+   width:100%!important;margin:0 0 21px!important;transform:none!important;box-shadow:none!important;
+   overflow:hidden!important;border:0!important;border-radius:0!important;
+ }
+ :root.reference-film .services.reference-services .service-row .film-service-preview img{
+   display:block!important;width:100%!important;height:100%!important;
+   object-fit:cover!important;object-position:center!important;opacity:1!important;
+ }
+ :root.reference-film .services.reference-services .service-row .number{grid-row:2!important;grid-column:1!important;font-size:11px!important}
+ :root.reference-film .services.reference-services .service-row h3{
+   grid-row:2!important;grid-column:2!important;line-height:1.1!important;font-size:clamp(25px,7.5vw,35px)!important;
+ }
+ :root.reference-film .services.reference-services .service-row .arrow{grid-row:2!important;grid-column:3!important}
+ :root.reference-film .services.reference-services .service-row p{grid-row:3!important;grid-column:2/4!important}
+ :root.reference-film .services.reference-services .service-row[aria-expanded=true] p{margin-top:14px!important;margin-bottom:4px!important}
+}
 </style></head><body class="reference-film-page"><div class="film-intro-loader" id="filmIntroLoader" aria-hidden="true" hidden><div class="film-intro-lockup"><strong>VISHAL</strong><span class="film-intro-image"><img src="/portfolio/assets/vishal-hero-new-portrait.png" alt="" loading="eager"></span><strong>TYAGI</strong></div><span class="film-intro-sub">GRAPHIC DESIGN / MOTION / CREATIVE DIRECTION</span></div>
 <a class="skip" href="#main">Skip to content</a><div class="page-progress" aria-hidden="true" id="pageProgress"></div>
 <header class="head"><a class="wordmark" href="./" aria-label="Vishal Tyagi home"><img class="wordmark-icon" src="portfolio/assets/vishal-tyagi-mark.svg" alt="" aria-hidden="true"/><span class="wordmark-copy"><strong>VISHAL TYAGI</strong><span>Graphic &amp; Motion Designer</span></span></a><nav class="head-right" aria-label="Main navigation"><button class="theme-switch" id="themeSwitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="symbol" aria-hidden="true"><svg class="ui-icon theme-glyph" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg></span><span class="theme-label">Dark mode</span></button><a href="#about">About</a><a href="#work">Work</a><a href="portfolio/">All projects</a><a class="resume-link" href="portfolio/assets/Vishal-Tyagi-Resume.pdf" download>Resume <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m-7-7 7 7 7-7"/></svg></a><a class="head-cta" href="#contact">HIRE / COLLAB <span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a><button class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open mobile navigation"><svg class="premium-menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h11"/></svg> MENU</button></nav><nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
