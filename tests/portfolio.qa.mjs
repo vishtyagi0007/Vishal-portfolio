@@ -256,8 +256,10 @@ await check('Portfolio archive has full-screen touch menu',async()=>{
  await archivePhone.locator('.archive-menu-toggle').click();
  const v=await archivePhone.locator('#archiveMobileMenu').evaluate(el=>({hidden:el.hidden,h:el.getBoundingClientRect().height,vh:innerHeight}));
  assert(!v.hidden && v.h>=v.vh*.9,JSON.stringify(v));
+ assert.equal(await archivePhone.locator('main').evaluate(el=>el.inert),true,'archive background focusable behind menu');
  await archivePhone.locator('#archiveMobileMenu a[href="#work"]').click();
  assert.equal(await archivePhone.locator('#archiveMobileMenu').evaluate(el=>el.hidden),true);
+ assert.equal(await archivePhone.locator('main').evaluate(el=>el.inert),false);
  return 'menu opens, navigates, closes';
 });
 await archivePhone.screenshot({path:'qa-screenshots/reference-rebuild-phone-archive.png'});
