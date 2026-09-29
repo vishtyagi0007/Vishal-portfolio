@@ -30,6 +30,8 @@ jobs:
             sleep 1
           done
           node tests/vform.qa.mjs
+      - name: Record actual native scroll and hero portal motion in Chromium
+        run: node tests/vform-capture.mjs
       - name: Preserve browser screenshots for visual art-direction review
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,5 +48,6 @@ jobs:
           path: |
             vform/
             tests/vform.qa.mjs
+            tests/vform-capture.mjs
           retention-days: 14
           if-no-files-found: error
