@@ -124,22 +124,27 @@ await check("VTCORE: single canvas architecture, modern geometric type, six orig
 await page.waitForTimeout(460);await page.screenshot({path:"qa-screenshots/worlds-2026/06-core-first-screen.png"});
 await check("VTCORE: switching six original projects dynamically updates ONE canvas",async()=>{
  await page.locator("[data-p='2']").click();
+ await page.waitForFunction(()=>document.querySelector("#project-title").textContent==="GTM Leads");
  const s=await page.evaluate(()=>window.__coreQA.state);
  assert.equal(s.index,2);assert.equal(await page.locator("#project-title").innerText(),"GTM Leads");
  assert.equal(await page.locator("#art-image").getAttribute("src"),"/portfolio/assets/gtm.svg");
  assert.equal(await page.locator("#art-window").getAttribute("data-tone"),"mint");
  await page.locator("[data-p='4']").click();
+ await page.waitForFunction(()=>document.querySelector("#art-image").getAttribute("src")?.includes("022-rcz"));
  assert.equal(await page.locator("#art-image").getAttribute("src"),"/portfolio/assets/022-rcz-weekend-buffet-carnival-1.webp");
  return "One canvas, six distinct original assets";
 });
 await check("VTCORE: actual modal viewer supports multi-image artwork and keyboard project arrows",async()=>{
  await page.locator("[data-p='0']").click();
+ await page.waitForFunction(()=>document.querySelector("#art-image").getAttribute("src")?.includes("001-ascott"));
  await page.locator("#present").click();
+ await page.waitForFunction(()=>document.querySelector("#viewer").open);
  assert(await page.locator("#viewer").evaluate(e=>e.open));
  assert.equal(await page.locator("#viewer-dots button").count(),4);
  await page.locator("#viewer-dots button").nth(2).click();
  assert.equal(await page.locator("#viewer-image").getAttribute("src"),"/portfolio/assets/003-ascott-discover-asr-india-03.webp");
  await page.keyboard.press("ArrowRight");
+ await page.waitForFunction(()=>document.querySelector("#viewer-title").textContent==="Resultbull.ai");
  assert.equal(await page.locator("#viewer-title").innerText(),"Resultbull.ai");
  await page.keyboard.press("Escape");
  assert.equal(await page.locator("#viewer").evaluate(e=>e.open),false);
@@ -150,7 +155,8 @@ await check("VTCORE: Ctrl K searches original projects and navigates without pag
  assert(await page.locator("#command").evaluate(e=>e.open));
  await page.locator("#query").fill("Pride");
  assert.equal(await page.locator(".command-results button").count(),1);
- await page.keyboard.press("Enter");await page.waitForTimeout(120);
+ await page.keyboard.press("Enter");
+ await page.waitForFunction(()=>document.querySelector("#project-title").textContent==="Pride Hotels");
  assert.equal(await page.locator("#command").evaluate(e=>e.open),false);
  assert.equal(await page.locator("#project-title").innerText(),"Pride Hotels");
  await page.keyboard.press("Control+k");await page.locator("#query").fill("motion");
