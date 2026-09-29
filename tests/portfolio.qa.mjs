@@ -213,6 +213,17 @@ await check('Phone hero has photographic first-screen composition without horizo
  return JSON.stringify(d);
 });
 await phone.screenshot({path:'qa-screenshots/reference-rebuild-phone-hero.png'});
+await phone.waitForTimeout(1900);
+await check('Filmed mobile hero letters assemble and become readable within 4 seconds',async()=>{
+ const result=await phone.locator('.hero-title').evaluate(el=>{
+  const letters=[...el.querySelectorAll('.letter')];
+  return {count:letters.length,done:document.documentElement.classList.contains('ref-intro-complete'),running:letters.filter(x=>getComputedStyle(x).animationPlayState==='running').length,opacity:Math.min(...letters.map(x=>parseFloat(getComputedStyle(x).opacity)))};
+ });
+ assert(result.done && result.count>30&&result.opacity>.99,JSON.stringify(result));
+ return JSON.stringify(result);
+});
+await phone.screenshot({path:'qa-screenshots/reference-mobile-hero-assembled.png'});
+
 await check('Phone navigation becomes a fullscreen overlay and closes',async()=>{
  await phone.locator('.mobile-nav-toggle').click();
  await phone.waitForTimeout(80);
@@ -245,10 +256,159 @@ await check('Portfolio archive has full-screen touch menu',async()=>{
  await archivePhone.locator('.archive-menu-toggle').click();
  const v=await archivePhone.locator('#archiveMobileMenu').evaluate(el=>({hidden:el.hidden,h:el.getBoundingClientRect().height,vh:innerHeight}));
  assert(!v.hidden && v.h>=v.vh*.9,JSON.stringify(v));
+ assert.equal(await archivePhone.locator('main').evaluate(el=>el.inert),true,'archive background focusable behind menu');
  await archivePhone.locator('#archiveMobileMenu a[href="#work"]').click();
  assert.equal(await archivePhone.locator('#archiveMobileMenu').evaluate(el=>el.hidden),true);
+ assert.equal(await archivePhone.locator('main').evaluate(el=>el.inert),false);
  return 'menu opens, navigates, closes';
 });
 await archivePhone.screenshot({path:'qa-screenshots/reference-rebuild-phone-archive.png'});
+
+await check('Intro: same-tab reload keeps the hero visible',async()=>{
+ const fresh=await browser.newPage({viewport:{width:1440,height:900}});
+ await fresh.goto(BASE+'/',{waitUntil:'load'});
+ await fresh.waitForTimeout(2600);
+ const first=await fresh.evaluate(()=>({hidden:document.querySelector('#filmIntroLoader').hidden,done:document.documentElement.classList.contains('ref-intro-complete')}));
+ assert(first.hidden&&first.done,JSON.stringify(first));
+ await fresh.reload({waitUntil:'load'});
+ await fresh.waitForTimeout(380);
+ const state=await fresh.evaluate(()=>({
+  hidden:document.querySelector('#filmIntroLoader').hidden,
+  done:document.documentElement.classList.contains('ref-intro-complete'),
+  play:getComputedStyle(document.querySelector('.hero-title .title-line>span')).animationPlayState,
+  opacity:getComputedStyle(document.querySelector('.hero-title .title-line>span')).opacity
+ }));
+ assert(state.hidden&&state.done&&state.play!=='paused',JSON.stringify(state));
+ await fresh.waitForTimeout(1300);const opacity=await fresh.locator('.hero-title .title-line>span').first().evaluate(el=>parseFloat(getComputedStyle(el).opacity));assert(opacity>.99,'repeat visitor heading remains obscured: '+opacity);
+ await fresh.screenshot({path:'qa-screenshots/repeat-visit-desktop.png'});
+ await fresh.close();
+ return JSON.stringify(state);
+});
+await check('Mobile opener has independently animated accessible character spans',async()=>{
+ const title=phone.locator('.hero-title');
+ const state=await title.evaluate(el=>({
+  aria:el.getAttribute('aria-label'),
+  letters:el.querySelectorAll('.letter').length,
+  lineCount:el.querySelectorAll('.title-line').length,
+  screenWidth:el.getBoundingClientRect().width,
+  page:document.documentElement.scrollWidth
+ }));
+ assert(state.letters>35&&state.aria?.length>20&&state.lineCount===4,JSON.stringify(state));
+ assert(state.page<=393,JSON.stringify(state));
+ return JSON.stringify(state);
+});
+await check('Mobile selected projects load real artwork, and images appear inside each card',async()=>{
+ const selected=phone.locator('#work .scene');
+ const report=[];
+ for(let i=0;i<await selected.count();i++){
+  const scene=selected.nth(i);
+  await scene.scrollIntoViewIfNeeded();
+  await phone.waitForTimeout(160);
+  const v=await scene.evaluate(el=>{
+   const art=el.querySelector('.scene-art'),img=art&&art.querySelector('img');
+   const a=art?.getBoundingClientRect(),b=img?.getBoundingClientRect(),box=el.getBoundingClientRect();
+   return {name:el.id,imgLoaded:!!img?.complete&&img?.naturalWidth>0,artH:a?.height||0,imgH:b?.height||0,sceneH:box.height,scenePosition:getComputedStyle(el).position};
+  });
+  assert(v.imgLoaded&&v.artH>150&&v.imgH>100&&v.sceneH<1200,JSON.stringify(v));
+  report.push(v);
+ }
+ await selected.nth(2).scrollIntoViewIfNeeded();
+ await phone.waitForTimeout(300);
+ await phone.screenshot({path:'qa-screenshots/reference-mobile-project-real-images.png'});
+ return JSON.stringify(report);
+});
+await check('Reduced-motion mobile text remains legible without kinetic animation',async()=>{
+ const ctx=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+ const page=await ctx.newPage();await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+ const result=await page.evaluate(()=>({title:document.querySelector('.hero-title')?.textContent?.trim(),loaderHidden:document.querySelector('#filmIntroLoader')?.hidden}));
+ assert(result.title&&result.title.includes('STORY')&&result.loaderHidden,JSON.stringify(result));
+ await ctx.close();return 'reduced motion has text and no loader';
+});
+
+await check('Recorded visual chapter order is preserved on desktop and mobile',async()=>{
+ const result=await film.evaluate(()=>[...document.querySelector('main').querySelectorAll(':scope > section')].map(el=>el.id||el.className.split(' ')[0]));
+ const expected=['home','about','services','process','typeInterlude','work','typeOutro','contact'];
+ assert.deepEqual(result,expected,JSON.stringify(result));
+ return result.join(' → ');
+});
+await check('Phone services match recorded image-first editorial rows',async()=>{
+ await phone.locator('#services').scrollIntoViewIfNeeded();
+ const rows=phone.locator('.services .service-row');
+ const items=[];
+ for(let i=0;i<await rows.count();i++){
+  const item=rows.nth(i);
+  await item.scrollIntoViewIfNeeded();
+  await phone.waitForTimeout(90);
+  const v=await item.evaluate(el=>{
+   const img=el.querySelector('.film-service-preview img'),wrapper=el.querySelector('.film-service-preview'),heading=el.querySelector('h3');
+   const a=wrapper.getBoundingClientRect(),b=heading.getBoundingClientRect();
+   return {imageFirst:a.bottom<=b.top+1,visible:a.height>130,width:a.width,imageLoaded:!!img?.complete&&img?.naturalWidth>0};
+  });
+  assert(v.imageFirst&&v.visible&&v.imageLoaded,JSON.stringify({i,...v}));
+  items.push(v);
+ }
+ await rows.nth(1).scrollIntoViewIfNeeded();
+ await phone.screenshot({path:'qa-screenshots/recorded-mobile-image-first-services.png'});
+ return JSON.stringify(items);
+});
+await check('Motion work remains reachable from the simplified filmed homepage',async()=>{
+ const a=film.locator('#about a[href="portfolio/#motion"]');
+ assert(await a.isVisible());
+ const archive=await browser.newPage();
+ await archive.goto(BASE+'/portfolio/#motion',{waitUntil:'domcontentloaded'});
+ assert.equal(await archive.locator('#motion').count(),1);
+ await archive.close();
+ return 'real motion section accessible from about';
+});
+await check('Filmed phone process handoff is compact and expandable without losing steps',async()=>{
+ await phone.locator('#process').scrollIntoViewIfNeeded();
+ const button=phone.locator('.mobile-process-toggle');
+ assert(await button.isVisible(),'process disclosure missing');
+ assert.equal(await button.getAttribute('aria-expanded'),'false');
+ const folded=await phone.locator('#process').boundingBox();
+ assert(folded.height<=350,'reference mobile process interlude is too tall '+folded.height);
+ await phone.screenshot({path:'qa-screenshots/video-mobile-process-collapsed.png'});
+ await button.click();
+ assert.equal(await button.getAttribute('aria-expanded'),'true');
+ assert(await phone.locator('#processSteps .film-process-step').first().isVisible());
+ await phone.screenshot({path:'qa-screenshots/video-mobile-process-expanded.png'});
+ await button.click();
+ return 'compact light handoff and optional 3-stage process';
+});
+await check('Reference contact opening is correctly positioned and only uses the inline portrait',async()=>{
+ await film.evaluate(()=>{const el=document.querySelector('#contact');window.scrollTo({top:el.getBoundingClientRect().top+scrollY,behavior:'instant'})});
+ await film.waitForTimeout(300);
+ const state=await film.evaluate(()=>{
+  const c=document.querySelector('#contact'),headline=c.querySelector('.reference-contact-title'),inline=c.querySelector('.contact-photo-mark img');
+  return {sectionTop:c.getBoundingClientRect().top,titleTop:headline.getBoundingClientRect().top,titleBottom:headline.getBoundingClientRect().bottom,portraitVisible:inline.getBoundingClientRect().height>35,ghost:getComputedStyle(c,'::before').display};
+ });
+ assert(state.titleTop>40 && state.titleTop<420 && state.portraitVisible && state.ghost==='none',JSON.stringify(state));
+ await film.screenshot({path:'qa-screenshots/filmed-contact-at-section-entry.png'});
+ return JSON.stringify(state);
+});
+await check('Small phones and tablet: no horizontal overflow, visible hero and reachable footer',async()=>{
+ const sizes=[{w:320,h:740},{w:360,h:780},{w:430,h:932},{w:768,h:1024}];
+ const findings=[];
+ for(const d of sizes){
+  const p=await browser.newPage({viewport:{width:d.w,height:d.h},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  await p.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+  await p.waitForTimeout(180);
+  const a=await p.evaluate(()=>({
+   page:document.documentElement.scrollWidth,
+   viewport:innerWidth,
+   portrait:document.querySelector('.hero-portrait').getBoundingClientRect().width,
+   title:document.querySelector('.hero-title').getBoundingClientRect().width
+  }));
+  assert(a.page<=a.viewport+3,JSON.stringify({d,a}));
+  assert(a.portrait>Math.min(260,d.w*.65),JSON.stringify({d,a}));
+  await p.evaluate(()=>{const c=document.querySelector('#contact');scrollTo({top:c.getBoundingClientRect().top+scrollY,behavior:'instant'})});
+  await p.waitForTimeout(160);
+  assert(await p.locator('#filmBriefForm').count()===1,'contact form missing at '+d.w);
+  if(d.w===320)await p.screenshot({path:'qa-screenshots/mobile-320-hero-and-layout.png'});
+  findings.push({width:d.w,...a});
+  await p.close();
+ }
+ return JSON.stringify(findings);
+});
 await browser.close();console.log('QA RESULT '+results.filter(x=>x.success).length+'/'+results.length);
 if(process.exitCode)process.exit(process.exitCode);

@@ -39,3 +39,16 @@ jobs:
           path: qa-screenshots/
           if-no-files-found: ignore
           retention-days: 7
+      - name: Package verified static website preview
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-static-preview
+          path: |
+            index.html
+            portfolio/
+            robots.txt
+            sitemap.xml
+            site.webmanifest
+          if-no-files-found: error
+          retention-days: 7
