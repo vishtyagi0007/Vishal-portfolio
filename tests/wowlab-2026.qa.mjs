@@ -48,7 +48,7 @@ await test('TYPE/PORTAL: native vertical scroll physically enlarges typography a
 });
 await test('TYPE/PORTAL: original artwork remains visible and its final title does not dominate the frame',async()=>{
  const r=await desk.locator('.open-title strong').boundingBox();
- assert(r&&r.width<innerWidth*.42,'Final title should leave the full original artwork prominent: '+JSON.stringify(r));
+ assert(r&&r.width<desk.viewportSize().width*.42,'Final title should leave the full original artwork prominent: '+JSON.stringify(r));
 });
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/02-portal-after-scroll.png'});
 await test('TYPE/PORTAL: original project cases, logo, portrait-free opening and contact work',async()=>{
