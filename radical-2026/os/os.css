@@ -9,7 +9,7 @@
 .sys-message{font-weight:800;font-size:10px;letter-spacing:.08em}.sys-message i{display:inline-block;background:#2dc97c;width:9px;height:9px;border-radius:50%;margin-right:8px}
 .sys-search{background:var(--electric);border:1px solid #111764;color:#fff;padding:11px 18px;font-size:11px;font-weight:bold;min-height:42px}
 .sys-search kbd{border:1px solid #ffffff77;padding:3px 5px;margin-left:18px}
-.os-stage{position:relative;min-height:850px;min-height:max(850px,calc(100svh - 98px));background:radial-gradient(ellipse at 80% 68%,#7d87ff88,transparent 52%),linear-gradient(130deg,#283fe9,#182be0 56%,#5854de);color:#fbfaff;overflow:hidden;isolation:isolate}
+.os-stage{position:relative;min-height:800px;min-height:max(800px,calc(100svh - 98px));background:radial-gradient(ellipse at 80% 68%,#7d87ff88,transparent 52%),linear-gradient(130deg,#283fe9,#182be0 56%,#5854de);color:#fbfaff;overflow:hidden;isolation:isolate}
 .stage-grid{position:absolute;z-index:-1;inset:0;background-image:linear-gradient(#ffffff16 1px,transparent 1px),linear-gradient(90deg,#ffffff13 1px,transparent 1px);background-size:65px 65px}
 .stage-label{display:flex;justify-content:space-between;gap:15px;padding:25px clamp(17px,3vw,55px);font:800 10px var(--mono);letter-spacing:.08em;position:relative;z-index:2}
 .desktop-name{position:absolute;z-index:-1;left:3.2%;top:16%;font:bold clamp(80px,12vw,210px)/.78 Arial,Helvetica,sans-serif;letter-spacing:-.10em;margin:0;color:#ffffff19;white-space:nowrap;pointer-events:none}
@@ -39,7 +39,7 @@
 .js-os .workspace{position:absolute;inset:0;min-height:0;margin:0}
 .js-os .app-window{position:absolute;transform:translateZ(0);will-change:left,top;transition:box-shadow .25s}
 .js-os .app-window:not(.is-open){display:none}
-.js-os .app-window.window-work{height:min(610px,62svh);z-index:15}
+.js-os .app-window.window-work{height:min(560px,57svh);z-index:15}
 .js-os .app-window.window-about{height:min(395px,44svh);z-index:16}
 .js-os .app-window.window-motion{min-height:400px}
 .js-os .app-window.window-contact{min-height:370px}
