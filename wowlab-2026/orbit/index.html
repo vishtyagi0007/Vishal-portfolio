@@ -42,6 +42,14 @@ function paint(){raf=0;frames++;const dist=Math.max(1,runway.offsetHeight-innerH
 function schedule(){if(!raf)raf=requestAnimationFrame(paint)}
 function openProject(i){const item=items[i];const img=document.querySelector("#viewer-img");img.src="/portfolio/assets/"+item.file;img.alt="Original "+item.name+" artwork";document.querySelector("#viewer-title").textContent=item.name;document.querySelector("#viewer-type").textContent=item.type;document.querySelector("#viewer-desc").textContent=item.description;document.querySelector("#viewer-archive").href="/portfolio/"+item.href;if(!viewer.open)viewer.showModal()}
 panels.forEach(panel=>panel.addEventListener("click",()=>{const i=+panel.dataset.i;setActive(i);openProject(i)}));
+// CSS-3D projected hit-testing can miss a visibly front panel while the scene is
+// between keyframes. Pointer-capture fallback hits only inside the actual current
+// artwork's measured onscreen rectangle; it adds no second CTA or UI clutter.
+document.querySelector(".sticky").addEventListener("click",e=>{
+ if(!isDesktop()||viewer.open||e.target.closest("a,button"))return;
+ const r=panels[active].getBoundingClientRect();
+ if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)openProject(active);
+},true);
 document.querySelector("#close").addEventListener("click",()=>viewer.close());viewer.addEventListener("click",e=>{if(e.target===viewer)viewer.close()});
 if(pointer.matches)document.querySelector(".orbit-field").addEventListener("pointermove",e=>{if(!isDesktop())return;const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;ring.style.setProperty("--ry",(x*3.2).toFixed(1)+"deg");ring.style.setProperty("--rx",(-y*2).toFixed(1)+"deg");move++},{passive:true});
 const rail=ring;if(mobile.matches){rail.addEventListener("scroll",()=>{const centers=panels.map(panel=>Math.abs(panel.getBoundingClientRect().left+panel.getBoundingClientRect().width/2-innerWidth/2));const i=centers.indexOf(Math.min(...centers));if(i!==active)setActive(i)},{passive:true})}
