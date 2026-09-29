@@ -33,6 +33,20 @@ await test('Recruiter sees role, work and contact actions immediately',async()=>
  assert.equal(await home.locator('.project-card').count(),6);
  assert.equal(await home.locator('.contact-band .button').count(),3);
 });
+await test('Exact uploaded VT SVG appears in header, favicon and footer',async()=>{
+ const mark='/portfolio/assets/vishal-tyagi-mark.svg';
+ for(const selector of ['.site-header .brand-logo','.footer .footer-logo']){
+  const el=home.locator(selector);
+  assert.equal(await el.count(),1,selector);
+  assert.equal(await el.getAttribute('src'),mark,selector);
+  await el.evaluate(img=>img.decode());
+  assert(await el.evaluate(img=>img.naturalWidth>0),'Logo failed to load: '+selector);
+ }
+ assert.equal(await home.locator('link[rel="icon"]').getAttribute('href'),mark);
+ const svg=await(await home.request.get(BASE+mark)).text();
+ assert(svg.includes('#B76E79')&&svg.includes('#006D77')&&svg.includes('viewBox="0 0 1000 1000"'),'Uploaded original SVG details changed');
+ return 'Original SVG decoded with original teal and rose colors';
+});
 await test('Original portrait and project artwork load',async()=>{
  const samples=home.locator('.hero-photo img, .project-cover img');
  for(let i=0;i<await samples.count();i++){
@@ -77,6 +91,15 @@ await test('Contact and resume routes are correct',async()=>{
 await home.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await home.screenshot({path:'qa-screenshots/simple-home-desktop.png'});
 const archive=await browser.newPage({viewport:{width:1440,height:900}});
 await archive.goto(BASE+'/portfolio/',{waitUntil:'domcontentloaded'});
+await test('Portfolio archive uses exactly the same VT header and favicon',async()=>{
+ const mark='/portfolio/assets/vishal-tyagi-mark.svg';
+ const logo=archive.locator('.site-header .brand-logo');
+ assert.equal(await logo.getAttribute('src'),mark);
+ await logo.evaluate(img=>img.decode());
+ assert(await logo.evaluate(img=>img.naturalWidth>0));
+ assert.equal(await archive.locator('.footer-logo').getAttribute('src'),mark);
+ assert.equal(await archive.locator('link[rel="icon"]').getAttribute('href'),mark);
+});
 await test('All 14 original archive categories are preserved',async()=>{
  const map=JSON.parse(await readFile('source-map.json','utf8'));
  for(const project of map.projects){
@@ -132,7 +155,7 @@ for(const width of [320,390,430,768,1280]){
   const data=await page.evaluate(()=>({content:document.documentElement.scrollWidth,viewport:innerWidth,hero:document.querySelector('h1').getBoundingClientRect().width}));
   assert(data.content<=data.viewport+3,JSON.stringify(data));
   assert(data.hero>120,JSON.stringify(data));
-  for(const sel of ['.brand','.nav-links a[href="#work"]','.nav-links .nav-cta']){
+  for(const sel of ['.brand','.site-header .brand-logo','.nav-links a[href="#work"]','.nav-links .nav-cta']){
    assert(await page.locator(sel).isVisible(),sel);
   }
  });
