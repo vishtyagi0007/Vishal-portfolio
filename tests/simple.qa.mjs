@@ -12,7 +12,7 @@ const test=async(name,fn)=>{
 };
 const home=await browser.newPage({viewport:{width:1440,height:900}});
 const errors=[];home.on('pageerror',e=>errors.push(e.message));
-await home.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+await home.goto(BASE+'/classic/',{waitUntil:'domcontentloaded'});
 await test('No animation dependencies, scroll locking or autoplay',async()=>{
  const state=await home.evaluate(()=>({
   scripts:[...document.querySelectorAll('script[src]')].map(x=>x.src),
@@ -226,7 +226,7 @@ await archive.screenshot({path:'qa-screenshots/simple-archive-desktop.png'});
 for(const width of [320,390,430,768,1280]){
  const page=await browser.newPage({viewport:{width,height:844},deviceScaleFactor:1,isMobile:width<500,hasTouch:width<500});
  const jsErrors=[];page.on('pageerror',err=>jsErrors.push(err.message));
- await page.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+ await page.goto(BASE+'/classic/',{waitUntil:'domcontentloaded'});
  await test('Home '+width+'px: no sideways overflow and nav reachable',async()=>{
   const data=await page.evaluate(()=>({content:document.documentElement.scrollWidth,viewport:innerWidth,hero:document.querySelector('h1').getBoundingClientRect().width}));
   assert(data.content<=data.viewport+3,JSON.stringify(data));
@@ -252,7 +252,7 @@ for(const width of [320,390,430,768,1280]){
 }
 await test('Desktop has no JS exceptions',async()=>assert.deepEqual(errors,[]));
 const noJS=await browser.newPage({viewport:{width:390,height:844},javaScriptEnabled:false});
-await noJS.goto(BASE+'/',{waitUntil:'domcontentloaded'});
+await noJS.goto(BASE+'/classic/',{waitUntil:'domcontentloaded'});
 await test('Homepage works entirely without JavaScript',async()=>{
  assert.equal(await noJS.locator('h1').count(),1);
  assert.equal(await noJS.locator('.project-card').count(),6);
@@ -267,5 +267,5 @@ await test('Archive works entirely without JavaScript',async()=>{
  assert(await disclosure.evaluate(el=>el.open));
 });
 await browser.close();
-console.log('Simple website QA: '+passed+' passed, '+failed+' failed.');
+console.log('Preserved classic website QA: '+passed+' passed, '+failed+' failed.');
 if(failed)process.exitCode=1;
