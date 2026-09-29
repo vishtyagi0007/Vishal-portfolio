@@ -6,6 +6,8 @@ on:
       - 'wowlab-2026/**'
       - 'tests/wowlab-2026.qa.mjs'
       - 'tests/wowlab-2026.capture.mjs'
+      - 'tests/wowlab-2026.offline.qa.mjs'
+      - 'tests/package-wowlab-offline.py'
       - '.github/workflows/wowlab-2026-qa.yml'
   workflow_dispatch:
 permissions:
@@ -31,6 +33,18 @@ jobs:
             sleep 1
           done
           node tests/wowlab-2026.qa.mjs
+      - name: Package latest preview as four standalone local browser studies
+        run: python3 tests/package-wowlab-offline.py
+      - name: Validate four actual file-openable offline previews
+        run: node tests/wowlab-2026.offline.qa.mjs
+      - name: Upload complete standalone offline HTML preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VT_2026_WOWLAB_Standalone_Offline_Interactive_Preview
+          path: VT_2026_WOWLAB_offline_preview.zip
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Record three actual 2026 motion signatures in browser video
         run: node tests/wowlab-2026.capture.mjs
       - name: Save interactive original-motion evidence
