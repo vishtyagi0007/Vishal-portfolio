@@ -259,12 +259,16 @@ for(const path of ["/radical-2026/type/","/radical-2026/gallery/","/radical-2026
  });
  await reducePage.close();
 }
-await check("Production home and shared stylesheet remain unchanged on this review-only branch",async()=>{
+await check("Archived radical experiments, the current VT.OS home and original classic backup stay independent",async()=>{
  const html=await readFile("index.html","utf8");
+ const classic=await readFile("classic/index.html","utf8");
  const css=await readFile("simple.css","utf8");
- assert(html.includes('href="/simple.css"'));
- assert(html.includes("Graphic &amp; motion <em>designer.</em>"));
- assert(!html.includes("radical-2026"));
+ assert(html.includes('href="/vt-os-next/system.css"'));
+ assert(html.includes('content="index,follow,max-image-preview:large"'));
+ assert(!html.includes('PRIVATE CREATIVE PREVIEW'));
+ assert(classic.includes('href="/simple.css"'));
+ assert(classic.includes("Graphic &amp; motion <em>designer.</em>"));
+ assert(!html.includes('href="/radical-2026/"'));
  assert(css.includes("--primary:#006D77")&&css.includes("--secondary:#B76E79"));
 });
 await browser.close();
