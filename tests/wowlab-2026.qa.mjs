@@ -42,7 +42,9 @@ await test('TYPE/PORTAL: native vertical scroll physically enlarges typography a
  assert(after.progress>before.progress+.4,JSON.stringify({before,after}));
  assert(after.zoom.includes('scale(')&&Number(after.zoom.match(/scale\(([\d.]+)/)[1])>3,JSON.stringify(after));
  const openOpacity=await desk.locator('.portal-stage').evaluate(el=>+getComputedStyle(el).getPropertyValue('--open-o'));
+ const fullOpacity=await desk.locator('.portal-stage').evaluate(el=>+getComputedStyle(el).getPropertyValue('--full-o'));
  assert(openOpacity>0,JSON.stringify({openOpacity,after}));
+ assert(fullOpacity>.85,'The final project must genuinely fill the hero instead of leaving a black VT counter gap: '+JSON.stringify({fullOpacity,after}));
 });
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/02-portal-after-scroll.png'});
 await test('TYPE/PORTAL: original project cases, logo, portrait-free opening and contact work',async()=>{
