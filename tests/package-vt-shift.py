@@ -46,5 +46,30 @@ with zipfile.ZipFile(zip_path,"w",compression=zipfile.ZIP_DEFLATED,compresslevel
     for file in DEST.rglob("*"):
         if file.is_file():archive.write(file,arcname=str(Path("VT_SHIFT_DEMO")/file.relative_to(DEST)))
 size=sum((DEST/"assets"/name).stat().st_size for name in NAMES)
+# An independently testable, self-contained one-file alternative.
+# Keep all original bytes, including the optional original motion reel and resume.
+import base64,mimetypes
+css_inline=(DEST/"shift.css").read_text()
+js_inline=(DEST/"shift.js").read_text()
+one_html=(DEST/"index.html").read_text()
+one_html=one_html.replace('<link rel="stylesheet" href="./shift.css">',"<style>\n"+css_inline+"\n</style>")
+one_html=one_html.replace('<script src="./shift.js" defer></script>',"")
+data={}
+for filename in NAMES:
+    mime=mimetypes.guess_type(filename)[0] or "application/octet-stream"
+    data[filename]="data:"+mime+";base64,"+base64.b64encode((DEST/"assets"/filename).read_bytes()).decode("ascii")
+def inline_asset(match):
+    filename=match.group(1)
+    if filename not in data:raise ValueError("Unexpected local asset: "+filename)
+    return data[filename]
+one_html=re.sub(r'\./assets/([A-Za-z0-9_.-]+)',inline_asset,one_html)
+js_inline=js_inline.replace('const BASE="./assets/";','const BASE="";')
+for filename,uri in data.items():
+    js_inline=js_inline.replace('"'+filename+'"','"'+uri+'"')
+one_html=one_html.replace("</body>","<script>\n"+js_inline+"\n</script>\n</body>")
+standalone=ROOT/"dist"/"VT_SHIFT_STANDALONE.html"
+standalone.write_text(one_html)
+assert "./assets/" not in one_html and "data:video/mp4;base64," in one_html
+print("VT SHIFT STANDALONE: "+str(round(standalone.stat().st_size/1e6,2))+" MB one-file HTML with all 16 original media assets.")
 print("VT SHIFT OFFLINE PACKAGE: "+str(len(NAMES))+" untouched original media files.")
 print("VT SHIFT OFFLINE PACKAGE: "+str(round(size/1e6,2))+" MB original assets, "+str(round(zip_path.stat().st_size/1e6,2))+" MB ZIP.")
