@@ -52,7 +52,8 @@ await test('Resume and motion files are reachable',async()=>{
  }
 });
 await test('Desktop wheel scroll reaches contact with no interception',async()=>{
- await home.evaluate(()=>scrollTo(0,0));
+ await home.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+ await home.waitForTimeout(100);
  await home.mouse.move(500,420);
  const before=await home.evaluate(()=>scrollY);
  await home.mouse.wheel(0,850);
