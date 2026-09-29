@@ -12,6 +12,7 @@ async function check(name,run){
   catch(e){failed++;console.error("FAIL "+name+" — "+String(e).slice(0,1300))}
 }
 const desk=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+desk.setDefaultTimeout(8500);
 const errors=[];const broken=[];
 desk.on("pageerror",e=>errors.push(e.message));
 desk.on("requestfailed",r=>broken.push(r.url()+" "+r.failure()?.errorText));
@@ -215,18 +216,21 @@ await check("Full desktop scroll reaches expertise, original showreel and contac
   const d=await desk.evaluate(()=>({y:scrollY,max:document.documentElement.scrollHeight-innerHeight,contact:document.querySelector("#contact").getBoundingClientRect().top<innerHeight}));
   assert(Math.abs(d.y-d.max)<8&&d.contact,JSON.stringify(d));
   assert.deepEqual(errors,[]);
-  assert.deepEqual(broken,[]);
+  // Changing native video source legitimately cancels the previous in-flight fetch.
+  assert.deepEqual(broken.filter(s=>!s.includes("/motion-vertical.mp4 net::ERR_ABORTED")),[]);
 });
 await desk.screenshot({path:"qa-screenshots/vt-os-next/09-desktop-contact.png"});
 
 for(const width of [320,390,430,768,1024,1280,1440]){
   const height=width<=430?844:width===768?1024:900;
   const page=await browser.newPage({viewport:{width,height},isMobile:width<500,hasTouch:width<500,deviceScaleFactor:1});
+  page.setDefaultTimeout(8500);
   const errs=[];page.on("pageerror",e=>errs.push(e.message));
   const res=await page.goto(BASE+PATH,{waitUntil:"domcontentloaded"});
   await check("Viewport "+width+"px: original artwork loads, no horizontal overflow and hero CTA present",async()=>{
     assert.equal(res.status(),200);
     const d=await page.evaluate(()=>({width:innerWidth,page:document.documentElement.scrollWidth,hero:document.querySelector("#home-title")?.textContent,workspace:!!document.querySelector("#workspace"),cta:document.querySelector(".solid-cta")?.getAttribute("href")}));
+    assert(d.width===width,"Viewport auto-zoomed from "+width+" to "+d.width+": "+JSON.stringify(d));
     assert(d.page<=d.width+3,JSON.stringify(d));
     assert(d.hero.includes("HAPPEN")&&d.cta==="#workspace"&&d.workspace,JSON.stringify(d));
     await page.locator(".hero-portrait-plate img").evaluate(img=>img.decode());
