@@ -230,6 +230,20 @@ for(const width of [320,390,430,768,1024,1280,1440]){
   await check("Viewport "+width+"px: original artwork loads, no horizontal overflow and hero CTA present",async()=>{
     assert.equal(res.status(),200);
     const d=await page.evaluate(()=>({width:innerWidth,page:document.documentElement.scrollWidth,hero:document.querySelector("#home-title")?.textContent,workspace:!!document.querySelector("#workspace"),cta:document.querySelector(".solid-cta")?.getAttribute("href")}));
+    if(d.width!==width){
+      const oversize=await page.evaluate(expected=>{
+        const list=[...document.querySelectorAll("body *")].map(e=>{
+          const r=e.getBoundingClientRect(),c=getComputedStyle(e);
+          return {element:e.tagName.toLowerCase()+(e.id?"#"+e.id:"")+(e.className&&typeof e.className==="string"?"."+e.className.trim().replaceAll(" ",".").slice(0,60):""),
+            w:Math.round(r.width),left:Math.round(r.left),right:Math.round(r.right),scroll:e.scrollWidth,client:e.clientWidth,ws:c.whiteSpace,min:c.minWidth,
+            position:c.position,text:e.children.length===0?e.textContent.trim().slice(0,44):""};
+        });
+        return {meta:document.querySelector('meta[name="viewport"]')?.content,innerWidth,visualWidth:visualViewport?.width,
+          biggestLeaf:list.filter(x=>x.w>expected+5&&(x.text||x.ws==="nowrap"||x.scroll>x.client+6)).sort((a,b)=>b.w-a.w).slice(0,27),
+          overflow:list.filter(x=>x.scroll>x.client+6).sort((a,b)=>b.scroll-b.client-(a.scroll-a.client)).slice(0,18)};
+      },width);
+      console.error("MOBILE_LAYOUT_DEBUG "+width+" "+JSON.stringify(oversize));
+    }
     assert(d.width===width,"Viewport auto-zoomed from "+width+" to "+d.width+": "+JSON.stringify(d));
     assert(d.page<=d.width+3,JSON.stringify(d));
     assert(d.hero.includes("HAPPEN")&&d.cta==="#workspace"&&d.workspace,JSON.stringify(d));
