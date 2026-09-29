@@ -141,7 +141,7 @@ function openStudy(withHistory=true){
    width:from.width+"px",height:from.height+"px",objectFit:"contain",
    margin:"0",maxWidth:"none",transformOrigin:"0 0",willChange:"transform,opacity"
  });
- document.body.append(flyer);
+ study.append(flyer);
  studyImage.style.visibility="hidden";
  const dx=to.left-from.left,dy=to.top-from.top;
  const sx=to.width/from.width,sy=to.height/from.height;
