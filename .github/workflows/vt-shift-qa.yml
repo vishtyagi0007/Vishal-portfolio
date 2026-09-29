@@ -32,12 +32,24 @@ jobs:
           node tests/vt-shift.qa.mjs
       - name: Record actual original-artwork kinetic interactions in Chromium
         run: node tests/vt-shift-capture.mjs
+      - name: Build browser-openable original-asset offline ZIP
+        run: python3 tests/package-vt-shift.py
+      - name: Prove the downloadable demo runs without a web server
+        run: node tests/vt-shift-offline.qa.mjs
       - name: Save evidence of desktop and mobile art direction
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vt-shift-desktop-mobile-actual-browser
           path: qa-screenshots/vt-shift/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Offer original-media offline bundle for private review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VT_SHIFT_OFFLINE_DEMO
+          path: dist/VT_SHIFT_OFFLINE_DEMO.zip
           retention-days: 14
           if-no-files-found: ignore
       - name: Archive complete runnable private prototype
