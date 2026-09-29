@@ -1,0 +1,48 @@
+name: VT Radical 2026 Concept QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'radical-2026/**'
+      - 'tests/radical-2026.qa.mjs'
+      - '.github/workflows/vt-radical-2026-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium and dependencies
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Run visual interaction, scrolling, viewport and production-safety tests
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/vt-2026-preview.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/radical-2026/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/radical-2026.qa.mjs
+      - name: Save screenshot gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radical-2026-desktop-mobile-screenshots
+          path: qa-screenshots/radical-2026/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Package three concept prototypes
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radical-2026-three-prototypes
+          path: radical-2026/
+          retention-days: 14
+          if-no-files-found: error

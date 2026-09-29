@@ -1,0 +1,151 @@
+/* THE EXHIBITION — daylight spatial gallery. Original artwork displayed untouched. */
+:root{--wall:#f9f7f1;--stone:#e9e3d7;--ink:#283b39;--plaque:#677b72;--wine:#84384c;--sage:#dae6dc;--g:clamp(22px,5vw,86px);--ease:cubic-bezier(.16,1,.3,1)}
+*,*:before,*:after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:25px}body{margin:0;background:var(--wall);color:var(--ink);font:16px/1.55 Georgia,serif;overflow-x:clip}a{color:inherit}img{display:block;max-width:100%}
+a:focus-visible,button:focus-visible{outline:3px solid var(--wine);outline-offset:5px}
+.skip{position:fixed;top:-90px;left:10px;z-index:100;background:var(--wall);padding:12px}.skip:focus{top:7px}
+.preview{min-height:29px;padding:7px var(--g);background:#863b51;color:white;display:flex;align-items:center;justify-content:space-between;gap:14px;font:700 9px/1.4 Arial,sans-serif;letter-spacing:.15em}
+.gallery-header{height:103px;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:0 var(--g);background:var(--wall);border-bottom:1px solid #d8d8c8}
+.museum-brand{display:flex;align-items:center;gap:12px;text-decoration:none;white-space:nowrap;font:700 11px/1.2 Arial,sans-serif;letter-spacing:.12em}
+.museum-brand img{height:44px;width:44px}.museum-brand small{font-size:9px;color:#7d8f84;display:block;margin-top:5px}
+.gallery-header nav{display:flex;gap:clamp(13px,2vw,40px);align-items:center}
+.gallery-header nav a{font:700 10px Arial,sans-serif;letter-spacing:.15em;text-decoration:none}
+.gallery-header nav a:hover{color:var(--wine)}
+.open-sign{font:700 9px/1.5 Arial,sans-serif;letter-spacing:.08em;color:#677c6f;white-space:nowrap}.open-sign i{display:inline-block;background:#81ac80;height:6px;width:6px;border-radius:50%;margin-left:8px}
+.entrance{min-height:780px;min-height:max(760px,calc(100svh - 132px));position:relative;padding:25px var(--g) 78px;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:5%;background:linear-gradient(120deg,#fffef9,#f4f2e9)}
+.wall-light{pointer-events:none;position:absolute;z-index:-1;inset:-15% 7% 0 30%;background:repeating-linear-gradient(114deg,transparent 0 17%,#abbbb51c 17% 18%,transparent 18% 30%);transform:rotate(-8deg);filter:blur(10px)}
+.entrance-top{grid-column:1/-1;display:flex;justify-content:space-between;gap:20px;font:700 9px Arial,sans-serif;letter-spacing:.15em;color:#7c8d83}
+.portrait-installation{grid-column:1;grid-row:2;position:relative;display:flex;justify-content:center;align-items:center;min-height:580px;padding:0 8% 10px}
+.portrait-frame{position:relative;width:min(74%,390px);aspect-ratio:4/5.5;border:13px solid #e8dfd0;outline:1px solid #aa9981;box-shadow:4px 6px 0 #d6cdbf,15px 25px 50px #344a3c24;background:linear-gradient(140deg,#d2dace,#f5e8d9);overflow:hidden;transform:rotate(var(--frame-tilt,-2deg)) translateY(var(--frame-y,0px));will-change:transform}
+.portrait-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,#fff7 0,transparent 28%,transparent 75%,#ffffff24);pointer-events:none}
+.portrait-frame img{width:100%;height:100%;object-fit:contain;object-position:bottom;filter:none}
+.frame-plaque{position:absolute;left:0;bottom:7%;border-left:2px solid #9a604e;padding:8px 0 8px 15px;display:flex;flex-direction:column;gap:7px;background:#f9f7efdd}
+.frame-plaque span{font:800 11px Arial,sans-serif;letter-spacing:.13em}
+.frame-plaque em{font:italic 16px Georgia,serif}.frame-plaque small{font:700 8px Arial,sans-serif;letter-spacing:.12em;color:#7c8c82}
+.entrance-copy{grid-column:2;grid-row:2;display:flex;flex-direction:column;justify-content:center;align-items:start;padding:30px 0}
+.fine{font:800 9px Arial,sans-serif;letter-spacing:.18em;color:var(--wine)}
+.entrance-copy h1{font:400 clamp(58px,6.1vw,108px)/1.08 Georgia,serif;letter-spacing:-.063em;margin:35px 0 56px}
+.entrance-copy h1 em{color:var(--wine);font-weight:400;display:block;white-space:nowrap}
+.intro-bottom{border-top:1px solid #bac7ba;padding-top:23px;width:100%;display:grid;grid-template-columns:1fr auto;gap:25px}
+.intro-bottom p{font:400 14px/1.8 Georgia,serif;color:#65776e;max-width:350px;margin:0}
+.intro-bottom a{text-decoration:none;font:800 10px Arial,sans-serif;letter-spacing:.13em;max-width:118px;text-align:center;align-self:start;border:1px solid #758d7a;border-radius:50%;height:113px;width:113px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:background .4s,transform .4s}
+.intro-bottom a:hover{background:#dfe8dd;transform:translateY(-6px)}
+.intro-bottom a b{font-size:25px;font-weight:400}
+.entrance-number{position:absolute;right:4%;bottom:4%;font:400 clamp(65px,10vw,180px) Georgia,serif;letter-spacing:-.09em;color:#9da89c20;pointer-events:none}
+.museum-ticker{background:#dfd6c4;overflow:hidden;white-space:nowrap;padding:18px 0;color:#577568}.museum-ticker>span{display:inline-block;font:700 11px Arial,sans-serif;letter-spacing:.22em;animation:move 31s linear infinite}
+@keyframes move{to{transform:translateX(-50%)}}
+.preface{min-height:65svh;background:#f3eee5;padding:clamp(90px,10vw,165px) var(--g);display:grid;grid-template-columns:200px 1fr 90px;gap:6vw;align-items:start}
+.preface-num{font:800 9px Arial,sans-serif;letter-spacing:.17em;color:var(--wine);padding-top:15px}
+.preface h2{font:400 clamp(55px,6vw,112px)/1.08 Georgia,serif;letter-spacing:-.066em;margin:0 0 35px}
+.preface h2 em{color:var(--wine);font-weight:400}
+.preface p{margin:0;max-width:490px;color:#6c7c71;font:400 17px/1.75 Georgia,serif}
+.preface-arrow{font:400 84px Georgia,serif;color:#a7b8a9}
+.rooms{background:var(--stone);position:relative;min-height:0}
+.gallery-sticky{position:relative;overflow:hidden}
+.exhibit-rail{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px var(--g);font:800 9px Arial,sans-serif;letter-spacing:.16em;color:#606e64;position:relative;z-index:10;border-bottom:1px solid #aeb3a5}
+.room-dots{display:flex;gap:10px;align-items:center}
+.room-dots button{height:34px;width:34px;display:grid;place-items:center;border:1px solid #949f93;border-radius:50%;font:700 10px Arial,sans-serif;background:none;color:#60786e;transition:background .3s,color .3s}
+.room-dots button[aria-current=true],.room-dots button:hover{background:var(--wine);color:white;border-color:var(--wine)}
+.room-shell{perspective:1600px;transform-style:preserve-3d}
+.visually-hidden{position:absolute;height:1px;width:1px;clip-path:inset(100%);overflow:hidden;white-space:nowrap}
+.room-scene{position:relative;min-height:730px;height:calc(100svh - 180px);max-height:1000px;overflow:hidden;isolation:isolate;border-bottom:1px solid #c5c5b8}
+.room-first{background:linear-gradient(124deg,#ece9dd,#e2e0d2)}.room-second{background:linear-gradient(120deg,#f1e4dc,#e1d2ce)}.room-third{background:linear-gradient(130deg,#dbe9e3,#e7e6da)}
+.wall-floor{position:absolute;inset:78% 0 0;background:linear-gradient(#9c9f8b10,#9c9f8b45);border-top:1px solid #9da69c55;transform:skewY(-2deg);transform-origin:right center}
+.wall-no{position:absolute;left:var(--g);top:28px;font:800 9px Arial,sans-serif;letter-spacing:.16em;color:#607367}
+.wall-art{position:absolute;display:flex;flex-direction:column;align-items:center;gap:10px;transform:translate3d(0,var(--art-shift,0px),0) rotate(var(--art-rot,0deg));will-change:transform}
+.wall-art span{font:800 8px Arial,sans-serif;letter-spacing:.13em;color:#66776b}
+.art-frame{width:100%;height:100%;padding:18px;background:#fffdf5;border:9px solid #9b8f78;box-shadow:6px 8px 0 #a5a18d,22px 35px 55px #34413e29;display:grid;place-items:center}
+.art-frame img{width:100%;height:100%;object-fit:contain}
+.wall-art-a{width:31%;height:55%;left:17%;top:18%}.wall-art-b{width:18%;height:35%;left:50%;top:36%}.wall-art-b .art-frame{border-color:#a2886f}
+.wall-art-c{width:34%;height:63%;left:22%;top:15%;z-index:3}.wall-art-c .art-frame{border-color:#6c7570}
+.art-pedestal{position:absolute;width:50%;height:14%;left:14%;bottom:6%;background:linear-gradient(90deg,#b7b4a9,#f5eee4);transform:perspective(600px) rotateX(12deg);box-shadow:24px 30px 30px #57463d20}
+.wall-accent{position:absolute;left:10%;bottom:21%;font:400 clamp(65px,8vw,165px)/.83 Georgia,serif;letter-spacing:-.08em;color:#b76e7922;z-index:2}
+.wall-art-d{width:31%;height:57%;left:16%;top:17%;z-index:2}
+.wall-art-e{width:20%;height:35%;left:49%;top:38%;z-index:4}.wall-art-e .art-frame{border-color:#9e937e}
+.curator-label{position:absolute;z-index:5;top:27%;right:var(--g);max-width:min(24%,365px);border-left:2px solid var(--wine);padding:12px 0 11px 18px;background:#ffffff48}
+.curator-label small{font:800 9px Arial,sans-serif;letter-spacing:.16em;color:var(--wine)}
+.curator-label h3{font:400 clamp(42px,4.4vw,87px)/1.03 Georgia,serif;letter-spacing:-.065em;margin:28px 0}
+.curator-label h3 i{color:var(--wine)}
+.curator-label p{color:#5d6f65;font:400 15px/1.65 Georgia,serif;margin:0 0 28px}
+.curator-label a{text-decoration:none;border-bottom:1px solid var(--wine);padding-bottom:7px;color:var(--wine);font:800 9px Arial,sans-serif;letter-spacing:.12em}
+.museum-footer{padding:20px var(--g);display:flex;gap:30px;align-items:center;justify-content:space-between;border-top:1px solid #a7b3a1;font:800 9px Arial,sans-serif;letter-spacing:.16em;color:#60786b}
+.museum-line{height:2px;background:#b7c0b4;max-width:540px;flex:1;overflow:hidden}.museum-line i{display:block;background:var(--wine);width:100%;height:100%;transform:scaleX(0);transform-origin:left}
+@media(min-width:1000px) and (min-height:700px){
+ .rooms.js-gallery{height:360vh}
+ .rooms.js-gallery .gallery-sticky{height:100svh;position:sticky;top:0;display:flex;flex-direction:column}
+ .rooms.js-gallery .room-shell{flex:1;min-height:0;position:relative;overflow:hidden}
+ .rooms.js-gallery .room-scene{position:absolute;inset:0;height:100%;min-height:0;max-height:none;opacity:0;visibility:hidden;transform:translate3d(4%,0,-250px) rotateY(-10deg) scale(.89);pointer-events:none;transition:opacity .75s ease,visibility .75s,transform 1.15s var(--ease)}
+ .rooms.js-gallery .room-scene.is-active{opacity:1;visibility:visible;transform:translateZ(0) rotateY(0deg) scale(1);pointer-events:auto}
+ .rooms.js-gallery .room-scene.is-active .wall-art-a{--art-shift:0px}
+}
+.catalogue{padding:clamp(105px,12vw,195px) var(--g);background:#fbfaf4}
+.catalogue-top{border-top:1px solid #8c9b90;padding-top:18px;display:flex;justify-content:space-between;gap:20px;font:800 9px Arial,sans-serif;letter-spacing:.16em}
+.catalogue h2{font:400 clamp(70px,8.3vw,155px)/1 Georgia,serif;letter-spacing:-.09em;margin:65px 0}
+.catalogue h2 i{color:var(--wine)}
+.catalogue-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,36px)}
+.catalogue-item{display:flex;flex-direction:column;gap:14px;min-width:0;text-decoration:none}
+.catalogue-item>span:first-child{font:800 10px Arial,sans-serif;color:var(--wine)}
+.catalogue-item>div{aspect-ratio:1/.92;background:#dce1d9;display:grid;place-items:center;padding:15px;overflow:hidden}
+.catalogue-item:nth-child(2)>div{background:#e6dede}.catalogue-item:nth-child(3)>div{background:#e7e0d7}
+.catalogue-item img{height:100%;width:100%;object-fit:contain;transition:transform .75s var(--ease)}
+.catalogue-item:hover img{transform:scale(1.045)}
+.catalogue-item strong{font:400 clamp(25px,2.7vw,48px)/1.08 Georgia,serif;letter-spacing:-.04em}
+.catalogue-item>span:last-child{font:800 9px Arial,sans-serif;letter-spacing:.12em;color:var(--wine)}
+.museum-exit{background:#3c514a;color:#f8f6ed;padding:40px var(--g) 78px;min-height:85svh;display:flex;flex-direction:column;justify-content:space-between;gap:70px}
+.exit-top,.exit-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;font:800 9px Arial,sans-serif;letter-spacing:.15em}
+.museum-exit p{font:800 9px/1.7 Arial,sans-serif;letter-spacing:.14em;color:#d2ddd0}
+.museum-exit h2{font:400 clamp(69px,10vw,181px)/.97 Georgia,serif;letter-spacing:-.09em;margin:20px 0}
+.museum-exit h2 i{color:#e2bbc1}
+.exit-foot{border-top:1px solid #d7e5d052;padding-top:22px}.exit-foot a{font-size:10px;color:#efdfdd;text-decoration:none;border-bottom:1px solid #e2bbc1;padding-bottom:7px}
+.footer{background:#283f39;color:#d3dfd4;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:21px var(--g);font:800 9px Arial,sans-serif;letter-spacing:.12em}.footer a{color:#efd4db;text-decoration:none}
+.site-progress{position:fixed;left:0;bottom:0;right:0;height:3px;z-index:80;pointer-events:none}.site-progress i{display:block;height:100%;width:100%;background:var(--wine);transform:scaleX(0);transform-origin:left}
+@media(max-width:1200px){.open-sign{display:none}.entrance-copy h1{font-size:6.1vw}.curator-label{max-width:28%;right:3%}}
+@media(max-width:999px){.gallery-header{height:auto;min-height:86px;padding:15px 22px}.entrance{grid-template-columns:1fr 1fr;min-height:760px}.entrance-copy h1{font-size:6vw}.portrait-installation{min-height:500px}.room-scene{height:auto;min-height:670px}}
+@media(max-width:760px){
+ .preview{font-size:7px;letter-spacing:.04em;padding:8px 17px}
+ .preview span{max-width:48%;text-align:right}
+ .gallery-header{padding:17px;display:block}.museum-brand{font-size:10px}.museum-brand img{width:38px;height:38px}
+ .gallery-header nav{margin-top:20px;gap:17px;flex-wrap:wrap}.gallery-header nav a{font-size:8px}
+ .entrance{display:flex;flex-direction:column;padding:23px 20px 58px;min-height:0;gap:35px}
+ .entrance-top{font-size:8px}.entrance-top span:last-child{text-align:right;max-width:125px}
+ .portrait-installation{min-height:0;height:clamp(370px,115vw,620px);order:1;padding:0 5% 5px}
+ .portrait-frame{width:75%;max-width:350px;height:78%;aspect-ratio:auto;border-width:10px}
+ .frame-plaque{bottom:0;left:0}.frame-plaque span{font-size:9px}.frame-plaque em{font-size:13px}
+ .entrance-copy{order:2;padding:0}.entrance-copy h1{font-size:clamp(46px,10.4vw,82px);margin:20px 0 29px}
+ .intro-bottom{gap:10px}.intro-bottom p{font-size:13px}.intro-bottom a{width:92px;height:92px;font-size:8px}
+ .entrance-number{display:none}.museum-ticker{padding:13px 0}
+ .preface{display:block;padding:88px 20px;min-height:0}.preface-num{display:block;margin-bottom:30px}
+ .preface h2{font-size:clamp(45px,9vw,73px)}.preface p{font-size:14px}
+ .preface-arrow{display:none}
+ .exhibit-rail{padding:23px 20px;gap:9px;flex-wrap:wrap}
+ .exhibit-rail>span:last-child{display:none}
+ .room-scene{height:auto;min-height:0;overflow:hidden;padding:58px 20px 50px;display:flex;flex-direction:column;gap:25px}
+ .wall-no{position:relative;top:auto;left:auto;order:0;margin-bottom:6px;font-size:8px}
+ .wall-art,.wall-art-a,.wall-art-b,.wall-art-c,.wall-art-d,.wall-art-e{position:relative;top:auto;left:auto;right:auto;width:100%;height:auto;transform:none!important;min-height:0;gap:7px}
+ .wall-art-a,.wall-art-c,.wall-art-d{order:1;aspect-ratio:1.08}
+ .wall-art-b,.wall-art-e{order:2;aspect-ratio:1.25;width:70%;align-self:end}
+ .wall-art .art-frame{min-height:0;width:100%;height:85%;padding:10px;border-width:7px}
+ .wall-art span{font-size:7px;max-width:100%;text-align:center}
+ .wall-accent,.art-pedestal{display:none}
+ .curator-label{position:relative;top:auto;left:auto;right:auto;max-width:none;margin-top:22px;padding-left:17px;order:3;background:transparent}
+ .curator-label h3{font-size:clamp(42px,9vw,74px);margin:17px 0}.curator-label p{font-size:14px;max-width:330px}
+ .museum-footer{padding:20px;gap:10px}.museum-footer>span:last-child{display:none}
+ .catalogue{padding:95px 20px}.catalogue-top{font-size:8px}
+ .catalogue h2{font-size:clamp(62px,11vw,96px);margin:40px 0}
+ .catalogue-items{grid-template-columns:1fr 1fr;gap:28px 13px}
+ .catalogue-item:last-child{grid-column:1/-1;max-width:420px}
+ .catalogue-item strong{font-size:clamp(24px,5vw,39px)}
+ .museum-exit{padding:65px 20px;min-height:70svh}
+ .museum-exit h2{font-size:clamp(60px,10.2vw,100px)}
+ .exit-foot{align-items:start;flex-wrap:wrap}
+ .footer{padding:19px 20px;gap:14px;font-size:8px}
+}
+@media(max-width:390px){.entrance-copy h1{font-size:10vw}.museum-exit h2{font-size:10vw}.curator-label h3{font-size:10vw}.room-dots button{width:29px;height:29px}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}.museum-ticker>span{animation:none}
+ .rooms.js-gallery{height:auto!important}
+ .rooms.js-gallery .gallery-sticky{height:auto;position:relative;display:block}
+ .rooms.js-gallery .room-shell{overflow:visible}
+ .rooms.js-gallery .room-scene{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;pointer-events:auto;height:auto;min-height:660px}
+ .portrait-frame,.wall-art,.catalogue-item img{transform:none!important;transition:none!important;will-change:auto}
+}
