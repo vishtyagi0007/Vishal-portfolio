@@ -1,18 +1,20 @@
 /* VT.OS 2.0 / private design prototype / original artwork always served unchanged.
    Modern editorial software-workspace visual language. No external CSS dependencies. */
 :root{
- --bg:#0B101D;--bg2:#11182A;--fg:#F1F2F1;--secondary:#ADB6C7;
- --accent:#B3ADFF;--accent-strong:#918BF2;--accent-ink:#141635;
- --rose:#D79CAA;--teal:#68BFC0;--line:rgba(192,205,229,.19);
- --glass:rgba(25,34,53,.83);--glass-solid:#202A40;
- --window:#F2F1F0;--window-ink:#1B2534;--window-sub:#7F8691;
+ /* Exact fills from the existing, unmodified VT identity mark. */
+ --brand-teal:#006D77;--brand-rose:#B76E79;
+ --bg:#0D2025;--bg2:#142D32;--fg:#FAF9F6;--secondary:#B6CAC9;
+ --accent:var(--brand-teal);--accent-strong:#005964;--accent-ink:#FFFFFF;
+ --rose:var(--brand-rose);--teal:var(--brand-teal);--line:rgba(182,211,208,.22);
+ --glass:rgba(19,46,49,.88);--glass-solid:#203B3F;
+ --window:#FAF9F6;--window-ink:#16383D;--window-sub:#657B7B;
  --ease:cubic-bezier(.16,1,.3,1);--g:clamp(21px,4.6vw,79px);
 }
 html[data-theme="light"]{
- --bg:#F1F0EC;--bg2:#E8E7F2;--fg:#1F2633;--secondary:#636F83;
- --accent:#665FCB;--accent-strong:#5C58B3;--accent-ink:#FFF;
- --rose:#9B5260;--teal:#006D77;--line:rgba(53,68,82,.20);
- --glass:rgba(237,236,251,.91);--glass-solid:#ECEAF5;
+ --bg:#FAF9F6;--bg2:#E7F2F1;--fg:#16383D;--secondary:#536C6C;
+ --accent:var(--brand-teal);--accent-strong:#005964;--accent-ink:#FFF;
+ --rose:#A45966;--teal:var(--brand-teal);--line:rgba(22,56,61,.20);
+ --glass:rgba(231,242,241,.93);--glass-solid:#DCECEB;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:92px}
@@ -604,3 +606,71 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
 @media(max-width:480px) and (prefers-reduced-motion:reduce){
  .scroll-stories.is-pinned .story-track{grid-template-columns:1fr}
 }
+
+/* PUBLIC BRAND ALIGNMENT — exact VT teal #006D77 / rose #B76E79.
+   Neutral navy/ivory are supporting surfaces; ORIGINAL project artwork is not recolored. */
+a:focus-visible,button:focus-visible,input:focus-visible{outline-color:var(--brand-rose)}
+::selection{background:var(--brand-teal);color:#FFF}
+.topbrand img{filter:drop-shadow(0 0 12px #006D7733)}
+.top-hire,.solid-cta{background:var(--brand-teal);color:#FFF}
+.top-hire:hover,.solid-cta:hover{background:#00545E;color:#FFF}
+.theme-switch:hover,.top-key:hover{background:var(--glass-solid)}
+.page-progress i{background:linear-gradient(90deg,var(--brand-teal),#4B9294,var(--brand-rose))}
+.boot-hero{background:radial-gradient(ellipse 45% 62% at 87% 36%,#006D773D,transparent 73%),radial-gradient(ellipse 45% 67% at 11% 100%,#B76E7922,transparent 75%),var(--bg)}
+html[data-theme="light"] .boot-hero{background:radial-gradient(ellipse 48% 66% at 85% 40%,#006D771D,transparent 74%),var(--bg)}
+.boot-aura{border-color:#82BDB43D}.boot-aura::before,.boot-aura::after{border-color:#83AFAF25}
+.hero-rim{border-color:#7EB1AD70;background:radial-gradient(ellipse at 48% 44%,#006D7755,transparent 72%)}
+html[data-theme="light"] .hero-rim{background:radial-gradient(ellipse at 48% 44%,#006D772B,transparent 72%)}
+.hero-rim::after{border-color:#B76E7966}
+.float-stat{background:#173A3BD9;border-color:#A3C5BF6B}
+.float-stat>span{color:#C8E2DD}.float-stat-bottom b{color:#DDA8B1}
+.hero-copy .eyebrow,.spark,.hero-line em,.section-intro h2 em{color:var(--brand-rose)}
+.os-shell{background:#0D292D;border-color:#76A6A350}
+.os-wallpaper{background:radial-gradient(ellipse at 51% 30%,#23757A8C,transparent 56%),radial-gradient(ellipse at 89% 70%,#8F65763A,transparent 47%),linear-gradient(145deg,#102B31,#21494A 56%,#132C39)}
+.os-menu-bar{background:#10282DD9}
+.app-rail{background:#123A3F91}.app-launch:hover{background:#006D7750}
+.app-launch[aria-pressed=true]{background:#006D7755;border-color:#B7D8D17A}
+.rail-icon{background:linear-gradient(140deg,#8AC7C0,#006D77);color:#10373B}
+.icon-about{background:linear-gradient(140deg,#E5BEC5,#B76E79);color:#512B33}
+.icon-motion{background:linear-gradient(140deg,#ACE1DB,#438F91);color:#073B40}
+.icon-contact{background:linear-gradient(140deg,#E5C2C9,#AE7480);color:#542E38}
+.window.is-front{box-shadow:0 35px 110px #010F12B8,0 0 0 1px #78B9B2AC}
+.window-controls button:hover,.canvas-tools button:hover{background:#DCECEB}
+.project-search:focus-within{border-color:var(--brand-teal);box-shadow:0 0 0 2px #006D772B}
+.project-option[aria-current=true]{border-color:#A0CDC8}
+.canvas-category,.profile-body>span{color:#A45F6D}
+.present-button{background:var(--brand-teal)}.present-button:hover{background:#00545E}
+.thumb[aria-current=true]{border-color:var(--brand-teal);background:#E7F2F1}
+.thumb:hover{border-color:#519A9A}
+.about-window .window-header{background:#F3E9E9}
+.profile-photo{background:linear-gradient(160deg,#C2DEDB,#DBD3D1)}
+.profile-body h3 span{color:var(--brand-rose)}
+.profile-body>a,.connect-inner a:hover{color:var(--brand-teal)}
+.motion-tabs button[aria-pressed=true]{background:var(--brand-teal);border-color:var(--brand-teal)}
+.connect-inner{background:radial-gradient(ellipse at top right,#EAD9DC,transparent 66%),#F8F4F1}
+.connect-inner h3 em{color:var(--brand-rose)}
+.os-dock{background:#E5F0EEE8;color:#17454B}
+.os-dock button{color:var(--brand-teal)}
+.os-dock button:hover{background:#CAE4E0}
+.scroll-stories{background:#123137}
+.story-copy h3 span{color:#996371}
+.story-meter i{background:linear-gradient(90deg,var(--brand-teal),var(--brand-rose))}
+.story-bottom a{color:#E7B9C0}
+.reel-detail{background:radial-gradient(ellipse at 90% 5%,#006D7736,transparent 55%),#18383D}
+.reel-asterisk{color:#D8A0AA}
+.contact-section{background:#112D33}
+.contact-section::after{color:#80C0BA17}
+.contact-section h2 em{color:#D6A0AB}
+.contact-cards a{background:#DCEFEB;color:#16383D}
+.contact-cards a:nth-child(2){background:#E8D3D7;color:#512E37}
+.contact-cards a:hover{background:#C6E5DF}
+.footer{background:#091E22}.footer a{color:#DAB0B8}
+.presentation{background:#103038}
+.present-divider,.present-project-no,.present-meta{color:#DCAAB2}
+.present-dots button[aria-current=true]{background:var(--brand-teal)}
+.present-links a{border-color:var(--brand-rose)}
+.command-modal{background:#F8FBF9;color:#193B40}
+.command-header{background:#E3F0ED;border-color:#CBDDD9}
+#command-input:focus{border-color:var(--brand-teal);box-shadow:0 0 0 2px #006D7733}
+.commands-list button:hover,.commands-list button[aria-selected=true]{background:#E5F2EF;border-color:#9DCBC3}
+.command-footer{background:#E7F0EE}
