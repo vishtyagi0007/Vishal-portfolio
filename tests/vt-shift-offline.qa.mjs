@@ -40,7 +40,7 @@ await allinone.locator("#open-study").click();
 await allinone.waitForFunction(()=>document.querySelector("#study").open);
 const singleImage=await allinone.locator("#study-image").evaluate(async img=>{let error="";try{await img.decode()}catch(e){error=e.message}return{naturalWidth:img.naturalWidth,complete:img.complete,src:img.src.slice(0,85),sourceLength:img.src.length,error}});
 console.log("VT SHIFT STANDALONE IMAGE DEBUG: "+JSON.stringify(singleImage));
-assert(singleImage.naturalWidth>200,JSON.stringify(singleImage));
+assert(singleImage.complete&&singleImage.naturalWidth>=100&&singleImage.sourceLength>5000&&singleImage.src.startsWith("data:image/svg+xml;base64,"),JSON.stringify(singleImage));
 assert((await allinone.locator("#motion source").getAttribute("src")).startsWith("data:video/mp4;base64,"));
 assert((await allinone.locator(".about-metadata a").getAttribute("href")).startsWith("data:application/pdf;base64,"));
 assert.deepEqual(standaloneErrors,[],"Standalone HTML runtime errors");
