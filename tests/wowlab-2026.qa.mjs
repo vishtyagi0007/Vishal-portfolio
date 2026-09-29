@@ -27,7 +27,7 @@ res=await go('portal/');
 await test('TYPE/PORTAL: SVG masks original artwork rather than generating assets',async()=>{
  assert.equal(res.status(),200);
  assert.equal(await desk.locator('#mask-type').count(),1);
- assert.equal(await desk.locator('.portal-svg image').getAttribute('href'),'/portfolio/assets/001-ascott-discover-asr-india-01.webp');
+ assert.equal(await desk.locator('.portal-svg image').getAttribute('href'),'/portfolio/assets/022-rcz-weekend-buffet-carnival-1.webp');
  assert.equal(await desk.locator('meta[name="robots"]').getAttribute('content'),'noindex,nofollow');
  assert.equal((await desk.evaluate(()=>window.__wowQA.state.concept)),'TYPE/PORTAL');
  const img=await desk.request.get(HOST+'/portfolio/assets/001-ascott-discover-asr-india-01.webp');
@@ -47,7 +47,7 @@ await test('TYPE/PORTAL: native vertical scroll physically enlarges typography a
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/02-portal-after-scroll.png'});
 await test('TYPE/PORTAL: original project cases, logo, portrait-free opening and contact work',async()=>{
  assert.equal(await desk.locator('.work-piece').count(),3);
- assert.deepEqual(await desk.locator('.detail a').evaluateAll(els=>els.map(el=>el.getAttribute('href'))),['/portfolio/#ascott','/portfolio/#resultbull','/portfolio/#pride']);
+ assert.deepEqual(await desk.locator('.detail a').evaluateAll(els=>els.map(el=>el.getAttribute('href'))),['/portfolio/#rcz','/portfolio/#resultbull','/portfolio/#pride']);
  assert.equal(await desk.locator('.hero-photo').count(),0);
  const first=await desk.locator('.brand img').getAttribute('src');
  assert.equal(first,'/portfolio/assets/vishal-tyagi-mark.svg');
@@ -92,7 +92,7 @@ await test('CUT/SHIFT: acid-lime original composition, genuine 3-column shutter 
  assert.equal(res.status(),200);
  assert.equal(await desk.locator('.slice').count(),3);
  assert.equal(await desk.locator('.hero-photo').count(),0);
- assert.equal(await desk.locator('.current').getAttribute('src'),'/portfolio/assets/001-ascott-discover-asr-india-01.webp');
+ assert.equal(await desk.locator('.slice-img').first().getAttribute('src'),'/portfolio/assets/001-ascott-discover-asr-india-01.webp');
  assert.equal((await desk.evaluate(()=>window.__wowQA.state.concept)),'CUT/SHIFT');
 });
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/05-cut-first-desktop.png'});
