@@ -191,7 +191,10 @@ for(const width of [320,390,430,768,1024,1280,1440]){
    assert(state.hero);
    assert.deepEqual(err,[]);
    if(name==="cinema"&&width<1000)assert.equal((await p.evaluate(()=>window.__frameQA.state)).pinned,false);
-   if(name==="core")assert.equal(await p.locator("[data-p]").count(),6);
+   if(name==="core"){
+     assert.equal(await p.locator("[data-p]").count(),6);
+     if(width===390){const box=await p.locator("#art-window").boundingBox();assert(box.y<860,"Mobile project artwork must begin in the first screen, actual y="+Math.round(box.y))}
+   }
    if(name==="editorial")assert.equal(await p.locator(".spread").count(),4);
   });
   if(name!=="hub"){
