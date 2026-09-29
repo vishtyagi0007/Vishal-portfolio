@@ -184,6 +184,8 @@ for(const width of [390,1440]){
 }
 const nojs=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,javaScriptEnabled:false});
 await nojs.goto(BASE+ROUTE,{waitUntil:"domcontentloaded"});
+await nojs.evaluate(()=>document.fonts.ready);
+await nojs.waitForTimeout(180);
 await check("Without JavaScript: original art, reel, resume and direct contact are all present",async()=>{
  assert.equal(await nojs.locator(".film-scene").count(),4);
  assert.equal(await nojs.locator(".film-scene[aria-hidden=true]").count(),0);
@@ -191,6 +193,7 @@ await check("Without JavaScript: original art, reel, resume and direct contact a
  assert.equal(await nojs.locator('a[href$="Vishal-Tyagi-Resume.pdf"]').count(),1);
  assert.equal(await nojs.locator('#contact a[href*="linkedin.com"]').count(),1);
  const s=await nojs.evaluate(()=>({vw:innerWidth,doc:document.documentElement.scrollWidth}));
+ if(s.vw!==390||s.doc>393){const elems=await nojs.evaluate(()=>[...document.querySelectorAll("body *")].map(el=>{const r=el.getBoundingClientRect();return{tag:el.tagName,cls:el.className,width:Math.round(r.width),right:Math.round(r.right),scroll:el.scrollWidth,client:el.clientWidth,white:getComputedStyle(el).whiteSpace}}).filter(e=>e.width>390||e.right>394).sort((a,b)=>b.right-a.right).slice(0,16));console.error("NOJS_OVERFLOW "+JSON.stringify({s,elems}));}
  assert(s.vw===390&&s.doc<=393,JSON.stringify(s));
 });
 await check("Private preview never edits main index, approved original palette or existing project archive",async()=>{
