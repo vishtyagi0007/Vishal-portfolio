@@ -47,6 +47,67 @@ await test('Exact uploaded VT SVG appears in header, favicon and footer',async()
  assert(svg.includes('#B76E79')&&svg.includes('#006D77')&&svg.includes('viewBox="0 0 1000 1000"'),'Uploaded original SVG details changed');
  return 'Original SVG decoded with original teal and rose colors';
 });
+await test('VT logo palette: applied desktop tokens and accessible foreground/background combinations',async()=>{
+ const c=await home.evaluate(()=>{
+   const $=sel=>getComputedStyle(document.querySelector(sel));
+   const css=getComputedStyle(document.documentElement);
+   return {
+     tokens:Object.fromEntries(['--primary','--secondary','--secondary-text','--heading','--text','--paper','--white','--teal-light','--rose-light','--line'].map(key=>[key,css.getPropertyValue(key).trim().toUpperCase()])),
+     body:$( 'body').backgroundColor,header:$('.site-header').backgroundColor,
+     heading:$('.hero-copy h1').color,roseTitle:$('.hero-copy h1 em').color,
+     roseLabel:$('.hero-copy .eyebrow').color,
+     button:$('.hero .button.dark').backgroundColor,
+     buttonText:$('.hero .button.dark').color,
+     outline:$('.hero .button.outline').color,
+     project:$('.project-cover').backgroundColor,
+     contact:$('.contact-band').backgroundColor,contactText:$('.contact-band').color,
+     contactLabel:$('.contact-band .eyebrow').color,
+     contactButton:$('.contact-band .button.dark').color,
+     contactButtonBg:$('.contact-band .button.dark').backgroundColor
+   };
+ });
+ const expected={
+   '--primary':'#006D77','--secondary':'#B76E79','--secondary-text':'#9B5260',
+   '--heading':'#16383D','--text':'#667579','--paper':'#FAF9F6',
+   '--white':'#FFFFFF','--teal-light':'#E7F2F1','--rose-light':'#F6EAED','--line':'#DCE3E2'
+ };
+ assert.deepEqual(c.tokens,expected);
+ assert.equal(c.body,'rgb(250, 249, 246)');
+ assert.equal(c.header,'rgb(255, 255, 255)');
+ assert.equal(c.heading,'rgb(22, 56, 61)');
+ assert.equal(c.roseTitle,'rgb(183, 110, 121)');
+ assert.equal(c.roseLabel,'rgb(155, 82, 96)');
+ assert.equal(c.button,'rgb(0, 109, 119)');
+ assert.equal(c.buttonText,'rgb(255, 255, 255)');
+ assert.equal(c.outline,'rgb(0, 109, 119)');
+ assert.equal(c.project,'rgb(231, 242, 241)');
+ assert.equal(c.contact,'rgb(22, 56, 61)');
+ assert.equal(c.contactText,'rgb(255, 255, 255)');
+ assert.equal(c.contactLabel,'rgb(218, 176, 184)');
+ assert.equal(c.contactButton,'rgb(22, 56, 61)');
+ assert.equal(c.contactButtonBg,'rgb(255, 255, 255)');
+ const luminance=hex=>{
+   const rgb=hex.slice(1).match(/.{2}/g).map(n=>{
+     const v=parseInt(n,16)/255;
+     return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;
+   });
+   return rgb.reduce((acc,v,i)=>acc+v*[.2126,.7152,.0722][i],0);
+ };
+ const contrast=(a,b)=>{
+   const la=luminance(a),lb=luminance(b);
+   return (Math.max(la,lb)+.05)/(Math.min(la,lb)+.05);
+ };
+ for(const [fg,bg,threshold,name] of [
+   ['#006D77','#FFFFFF',4.5,'primary CTA'],
+   ['#9B5260','#FAF9F6',4.5,'small accent labels'],
+   ['#667579','#FAF9F6',4.5,'secondary text'],
+   ['#16383D','#FAF9F6',4.5,'headings'],
+   ['#E7F2F1','#16383D',4.5,'contact description'],
+   ['#DAB0B8','#16383D',4.5,'contact accent'],
+   ['#B76E79','#FAF9F6',3,'large italic heading']
+ ])assert(contrast(fg,bg)>=threshold,name+' insufficient contrast: '+contrast(fg,bg).toFixed(2));
+ return 'Logo palette and contrast thresholds verified against rendered desktop';
+});
 await test('Original portrait and project artwork load',async()=>{
  const samples=home.locator('.hero-photo img, .project-cover img');
  for(let i=0;i<await samples.count();i++){
@@ -99,6 +160,21 @@ await test('Portfolio archive uses exactly the same VT header and favicon',async
  assert(await logo.evaluate(img=>img.naturalWidth>0));
  assert.equal(await archive.locator('.footer-logo').getAttribute('src'),mark);
  assert.equal(await archive.locator('link[rel="icon"]').getAttribute('href'),mark);
+});
+await test('Archive shares the same visual palette without recoloring project artwork',async()=>{
+ const state=await archive.evaluate(()=>({
+   background:getComputedStyle(document.body).backgroundColor,
+   header:getComputedStyle(document.querySelector('.site-header')).backgroundColor,
+   title:getComputedStyle(document.querySelector('.archive-hero h1')).color,
+   eyebrow:getComputedStyle(document.querySelector('.archive-hero .eyebrow')).color,
+   token:getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()
+ }));
+ assert.equal(state.background,'rgb(250, 249, 246)');
+ assert.equal(state.header,'rgb(255, 255, 255)');
+ assert.equal(state.title,'rgb(22, 56, 61)');
+ assert.equal(state.eyebrow,'rgb(155, 82, 96)');
+ assert.equal(state.token.toUpperCase(),'#006D77');
+ return JSON.stringify(state);
 });
 await test('All 14 original archive categories are preserved',async()=>{
  const map=JSON.parse(await readFile('source-map.json','utf8'));
