@@ -84,10 +84,11 @@
   position:relative;z-index:1;margin-top:18px;
   font:500 clamp(34px,6.7vw,102px)/.9 Arial,Helvetica,sans-serif;
   letter-spacing:-.09em;white-space:nowrap;
-  transform:translate3d(0,22px,0);opacity:.02;transition:transform 1s var(--tr-ease),opacity 1s ease;
+  transform:none;opacity:1;transition:transform 1s var(--tr-ease),opacity 1s ease;
   text-shadow:0 3px 12px rgba(0,0,0,.12);
 }
 .tr-bridge__statement em{font:italic 400 1em Georgia,serif;color:#f4c18d}
+.tr-ready .tr-bridge:not(.is-visible) .tr-bridge__statement{transform:translate3d(0,22px,0);opacity:.02}
 .tr-bridge.is-visible .tr-bridge__statement{transform:translate3d(0,0,0);opacity:1}
 .tr-bridge__micro{
   position:absolute;z-index:2;left:var(--gutter);bottom:21px;color:#c2bcb6;
