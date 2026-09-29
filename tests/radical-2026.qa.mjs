@@ -41,6 +41,8 @@ await check("TYPE/CTRL: real typography stretch control visibly modifies text sh
  assert.notEqual(before,after,JSON.stringify({before,after}));
  return JSON.stringify({before,after});
 });
+await desktop.evaluate(()=>scrollTo({top:0,behavior:"instant"}));
+await desktop.waitForTimeout(1480);
 await desktop.screenshot({path:"qa-screenshots/radical-2026/type-desktop-hero.png"});
 await desktop.locator(".control").scrollIntoViewIfNeeded();await desktop.waitForTimeout(250);
 await desktop.screenshot({path:"qa-screenshots/radical-2026/type-desktop-control.png"});
