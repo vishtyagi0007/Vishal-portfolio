@@ -5,6 +5,7 @@ on:
     paths:
       - 'wowlab-2026/**'
       - 'tests/wowlab-2026.qa.mjs'
+      - 'tests/wowlab-2026.capture.mjs'
       - '.github/workflows/wowlab-2026-qa.yml'
   workflow_dispatch:
 permissions:
@@ -30,6 +31,16 @@ jobs:
             sleep 1
           done
           node tests/wowlab-2026.qa.mjs
+      - name: Record three actual 2026 motion signatures in browser video
+        run: node tests/wowlab-2026.capture.mjs
+      - name: Save interactive original-motion evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-wowlab-three-real-motion-videos
+          path: qa-videos/wowlab-2026/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Capture actual browser desktop and mobile screenshots
         if: always()
         uses: actions/upload-artifact@v4
