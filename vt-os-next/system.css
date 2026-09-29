@@ -385,6 +385,7 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .story-copy h3{font-size:5vw}
 }
 @media(max-width:1199px){
+ .window-controls{display:none}
  .topbar{height:72px}
  .system-center{display:none}
  .hero-content{grid-template-columns:minmax(0,1.05fr) minmax(0,.82fr)}
