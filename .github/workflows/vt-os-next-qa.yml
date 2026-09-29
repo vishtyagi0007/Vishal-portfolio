@@ -1,0 +1,48 @@
+name: VT OS 2 Complete Interactive Demo QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'vt-os-next/**'
+      - 'tests/vt-os-next.qa.mjs'
+      - '.github/workflows/vt-os-next-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-interaction-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test environment
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Test desktop OS, window manager, command palette, presentation and mobile
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/vt-os-next-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/vt-os-next/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/vt-os-next.qa.mjs
+      - name: Save desktop and mobile screenshots for visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-os-next-desktop-mobile-evidence
+          path: qa-screenshots/vt-os-next/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Package the private interactive demo
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-os-next-interactive-demo
+          path: vt-os-next/
+          if-no-files-found: error
+          retention-days: 14
