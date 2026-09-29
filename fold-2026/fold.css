@@ -175,7 +175,7 @@ footer a{color:#D9EACF;text-decoration:none}
  .dialog-copy p{font-size:13px}
  .dialog-foot{margin-top:30px;padding-top:18px}
 }
-@media(max-width:410px){
+@media(max-width:410px){.header{padding-inline:14px}.header nav{gap:9px;font-size:7px}.contact h2{white-space:normal;overflow-wrap:anywhere}
  .concept-ribbon{font-size:7px;letter-spacing:0}
  .concept-ribbon span:last-child{max-width:49%;text-align:right}
  .header nav{gap:12px;font-size:8px}
