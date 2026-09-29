@@ -30,6 +30,8 @@ jobs:
             sleep 1
           done
           node tests/vt-shift.qa.mjs
+      - name: Record actual original-artwork kinetic interactions in Chromium
+        run: node tests/vt-shift-capture.mjs
       - name: Save evidence of desktop and mobile art direction
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,5 +48,6 @@ jobs:
           path: |
             vt-shift/
             tests/vt-shift.qa.mjs
+            tests/vt-shift-capture.mjs
           retention-days: 14
           if-no-files-found: error
