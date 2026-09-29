@@ -1,9 +1,19 @@
-name: VT OS 2 Complete Interactive Demo QA
+name: VT OS 2 Public Launch and Interaction QA
 on:
   pull_request:
     branches: [main]
     paths:
       - 'vt-os-next/**'
+      - 'index.html'
+      - 'site.webmanifest'
+      - 'tests/vt-os-next.qa.mjs'
+      - '.github/workflows/vt-os-next-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'vt-os-next/**'
+      - 'index.html'
+      - 'site.webmanifest'
       - 'tests/vt-os-next.qa.mjs'
       - '.github/workflows/vt-os-next-qa.yml'
   workflow_dispatch:
@@ -38,7 +48,7 @@ jobs:
           path: qa-screenshots/vt-os-next/
           if-no-files-found: ignore
           retention-days: 14
-      - name: Package the private interactive demo
+      - name: Package the interactive homepage and original artwork viewer
         if: always()
         uses: actions/upload-artifact@v4
         with:
