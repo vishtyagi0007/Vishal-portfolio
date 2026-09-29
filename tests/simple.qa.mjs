@@ -62,8 +62,8 @@ await test('Desktop wheel scroll reaches contact with no interception',async()=>
  assert(after>before+100,JSON.stringify({before,after}));
  await home.evaluate(()=>scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
  await home.waitForTimeout(120);
- const state=await home.evaluate(()=>({atBottom:Math.abs(scrollY-(document.documentElement.scrollHeight-innerHeight))<8,contact:document.querySelector('#contact').getBoundingClientRect().top}));
- assert(state.atBottom&&state.contact<innerHeight,JSON.stringify(state));
+ const state=await home.evaluate(()=>({atBottom:Math.abs(scrollY-(document.documentElement.scrollHeight-innerHeight))<8,contact:document.querySelector('#contact').getBoundingClientRect().top,vh:innerHeight}));
+ assert(state.atBottom&&state.contact<state.vh,JSON.stringify(state));
  return 'wheel moved '+Math.round(after-before)+'px';
 });
 await test('Contact and resume routes are correct',async()=>{
