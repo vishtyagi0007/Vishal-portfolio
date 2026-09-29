@@ -63,8 +63,8 @@ html[data-theme=light] .boot-hero{background:radial-gradient(ellipse 40% 64% at 
 .spark{font:400 23px Georgia,serif;color:var(--rose);line-height:1}
 .hero-copy h1{font-weight:650;line-height:.82;letter-spacing:-.091em;font-size:clamp(88px,10.5vw,195px);margin:30px 0 42px;white-space:nowrap}
 .hero-line{display:block}
-.hero-line-alt{margin-left:6vw}
-.hero-line em{font:italic 400 .79em/1 Georgia,"Times New Roman",serif;color:var(--rose);letter-spacing:-.087em;vertical-align:.03em}
+.hero-line-alt{margin-left:2.2vw}
+.hero-line em{font:italic 400 .72em/1 Georgia,"Times New Roman",serif;color:var(--rose);letter-spacing:-.087em;vertical-align:.03em}
 .hero-copy>p{color:var(--secondary);font-size:clamp(15px,1.45vw,19px);line-height:1.65;max-width:470px;margin:0 0 32px}
 .hero-ctas{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
 .solid-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:48px;padding:16px 21px;min-height:52px;background:var(--accent);color:var(--accent-ink);font-size:10px;letter-spacing:.14em;font-weight:900;text-decoration:none;transition:background .3s,transform .3s}
@@ -434,7 +434,7 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .hero-copy .eyebrow{font-size:9px}
  .hero-copy h1{font-size:clamp(61px,11.5vw,100px);margin:25px 0;white-space:normal}
  .hero-line-alt{margin-left:0;white-space:normal;max-width:100%}
- .hero-line-alt em{display:inline-block;max-width:100%}
+ .hero-line-alt em{display:inline-block;max-width:100%;font-size:.94em}
  .hero-line-alt{margin-left:1.2vw}
  .hero-copy>p{max-width:475px;font-size:14px;margin-bottom:23px}
  .hero-ctas{gap:20px}
