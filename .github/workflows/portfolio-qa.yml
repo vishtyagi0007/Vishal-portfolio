@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - index.html
+      - trionn-direction.css
+      - trionn-direction.js
       - portfolio/index.html
       - tests/**
       - .github/workflows/portfolio-qa.yml
@@ -31,6 +33,7 @@ jobs:
             sleep 1
           done
           node tests/portfolio.qa.mjs
+          node tests/trionn.phase1.qa.mjs
       - name: Save visual QA evidence
         if: always()
         uses: actions/upload-artifact@v4
