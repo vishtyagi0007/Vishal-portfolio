@@ -39,10 +39,12 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
       - name: Package the private interactive demo
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vt-os-next-interactive-demo
-          path: vt-os-next/
+          path: |
+            vt-os-next/
+            tests/vt-os-next.qa.mjs
           if-no-files-found: error
           retention-days: 14
