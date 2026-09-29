@@ -248,7 +248,6 @@
 
   // Read-only QA diagnostics. No timers or persistent storage.
   window.__vtDemoQA={
-    get state(){return {desktop:desktop,reduced:reduce,active:active,scrollEvents:scrollEvents,sceneCount:scenes.length}},
-    get liveSiteUnchanged(){return true}
+    get state(){return {desktop:desktop,reduced:reduce,active:active,scrollEvents:scrollEvents,sceneCount:scenes.length}}
   };
 })();
