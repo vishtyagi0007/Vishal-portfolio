@@ -353,6 +353,8 @@ commandInput.addEventListener("keydown",e=>{
 });
 document.addEventListener("keydown",e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommands();return}
+ // Search inputs consume the first Escape to clear their text; explicitly close this dialog.
+ if(e.key==="Escape"&&commands.open){e.preventDefault();commands.close();return}
  if(presentation.open&&!e.altKey&&!e.ctrlKey&&!e.metaKey){
    if(e.key==="ArrowRight"){e.preventDefault();qs("#present-next").click()}
    if(e.key==="ArrowLeft"){e.preventDefault();qs("#present-prev").click()}
