@@ -1,0 +1,53 @@
+name: VFORM One Original Visual Experience QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'vform/**'
+      - 'tests/vform.qa.mjs'
+      - '.github/workflows/vform-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual-and-interaction-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Test original portal, native-scroll film, real media and mobile layouts
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/vform.log 2>&1 &
+          for i in {1..22}; do
+            if curl -fsS http://127.0.0.1:4173/vform/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/vform.qa.mjs
+      - name: Record actual native scroll and hero portal motion in Chromium
+        run: node tests/vform-capture.mjs
+      - name: Preserve browser screenshots for visual art-direction review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vform-desktop-mobile-visual-evidence
+          path: qa-screenshots/vform/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Save complete self-contained concept
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vform-private-interactive-prototype
+          path: |
+            vform/
+            tests/vform.qa.mjs
+            tests/vform-capture.mjs
+          retention-days: 14
+          if-no-files-found: error
