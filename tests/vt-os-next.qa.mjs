@@ -172,7 +172,7 @@ await check("Theme toggle: light and dark are both live CSS modes",async()=>{
   assert.equal(v,"light");
   assert.equal(await btn.getAttribute("aria-label"),"Switch to dark mode");
   const bg=await desk.locator("body").evaluate(e=>getComputedStyle(e).backgroundColor);
-  assert.equal(bg,"rgb(241, 240, 236)");
+  assert.equal(bg,"rgb(250, 249, 246)");
   await btn.click();assert.equal((await desk.evaluate(()=>window.__vtOs2QA.state.theme)),"dark");
 });
 await check("All major website sections exist and contact channels use existing verified profile links",async()=>{
@@ -315,16 +315,80 @@ await check("No-JS fallback: full project archive access, original artwork and a
   assert.equal(await nojs.locator(".story-card").count(),4);
   assert.equal(await nojs.locator(".reel-player video").count(),1);
 });
-await check("Production homepage, portfolio archive and official brand palette are unchanged in preview branch",async()=>{
-  const html=await readFile("index.html","utf8");
-  const css=await readFile("simple.css","utf8");
-  const archive=await readFile("portfolio/index.html","utf8");
-  assert(html.includes('href="/simple.css"'));
-  assert(html.includes("Graphic &amp; motion <em>designer.</em>"));
-  assert(!html.includes("vt-os-next/"));
-  assert(css.includes("--primary:#006D77")&&css.includes("--secondary:#B76E79"));
-  assert(archive.includes('id="ascott"')&&archive.includes('id="pride"'));
+
+await check("Brand source of truth: new public OS exactly references original VT logo teal and rose",async()=>{
+  const brand=await readFile("portfolio/assets/vishal-tyagi-mark.svg","utf8");
+  const css=await readFile("vt-os-next/system.css","utf8");
+  const old=await readFile("simple.css","utf8");
+  const manifest=JSON.parse(await readFile("site.webmanifest","utf8"));
+  assert(brand.includes("fill:#006D77")&&brand.includes("fill:#B76E79"));
+  assert(css.includes("--brand-teal:#006D77;--brand-rose:#B76E79"));
+  assert(old.includes("--primary:#006D77")&&old.includes("--secondary:#B76E79"));
+  assert.equal(manifest.theme_color,"#006D77");
+  const styles=await desk.evaluate(()=>{
+    const root=getComputedStyle(document.documentElement);
+    return {teal:root.getPropertyValue("--brand-teal").trim(),rose:root.getPropertyValue("--brand-rose").trim(),primary:getComputedStyle(document.querySelector(".top-hire")).backgroundColor,italic:getComputedStyle(document.querySelector(".hero-line em")).color};
+  });
+  assert.deepEqual(styles,{teal:"#006D77",rose:"#B76E79",primary:"rgb(0, 109, 119)",italic:"rgb(183, 110, 121)"});
 });
+const publicDesk=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+publicDesk.setDefaultTimeout(8500);
+const publicErrors=[];
+publicDesk.on("pageerror",e=>publicErrors.push(e.message));
+const publicResponse=await publicDesk.goto(BASE+"/",{waitUntil:"domcontentloaded"});
+await check("Launch-ready public homepage: correct SEO metadata, brand, no private preview banner",async()=>{
+  assert.equal(publicResponse.status(),200);
+  assert.equal(await publicDesk.locator('meta[name="robots"]').getAttribute("content"),"index,follow,max-image-preview:large");
+  assert.equal(await publicDesk.locator('meta[name="theme-color"]').getAttribute("content"),"#0D2025");
+  assert.equal(await publicDesk.locator('link[rel="canonical"]').getAttribute("href"),"https://vishal-portfolio-bay.vercel.app/");
+  assert.equal(await publicDesk.locator('link[rel="stylesheet"]').getAttribute("href"),"/vt-os-next/system.css");
+  assert.equal(await publicDesk.locator('script[src]').getAttribute("src"),"/vt-os-next/system.js");
+  assert.equal(await publicDesk.locator(".preview-ribbon").count(),0);
+  const txt=await publicDesk.locator("body").innerText();
+  assert(!/PRIVATE CREATIVE PREVIEW|LIVE WEBSITE UNCHANGED|CREATIVE SYSTEM DEMO/.test(txt));
+  assert(txt.includes("MAKE")&&txt.includes("IDEAS"));
+});
+await check("Public root original portrait, logo, projects and archive still resolve",async()=>{
+  for(const sel of [".topbrand img",".hero-portrait-plate img"]){
+    await publicDesk.locator(sel).evaluate(e=>e.decode());
+    assert((await publicDesk.locator(sel).evaluate(e=>e.naturalWidth))>40);
+  }
+  assert.equal((await publicDesk.evaluate(()=>window.__vtOs2QA.state)).projectCount,6);
+  const source=await publicDesk.locator("#canvas-image").getAttribute("src");
+  assert(source.startsWith("/portfolio/assets/"));
+  assert.equal(await publicDesk.locator("a[href='/portfolio/']").count()>0,true);
+  assert.deepEqual(publicErrors,[]);
+});
+await publicDesk.screenshot({path:"qa-screenshots/vt-os-next/13-production-desktop-home.png"});
+await check("Public root workspace interaction and direct hiring entrypoint",async()=>{
+  await publicDesk.locator("#open-commands").click();
+  assert(await publicDesk.locator("#commands").evaluate(e=>e.open));
+  await publicDesk.keyboard.press("Escape");
+  assert.equal(await publicDesk.locator("#commands").evaluate(e=>e.open),false);
+  assert.equal(await publicDesk.locator(".contact-cards a").count(),2);
+  assert((await publicDesk.locator(".contact-cards a").first().getAttribute("href")).startsWith("https://wa.me/"));
+});
+const publicMobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+publicMobile.setDefaultTimeout(8500);
+await publicMobile.goto(BASE+"/",{waitUntil:"domcontentloaded"});
+await check("Public root real mobile viewport: no overflow; original visuals and stacked workspace",async()=>{
+  await publicMobile.locator(".hero-portrait-plate img").evaluate(e=>e.decode());
+  const metrics=await publicMobile.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,apps:document.querySelectorAll("[data-window]").length}));
+  assert.equal(metrics.width,390);
+  assert(metrics.scroll<=390,JSON.stringify(metrics));
+  assert.equal(metrics.apps,4);
+  assert(await publicMobile.locator(".hero-portrait-plate img").isVisible());
+});
+await publicMobile.screenshot({path:"qa-screenshots/vt-os-next/14-production-mobile-home.png"});
+await publicMobile.locator("#workspace").scrollIntoViewIfNeeded();
+await publicMobile.screenshot({path:"qa-screenshots/vt-os-next/15-production-mobile-workspace.png"});
+await check("Original archive preserved and legacy style untouched",async()=>{
+  const archive=await readFile("portfolio/index.html","utf8");
+  assert(archive.includes('id="ascott"')&&archive.includes('id="pride"'));
+  assert((await readFile("simple.css","utf8")).includes("--primary:#006D77"));
+});
+await publicMobile.close();await publicDesk.close();
+
 await browser.close();
 console.log("VT.OS 2.0 QA: "+passed+" passed, "+failed+" failed.");
 if(failed)process.exitCode=1;
