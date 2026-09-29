@@ -63,6 +63,8 @@ function paint(){
  const world=clamp((p-intro)/(1-intro)),unit=Math.min(3.9999,world*4);
  const index=Math.floor(unit),phase=unit-index;
  if(index!==active)choose(index);
+ // The first chapter may already be selected during the opening, but its navigation marker must activate when content takes over.
+ jumps.forEach((button,n)=>n===index?button.setAttribute("aria-current","true"):button.removeAttribute("aria-current"));
  const opened=Math.min(smooth(clamp(phase/.18)),smooth(clamp((1-phase)/.18)));
  sculpture.style.setProperty("--open",(.12+.88*opened).toFixed(4));
  sculpture.style.setProperty("--canvas-scale",(1.09+.06*opened).toFixed(4));
