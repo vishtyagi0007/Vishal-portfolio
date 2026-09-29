@@ -486,7 +486,8 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .expertise-card h3{font-size:43px;margin:12px 0}
  .reel-section{padding:105px 17px}
  .reel-section h2{font-size:clamp(70px,11vw,105px)}
- .reel-layout{display:block}.reel-detail{min-height:220px;margin-top:16px;padding:27px;display:grid;grid-template-columns:80px 1fr;align-items:center;gap:10px}
+ .reel-layout{display:block}
+ .reel-player{min-height:0;max-width:100%;width:100%;aspect-ratio:16/9}.reel-detail{min-height:220px;margin-top:16px;padding:27px;display:grid;grid-template-columns:80px 1fr;align-items:center;gap:10px}
  .reel-asterisk{font-size:70px}.reel-detail p{grid-column:2}.reel-detail button{grid-column:2;justify-self:start}
  .contact-section{padding:100px 17px 28px}
  .contact-section h2{font-size:clamp(64px,11.9vw,115px)}
