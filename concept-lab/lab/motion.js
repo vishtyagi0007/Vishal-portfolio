@@ -19,7 +19,7 @@ const railCounter=document.querySelector("#rail-count");
 const prev=document.querySelector("#prev-project");
 const next=document.querySelector("#next-project");
 const reveals=[...document.querySelectorAll(".reveal")];
-let enhanced=false,start=0,travel=1,offset=0,active=0,raf=0,renderCount=0;
+let enhanced=false,start=0,travel=1,offset=0,active=-1,raf=0,renderCount=0;
 
 function enableReveals(){
  if(reduce.matches||!("IntersectionObserver" in window)){
@@ -57,6 +57,7 @@ function measure(){
  if(should!==enhanced){
    enhanced=should;
    section.classList.toggle("js-hscroll",enhanced);
+   if(enhanced)active=-1;
    if(!enhanced){
      section.style.removeProperty("--lab-height");
      track.style.removeProperty("--track-x");
