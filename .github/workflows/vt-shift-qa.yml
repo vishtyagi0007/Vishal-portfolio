@@ -49,7 +49,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: VT_SHIFT_OFFLINE_DEMO
-          path: dist/VT_SHIFT_OFFLINE_DEMO.zip
+          path: |
+            dist/VT_SHIFT_OFFLINE_DEMO.zip
+            dist/VT_SHIFT_STANDALONE.html
           retention-days: 14
           if-no-files-found: ignore
       - name: Archive complete runnable private prototype
