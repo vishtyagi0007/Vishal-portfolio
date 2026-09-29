@@ -8,7 +8,7 @@ const projects=[
 {name:"Pride Hotels",heading:"Pride<br><i>Hotels.</i>",category:"HOSPITALITY / CAMPAIGN",summary:"Original hospitality and vacation campaign artworks for Pride Hotels & Resorts.",role:"HOSPITALITY CAMPAIGN DESIGN",archive:"/portfolio/#pride",color:"#E5D7CC",images:["008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp","009-pride-vacation-vibes-with-pride-campaign-creatives-02.webp","010-pride-vacation-vibes-with-pride-campaign-creatives-03.webp","011-pride-vacation-vibes-with-pride-campaign-creatives-04.webp","012-pride-vacation-vibes-with-pride-campaign-creatives-05.webp"]}
 ];
 const root=document.querySelector(".fold-journey"),sticky=document.querySelector(".fold-sticky"),sculpture=document.querySelector(".fold-sculpture");
-const hero=document.querySelector(".hero-voice"),titleZone=document.querySelector(".project-title-zone"),meter=document.querySelector("#page-meter span");
+const hero=document.querySelector(".hero-voice"),titleZone=document.querySelector(".project-title-zone"),meter=document.querySelector("#page-meter");
 const H={count:document.querySelector("#stage-count"),index:document.querySelector("#project-index"),title:document.querySelector("#project-title"),category:document.querySelector("#project-category"),summary:document.querySelector("#project-summary"),stage:document.querySelector("#stage-kicker"),floor:document.querySelector("#floor-label")};
 const originals=[...document.querySelectorAll(".fold-half .full-art")],jumps=[...document.querySelectorAll(".stage-dots [data-jump]")];
 const dialog=document.querySelector("#work-dialog"),image=document.querySelector("#dialog-image"),count=document.querySelector("#gallery-count");
