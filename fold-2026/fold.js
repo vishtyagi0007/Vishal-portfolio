@@ -52,8 +52,8 @@ function paint(){
   opening=clamp(p/intro);const eased=smooth(opening);
   if(active!==0)choose(0);
   sculpture.style.setProperty("--open",(.08+.92*eased).toFixed(4));
-  sculpture.style.setProperty("--canvas-scale",(1+.13*eased).toFixed(4));
-  sculpture.style.setProperty("--canvas-x",(eased*18).toFixed(1)+"px");
+  sculpture.style.setProperty("--canvas-scale",(1+.07*eased).toFixed(4));
+  sculpture.style.setProperty("--canvas-x",(eased*12).toFixed(1)+"px");
   hero.style.setProperty("--hero-opacity",clamp(1-eased*1.55).toFixed(4));
   hero.style.setProperty("--hero-translate",(-eased*48).toFixed(1)+"px");
   titleZone.style.setProperty("--project-opacity","0");
@@ -67,8 +67,8 @@ function paint(){
  jumps.forEach((button,n)=>n===index?button.setAttribute("aria-current","true"):button.removeAttribute("aria-current"));
  const opened=Math.min(smooth(clamp(phase/.18)),smooth(clamp((1-phase)/.18)));
  sculpture.style.setProperty("--open",(.12+.88*opened).toFixed(4));
- sculpture.style.setProperty("--canvas-scale",(1.09+.06*opened).toFixed(4));
- sculpture.style.setProperty("--canvas-x",(28+7*opened).toFixed(1)+"px");
+ sculpture.style.setProperty("--canvas-scale",(.99+.05*opened).toFixed(4));
+ sculpture.style.setProperty("--canvas-x",(10+4*opened).toFixed(1)+"px");
  hero.style.setProperty("--hero-opacity","0");hero.style.setProperty("--hero-translate","-50px");
  const reveal=clamp((p-intro)/.045),out=clamp((1-phase)/.11),appear=Math.min(reveal,out);
  titleZone.style.setProperty("--project-opacity",appear.toFixed(4));
