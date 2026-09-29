@@ -12,6 +12,10 @@ for (const filename of ["index.html","portal.html","orbit.html","cut.html"]){
   const issues=[];
   page.on("pageerror",e=>issues.push(e.message));
   const response=await page.goto(pathToFileURL(resolve(root,filename)).href,{waitUntil:"load"});
+  // Browser-native loading="lazy" keeps offscreen originals unloaded until scrolled; force decode solely for this asset QA.
+  await page.locator('img[src*="/assets/"]').evaluateAll(async imgs=>{
+    await Promise.all(imgs.map(img=>{img.loading="eager";return img.decode().catch(()=>{})}));
+  });
   const info=await page.evaluate(()=>({
     path:location.protocol,doc:document.documentElement.scrollWidth,viewport:innerWidth,
     images:[...document.querySelectorAll('img[src*="/assets/"]')].slice(0,8).map(img=>({src:img.getAttribute("src"),naturalWidth:img.naturalWidth})),
