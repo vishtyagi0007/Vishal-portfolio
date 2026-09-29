@@ -1,0 +1,48 @@
+name: Isolated VT Cinematic Demo QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'motion-demo/**'
+      - 'tests/motion-demo.qa.mjs'
+      - '.github/workflows/motion-demo-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium for desktop and mobile QA
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Verify isolated demo, scroll, motion, accessibility and viewport behavior
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/vt-demo-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/motion-demo/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/motion-demo.qa.mjs
+      - name: Save QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-cinematic-demo-screenshots
+          path: qa-screenshots/vt-motion-demo/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Package demo preview only
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-motion-demo-code
+          path: motion-demo/
+          retention-days: 14
+          if-no-files-found: error
