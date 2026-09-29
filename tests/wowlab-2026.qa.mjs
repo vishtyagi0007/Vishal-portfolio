@@ -77,10 +77,23 @@ await test('ORBIT/WORK: native wheel advances gallery and CSS 3D panel coordinat
 });
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/04-orbit-depth-scroll.png'});
 await test('ORBIT/WORK: clicking selected project opens actual accessible original-asset viewer',async()=>{
- const state=await desk.evaluate(()=>window.__wowQA.state);
- await desk.locator('.orbit-panel[data-i="'+state.active+'"]').click({force:true});
+ // Clicking a visual 3D artwork is a pointer interaction. Locator.click() tries to
+ // auto-scroll the sticky source during actionability checks and changes its position;
+ // use the real on-screen centre under the native-scroll camera instead.
+ await desk.evaluate(()=>{
+   const runway=document.querySelector('.orbit-runway'),dist=runway.offsetHeight-innerHeight;
+   scrollTo({top:runway.getBoundingClientRect().top+scrollY+dist*.60,behavior:'instant'});
+ });
+ await desk.waitForTimeout(240);
+ const coords=await desk.evaluate(()=>{
+   const s=window.__wowQA.state;
+   const target=document.querySelector('.orbit-panel[data-i="'+s.active+'"]');
+   const r=target.getBoundingClientRect();
+   return {x:r.left+r.width/2,y:r.top+r.height/2,active:s.active,front:document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.closest('.orbit-panel')?.dataset.i};
+ });
+ await desk.mouse.click(coords.x,coords.y);
  await desk.waitForTimeout(100);
- assert.equal(await desk.locator('#viewer').evaluate(el=>el.open),true);
+ assert.equal(await desk.locator('#viewer').evaluate(el=>el.open),true,JSON.stringify(coords));
  assert.equal(await desk.locator('#viewer-img').getAttribute('src').then(s=>s.startsWith('/portfolio/assets/')),true);
  assert.equal(await desk.locator('#viewer-archive').getAttribute('href').then(s=>s.startsWith('/portfolio/#')),true);
  await desk.locator('#close').click();
