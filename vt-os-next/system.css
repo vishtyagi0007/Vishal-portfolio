@@ -432,7 +432,9 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .hero-content{min-height:0;display:flex;flex-direction:column;align-items:stretch;padding:70px 17px 95px;gap:10px}
  .hero-copy{order:0}
  .hero-copy .eyebrow{font-size:9px}
- .hero-copy h1{font-size:clamp(61px,11.5vw,100px);margin:25px 0}
+ .hero-copy h1{font-size:clamp(61px,11.5vw,100px);margin:25px 0;white-space:normal}
+ .hero-line-alt{margin-left:0;white-space:normal;max-width:100%}
+ .hero-line-alt em{display:inline-block;max-width:100%}
  .hero-line-alt{margin-left:1.2vw}
  .hero-copy>p{max-width:475px;font-size:14px;margin-bottom:23px}
  .hero-ctas{gap:20px}
@@ -502,7 +504,8 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .present-foot>span{font-size:8px}
 }
 @media(max-width:480px){
- .topbrand small{max-width:142px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .topbrand>span{display:none}
+ .topbrand small{display:none}
  .topbar{gap:6px}
  .top-hire{height:38px}
  .hero-meta{font-size:7px}
@@ -578,7 +581,10 @@ dialog::backdrop{background:#060A15D9;backdrop-filter:blur(14px)}
  .contact-section h2{font-size:clamp(61px,12vw,83px)}
  .contact-cards{grid-template-columns:1fr}
  .contact-cards a{min-height:112px;gap:20px}
- .present-top{padding:12px;gap:8px;font-size:9px}
+ .present-top{position:relative;z-index:2;background:#111A2E;flex-wrap:wrap;padding:12px;gap:8px;font-size:9px}
+ .present-top>span{flex:1 0 100%}
+ .present-top>div{margin-left:auto;flex:0 0 auto;display:flex;justify-content:flex-end}
+ .presentation{max-width:100%;max-height:100dvh}
  .present-top button{padding:8px;font-size:8px}
  .present-art{min-height:45svh;flex-basis:45svh;padding:13px}
  .present-foot button{padding:8px;font-size:9px}
