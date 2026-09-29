@@ -177,7 +177,8 @@ for(const width of [320,390,430,768,1024,1280,1440]){
  for(const url of paths){
   const name=url===ROOT?"hub":url.split("/").filter(Boolean).at(-1);
   const res=await p.goto(BASE+url,{waitUntil:"domcontentloaded"});
-  await p.waitForTimeout(140);
+  await p.evaluate(()=>document.fonts.ready);
+  await p.waitForTimeout(220);
   await check(name+" / "+width+"px: real viewport width, no page overflow, correct original layout",async()=>{
    assert.equal(res.status(),200);
    const state=await p.evaluate(()=>({vw:innerWidth,doc:document.documentElement.scrollWidth,body:document.body.scrollWidth,hero:!!document.querySelector("h1")}));
