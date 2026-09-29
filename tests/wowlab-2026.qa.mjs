@@ -184,7 +184,7 @@ for(const name of ['portal','orbit','cut']){
  await nj.close();
 }
 await test('All referenced original files exist and old site production unchanged',async()=>{
- for(const a of ['001-ascott-discover-asr-india-01.webp','resultbull.svg','gtm.svg','008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp','022-rcz-weekend-buffet-carnival-1.webp','motion-selected.mp4','vishal-tyagi-mark.svg']){
+ for(const a of ['001-ascott-discover-asr-india-01.webp','resultbull.svg','gtm.svg','008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp','022-rcz-weekend-buffet-carnival-1.webp','083-social-media-12.webp','motion-selected.mp4','vishal-tyagi-mark.svg']){
   const r=await desk.request.get(HOST+'/portfolio/assets/'+a);assert.equal(r.status(),200,a);
  }
  const home=await readFile('index.html','utf8'),css=await readFile('simple.css','utf8');
