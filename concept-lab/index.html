@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#102b30">
+<title>VT / Three Interactive Portfolio Directions — Private Concept Review</title>
+<meta name="description" content="Compare three original animated portfolio layouts, based on Vishal Tyagi's real art and approved logo palette. Private preview only.">
+<link rel="icon" type="image/svg+xml" href="/portfolio/assets/vishal-tyagi-mark.svg">
+<style>
+:root{--teal:#006d77;--rose:#b76e79;--ivory:#faf9f6;--dark:#12343a;--g:clamp(20px,4.4vw,78px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#e9eeea;color:#193a3d;overflow-x:clip;font:15px/1.5 Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+a:focus-visible{outline:3px solid var(--rose);outline-offset:4px}
+.ribbon{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:28px;padding:6px var(--g);font-size:9px;font-weight:800;letter-spacing:.14em;background:#b76e79;color:#241b1d}
+.header{display:flex;align-items:center;justify-content:space-between;padding:20px var(--g);gap:30px;background:#f8f6ef}
+.brand{display:inline-flex;align-items:center;gap:13px}
+.brand img{width:43px;height:43px}
+.brand span{display:flex;flex-direction:column;gap:4px}
+.brand strong{font-size:12px;letter-spacing:.1em}
+.brand small{font-size:9px;letter-spacing:.11em;color:#657c7d;font-weight:700}
+.header>a:last-child{font-size:10px;letter-spacing:.14em;border-bottom:1px solid #006d77;padding-bottom:5px;font-weight:800}
+.hero{padding:clamp(60px,8vw,112px) var(--g) clamp(40px,6.1vw,90px);background:#f8f6ef;position:relative;overflow:hidden}
+.hero::after{content:"✳";position:absolute;right:-40px;top:-140px;font:400 clamp(240px,39vw,690px)/1 Georgia,serif;color:#006d770d;pointer-events:none}
+.kicker{display:block;font-size:10px;letter-spacing:.18em;color:#9b5260;font-weight:800;position:relative;z-index:1}
+.hero h1{font:400 clamp(58px,7.4vw,134px)/.96 Georgia,serif;letter-spacing:-.08em;margin:23px 0 20px;max-width:1450px;position:relative;z-index:1}
+.hero h1 em{font-style:italic;color:#ad707d}
+.hero-bottom{display:flex;align-items:end;justify-content:space-between;gap:35px;position:relative;z-index:1}
+.hero-bottom p{font-size:clamp(15px,1.4vw,20px);color:#577074;line-height:1.65;max-width:570px;margin:0}
+.hero-bottom span{font-size:10px;letter-spacing:.14em;font-weight:800;text-align:right;white-space:nowrap}
+.compare{padding:clamp(60px,6vw,92px) var(--g) clamp(75px,8vw,125px)}
+.compare-head{display:flex;justify-content:space-between;gap:30px;align-items:center;border-top:1px solid #a2b9b7;padding:18px 0 26px}
+.compare-head h2{font-size:11px;letter-spacing:.15em;margin:0}
+.compare-head span{font-size:10px;letter-spacing:.11em;color:#5e767a}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.8vw,30px)}
+.card{min-width:0;background:#f8f6f1;box-shadow:0 18px 43px #0e3a4014;display:flex;flex-direction:column;overflow:hidden;border-radius:2px;transition:transform .55s cubic-bezier(.16,1,.3,1),box-shadow .55s cubic-bezier(.16,1,.3,1)}
+.card:hover{transform:translateY(-7px);box-shadow:0 22px 53px #0e3a4029}
+.visual{position:relative;height:clamp(320px,38vw,570px);overflow:hidden;isolation:isolate;display:block}
+.visual .demo-caption{position:absolute;z-index:12;bottom:14px;left:15px;font-size:8px;font-weight:800;letter-spacing:.15em;background:#122f36d9;color:#fff;padding:8px 12px}
+.visual img{position:absolute;display:block;object-fit:contain;pointer-events:none}
+.visual-a{background:radial-gradient(ellipse at 77% 39%,#29616a,#09232b 68%)}
+.visual-a::before{content:"";position:absolute;right:-20%;top:-10%;width:90%;aspect-ratio:1;border:1px solid #e8bbc842;border-radius:50%}
+.visual-a .mini-logo{top:23px;left:24px;width:36px;height:36px;filter:brightness(1.5)}
+.visual-a .person{right:-4%;bottom:0;width:83%;height:87%;filter:brightness(.68) saturate(.8)}
+.visual-a .poster-type{position:absolute;z-index:3;top:22%;left:5%;font:700 clamp(53px,6.1vw,125px)/.88 Arial,sans-serif;letter-spacing:-.11em;color:#f8f6ef}
+.visual-a .poster-type em{display:block;margin-left:14%;font:italic 400 .8em Georgia,serif;color:#df9caa}
+.visual-a .demo-caption{background:#12373e}
+.visual-b{background:#eee8dc}
+.visual-b::before{content:"";position:absolute;inset:13% 9% auto auto;width:78%;aspect-ratio:1;border:1px solid #9cb3ac;border-radius:50%}
+.visual-b .mini-logo{top:22px;left:22px;width:32px;height:32px}
+.visual-b .person{right:8%;bottom:0;width:72%;height:68%;background:linear-gradient(160deg,#bbcdc0aa,#d2dbca55);border-radius:50% 50% 0 0}
+.visual-b .poster-type{position:absolute;top:24%;left:5%;z-index:3;font:400 clamp(67px,8.5vw,175px)/.79 Georgia,serif;letter-spacing:-.1em;color:#1a3c3c;mix-blend-mode:multiply}
+.visual-b .poster-type em{font-style:italic;color:#a96e7c}
+.visual-b .demo-caption{background:#faf7ec;color:#21464a}
+.visual-c{background:radial-gradient(ellipse at 70% 50%,#295b65,#091f26 65%)}
+.visual-c::before{content:"";position:absolute;inset:0;background-image:linear-gradient(90deg,#ffffff11 1px,transparent 1px);background-size:20% 100%}
+.visual-c .mini-logo{top:22px;left:22px;width:35px;height:35px;filter:brightness(1.45)}
+.visual-c .person{right:-4%;bottom:0;width:68%;height:70%;opacity:.57;filter:brightness(.77)}
+.visual-c .poster-type{position:absolute;z-index:3;top:27%;left:5%;font:800 clamp(47px,6.9vw,135px)/.77 Arial,sans-serif;color:#fff;letter-spacing:-.095em}
+.visual-c .poster-type em{font:italic 400 .85em Georgia,serif;color:#d49daa}
+.visual-c .widget{position:absolute;right:5%;top:12%;padding:11px 13px;background:#b76e79;color:#183b41;font-size:8px;letter-spacing:.12em;font-weight:800;transform:rotate(10deg);z-index:4}
+.visual-c .demo-caption{background:#d9b2b7;color:#22363a}
+.card-body{padding:24px clamp(17px,2vw,29px) 26px;flex:1;display:flex;flex-direction:column}
+.card-number{font-size:9px;font-weight:800;letter-spacing:.15em;color:#9b5260}
+.card h3{font-size:clamp(25px,2.7vw,48px);letter-spacing:-.07em;line-height:1.02;margin:12px 0 16px}
+.card p{color:#5b7576;font-size:13px;line-height:1.75;margin:0 0 23px;max-width:420px}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;margin-bottom:25px}
+.tags span{font-size:8px;letter-spacing:.08em;border:1px solid #cdd8d1;padding:7px 9px;color:#547074;font-weight:700}
+.launch{display:flex;align-items:center;justify-content:space-between;padding:16px 17px;background:var(--teal);color:#fff;font-size:11px;letter-spacing:.13em;font-weight:800;transition:background .25s}
+.launch:hover,.launch:focus-visible{background:#18474c}
+.card:nth-child(2) .launch{background:#9b5260}.card:nth-child(2) .launch:hover{background:#7d3e4c}
+.card:nth-child(3) .launch{background:#173b43}.card:nth-child(3) .launch:hover{background:#30636c}
+.launch span{font-size:20px}
+.notes{padding:0 var(--g) 85px;background:#e9eeea}
+.notes-inner{border-top:1px solid #b8c8c1;padding-top:25px;display:grid;grid-template-columns:1fr 1.6fr;gap:30px}
+.notes-inner h2{font:400 clamp(31px,3.6vw,57px)/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}
+.notes-inner p{max-width:660px;color:#5a7475;line-height:1.8;font-size:14px;margin:0}
+.footer{background:#143b40;color:#e1e9db;padding:20px var(--g);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:10px;font-weight:800;letter-spacing:.1em}
+.footer a{color:#f1bfca}
+@media(max-width:1130px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card:nth-child(3){grid-column:1/-1;max-width:780px}.visual{height:450px}.card h3{font-size:37px}.visual-a .poster-type{font-size:10vw}.visual-b .poster-type{font-size:11vw}.visual-c .poster-type{font-size:9vw}}
+@media(max-width:720px){
+ .ribbon{padding:8px 17px;font-size:7px;letter-spacing:.04em}
+ .header{padding:14px 17px}.brand img{width:39px;height:39px}.brand strong{font-size:11px}.brand small{font-size:8px}
+ .header>a:last-child{font-size:9px}
+ .hero{padding:68px 20px 60px}
+ .hero h1{font-size:clamp(50px,11.6vw,85px);margin:20px 0}
+ .hero-bottom{display:block}.hero-bottom p{font-size:14px}.hero-bottom span{display:block;text-align:left;margin-top:24px;font-size:8px}
+ .compare{padding:55px 20px 73px}.compare-head{display:block}.compare-head span{display:block;margin-top:13px}
+ .cards{grid-template-columns:1fr;gap:25px}
+ .card:nth-child(3){grid-column:auto;max-width:none}
+ .visual{height:clamp(330px,94vw,500px)}
+ .visual-a .poster-type{font-size:19vw}.visual-b .poster-type{font-size:22vw}.visual-c .poster-type{font-size:17vw}
+ .card h3{font-size:37px}.card-body{padding:22px}
+ .notes{padding:0 20px 70px}.notes-inner{display:block}.notes-inner p{margin-top:18px}
+ .footer{padding:22px 20px;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.card,.launch{transition:none!important}.card:hover{transform:none!important}}
+</style></head><body>
+<div class="ribbon"><span>VT / THREE DIRECTIONS</span><span>DESIGN REVIEW ONLY — NOT THE LIVE WEBSITE</span></div>
+<header class="header">
+<a class="brand" href="/concept-lab/"><img src="/portfolio/assets/vishal-tyagi-mark.svg" width="43" height="43" alt=""><span><strong>VISHAL TYAGI</strong><small>DESIGN / MOTION EXPERIMENTS</small></span></a>
+<a href="https://vishal-portfolio-bay.vercel.app/" target="_blank" rel="noopener noreferrer">CURRENT LIVE SITE ↗</a>
+</header>
+<main>
+<section class="hero">
+<span class="kicker">THREE ORIGINAL VISUAL DIRECTIONS / ONE CREATIVE IDENTITY</span>
+<h1>One designer.<br><em>Three different</em> worlds.</h1>
+<div class="hero-bottom"><p>Same original face, same artwork, same VT logo. Completely different layout, navigation and scroll-motion logic. Open each interactive concept and explore it like a real website.</p><span>SCROLL TO EXPLORE THE CONCEPTS ↓</span></div>
+</section>
+<section class="compare" aria-labelledby="compare-title">
+<div class="compare-head"><h2 id="compare-title">01 / 02 / 03 — OPEN INTERACTIVE PREVIEWS</h2><span>DESKTOP + MOBILE · ORIGINAL PROJECT FILES</span></div>
+<div class="cards">
+<article class="card"><a class="visual visual-a" href="/motion-demo/" aria-label="Open concept 1 Cinematic Director's Cut">
+<img class="mini-logo" src="/portfolio/assets/vishal-tyagi-mark.svg" width="35" height="35" alt="">
+<img class="person" src="/portfolio/assets/vishal-hero-new-portrait.png" width="405" height="600" alt="Original portrait of Vishal Tyagi">
+<div class="poster-type">DESIGN.<em>IN MOTION.</em></div><span class="demo-caption">DIRECTION 01 / CINEMATIC</span></a>
+<div class="card-body"><span class="card-number">CONCEPT / 01</span><h3>Cinematic<br>Director's Cut.</h3><p>Full-screen portrait, kinetic typographic entry and sticky fullscreen project chapters with native scroll progression.</p><div class="tags"><span>CINEMATIC HERO</span><span>SCROLL CHAPTERS</span><span>FULL BLEED</span></div><a class="launch" href="/motion-demo/">EXPLORE CINEMATIC DEMO <span>↗</span></a></div></article>
+<article class="card"><a class="visual visual-b" href="./editorial/" aria-label="Open concept 2 Editorial Infinite Canvas">
+<img class="mini-logo" src="/portfolio/assets/vishal-tyagi-mark.svg" width="33" height="33" alt="">
+<img class="person" src="/portfolio/assets/vishal-hero-new-portrait.png" width="405" height="600" alt="Original portrait of Vishal Tyagi">
+<div class="poster-type">DESIGN<br>IS <em>alive.</em></div><span class="demo-caption">DIRECTION 02 / EDITORIAL</span></a>
+<div class="card-body"><span class="card-number">CONCEPT / 02</span><h3>Editorial<br>Infinite Canvas.</h3><p>A high-end design magazine: dramatic serif typography, asymmetric artwork spreads, kinetic ticker and layered parallax.</p><div class="tags"><span>MAGAZINE LAYOUT</span><span>PARALLAX</span><span>ASYMMETRY</span></div><a class="launch" href="./editorial/">EXPLORE EDITORIAL DEMO <span>↗</span></a></div></article>
+<article class="card"><a class="visual visual-c" href="./lab/" aria-label="Open concept 3 Interactive Creative Lab">
+<img class="mini-logo" src="/portfolio/assets/vishal-tyagi-mark.svg" width="33" height="33" alt="">
+<img class="person" src="/portfolio/assets/vishal-hero-new-portrait.png" width="405" height="600" alt="Original portrait of Vishal Tyagi">
+<div class="poster-type">LET'S<br><em>MAKE.</em><br>MOVE<span style="color:#c07e89">✳</span></div>
+<span class="widget">VISUAL SYSTEM<br>↗</span><span class="demo-caption">DIRECTION 03 / EXPERIMENTAL</span></a>
+<div class="card-body"><span class="card-number">CONCEPT / 03</span><h3>Interactive<br>Creative Lab.</h3><p>Experimental bento-style visual playground, reactive spotlight and horizontally moving project gallery controlled by vertical scroll.</p><div class="tags"><span>INTERACTIVE BENTO</span><span>HORIZONTAL WORK</span><span>SPOTLIGHT</span></div><a class="launch" href="./lab/">EXPLORE CREATIVE LAB <span>↗</span></a></div></article>
+</div></section>
+<section class="notes"><div class="notes-inner"><h2>What should<br><em style="color:#9b5260">we compare?</em></h2><p>Look at first-screen impact, project visibility, quality of scroll transitions and whether you'd feel confident sending each design to a recruiter or client. The existing website stays as it is until you explicitly approve one direction. These are motion prototypes, not final production builds.</p></div></section>
+</main>
+<footer class="footer"><span>VT / CONCEPT REVIEW 2026</span><span>THIS BRANCH IS PREVIEW-ONLY · NO PRODUCTION RELEASE</span><a href="https://vishal-portfolio-bay.vercel.app/" target="_blank" rel="noopener noreferrer">EXISTING LIVE WEBSITE ↗</a></footer>
+</body></html>
