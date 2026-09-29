@@ -1,0 +1,50 @@
+name: Three Distinct VT 2026 Concepts QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'worlds-2026/**'
+      - 'tests/three-worlds.qa.mjs'
+      - '.github/workflows/three-worlds-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright with Chromium
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Test OFFGRID, FRAMEONE and VTCORE across seven viewport widths
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/three-worlds-http.log 2>&1 &
+          for i in {1..25}; do
+            if curl -fsS http://127.0.0.1:4173/worlds-2026/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/three-worlds.qa.mjs
+      - name: Save real desktop and mobile browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: three-distinct-worlds-desktop-mobile-qa
+          path: qa-screenshots/worlds-2026/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Save all independent runnable prototypes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: three-distinct-worlds-prototypes
+          path: |
+            worlds-2026/
+            tests/three-worlds.qa.mjs
+          if-no-files-found: error
+          retention-days: 14
