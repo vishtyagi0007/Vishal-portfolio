@@ -1,0 +1,74 @@
+name: WOWLAB 2026 Motion-First Concept QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'wowlab-2026/**'
+      - 'tests/wowlab-2026.qa.mjs'
+      - 'tests/wowlab-2026.capture.mjs'
+      - 'tests/wowlab-2026.offline.qa.mjs'
+      - 'tests/package-wowlab-offline.py'
+      - '.github/workflows/wowlab-2026-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  motion-prototype-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser QA environment
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Test three distinct motion signature prototypes
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/wowlab-2026.log 2>&1 &
+          for i in {1..25}; do
+            if curl -fsS http://127.0.0.1:4173/wowlab-2026/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/wowlab-2026.qa.mjs
+      - name: Package latest preview as four standalone local browser studies
+        run: python3 tests/package-wowlab-offline.py
+      - name: Validate four actual file-openable offline previews
+        run: node tests/wowlab-2026.offline.qa.mjs
+      - name: Upload complete standalone offline HTML preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VT_2026_WOWLAB_Standalone_Offline_Interactive_Preview
+          path: VT_2026_WOWLAB_offline_preview.zip
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Record three actual 2026 motion signatures in browser video
+        run: node tests/wowlab-2026.capture.mjs
+      - name: Save interactive original-motion evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-wowlab-three-real-motion-videos
+          path: qa-videos/wowlab-2026/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Capture actual browser desktop and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wowlab-motion-first-desktop-mobile-qa
+          path: qa-screenshots/wowlab-2026/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Save isolated runnable concept prototypes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wowlab-three-motion-first-prototypes
+          path: |
+            wowlab-2026/
+            tests/wowlab-2026.qa.mjs
+          retention-days: 14
