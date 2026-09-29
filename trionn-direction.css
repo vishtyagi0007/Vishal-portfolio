@@ -1,0 +1,145 @@
+/* VT × cinematic direction — an original, lightweight interpretation.
+   Layers on top of the approved September portfolio without replacing project art. */
+:root.reference-film {
+  --tr-night:#0b1017;
+  --tr-warm:#e9c08a;
+  --tr-ivory:#f8f2e9;
+  --tr-ease:cubic-bezier(.16,1,.3,1);
+}
+/* One controlled dark act instead of a flat template or a heavy WebGL scene. */
+:root.reference-film .hero {
+  background:
+    radial-gradient(ellipse 44% 55% at 52% 57%,rgba(225,165,100,.25),transparent 75%),
+    radial-gradient(ellipse 54% 60% at 82% 7%,rgba(76,82,101,.19),transparent 72%),
+    linear-gradient(116deg,#090e15 0%,#151a23 47%,#211c1c 100%)!important;
+  color:var(--tr-ivory)!important;
+}
+:root.reference-film .hero::before{
+  background:linear-gradient(90deg,rgba(4,9,15,.30),transparent 45%,rgba(4,9,15,.17))!important;
+}
+:root.reference-film .hero::after{opacity:.27!important;border-color:rgba(233,192,138,.17)!important}
+:root.reference-film .hero-portrait{filter:brightness(.82) saturate(.83) sepia(.08) drop-shadow(0 22px 45px rgba(0,0,0,.25))!important}
+:root.reference-film .hero-title{color:var(--tr-ivory)!important;text-shadow:0 5px 40px rgba(0,0,0,.32)!important}
+:root.reference-film .hero-title .title-line,
+:root.reference-film .hero-title .title-line>span{color:var(--tr-ivory)!important}
+:root.reference-film .hero-title .title-line em{color:var(--tr-warm)!important}
+:root.reference-film .hero .hero-kicker{color:#f4d7aa!important;text-shadow:0 1px 14px #0009!important}
+:root.reference-film .hero-quick p{color:var(--tr-ivory)!important;text-shadow:0 2px 10px #000!important}
+:root.reference-film .hero-quick .hero-action-outline{
+  border-color:rgba(255,255,255,.78)!important;
+  background:rgba(9,13,20,.22)!important;
+}
+:root.reference-film .hero-quick .hero-action-fill{
+  background:var(--tr-warm)!important;color:#12171f!important;border-color:var(--tr-warm)!important;
+}
+:root.reference-film .hero-quick .hero-action:hover,
+:root.reference-film .hero-quick .hero-action:focus-visible{transform:translateY(-3px);box-shadow:0 10px 36px rgba(0,0,0,.32)}
+:root.reference-film .head .head-cta{border-color:rgba(255,255,255,.85)!important}
+/* A restrained signature mark made from Vishal's existing vector, not new AI artwork. */
+.tr-orb{
+  --tr-rx:0deg;--tr-ry:0deg;
+  position:absolute;z-index:3;top:clamp(166px,20vh,232px);right:clamp(36px,7vw,145px);
+  width:clamp(106px,13vw,188px);aspect-ratio:1;display:grid;place-items:center;
+  transform:perspective(680px) rotateX(var(--tr-rx)) rotateY(var(--tr-ry));
+  transform-style:preserve-3d;pointer-events:none;
+  transition:transform .46s var(--tr-ease);will-change:transform;
+}
+.tr-orb::before,.tr-orb::after{content:"";position:absolute;inset:0;border-radius:50%}
+.tr-orb::before{
+  border:1px solid rgba(239,204,153,.48);
+  background:conic-gradient(from 110deg,transparent 0 20%,rgba(235,184,121,.18) 31%,transparent 47%,rgba(205,218,224,.11) 62%,transparent 75%);
+  box-shadow:inset 0 0 38px rgba(233,195,138,.05),0 0 46px rgba(224,164,105,.08);
+  transform:translateZ(-14px) rotate(-13deg);
+}
+.tr-orb::after{inset:12%;border:1px solid rgba(251,232,196,.19);transform:translateZ(12px)}
+.tr-orb img{
+  display:block;width:73%;height:73%;object-fit:contain;transform:translateZ(28px);
+  filter:drop-shadow(0 9px 11px rgba(0,0,0,.3));
+}
+.tr-orb-label{
+  position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;font:700 8px/1.2 Arial,sans-serif;letter-spacing:.22em;color:#e0c29c;
+}
+:root.reference-film.ref-intro-complete .tr-orb{animation:tr-orb-arrive 1.35s var(--tr-ease) both}
+@keyframes tr-orb-arrive{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
+/* Signature underline: deliberate, not an animation on every line. */
+:root.reference-film .hero-title .title-line:last-child::after{
+  content:"";display:block;margin:clamp(12px,2vw,28px) auto 0;
+  width:min(21vw,275px);height:1px;background:linear-gradient(90deg,transparent,var(--tr-warm),transparent);
+  transform:scaleX(0);transform-origin:center;transition:transform 1s .56s var(--tr-ease);
+}
+:root.reference-film.ref-intro-complete .hero-title .title-line:last-child::after{transform:scaleX(1)}
+/* One transition moment between editorial intro and dark services. */
+.tr-bridge{
+  --tr-shift:0px;position:relative;isolation:isolate;overflow:hidden;
+  height:clamp(126px,17vw,235px);background:#11151b;display:flex;align-items:center;justify-content:center;
+  margin-top:-1px;color:rgba(247,240,228,.93);pointer-events:none;
+}
+.tr-bridge::before{
+  content:"";position:absolute;inset:-100% -20% 7%;z-index:-1;
+  border-radius:0 0 50% 50%;background:#f7f5f0;transform:translate3d(0,calc(-22% + var(--tr-shift)),0) rotate(-3deg);
+  transform-origin:50% 90%;box-shadow:0 24px 0 rgba(229,168,108,.78),0 51px 0 rgba(198,107,79,.33);
+}
+.tr-bridge__statement{
+  position:relative;z-index:1;margin-top:18px;
+  font:500 clamp(34px,6.7vw,102px)/.9 Arial,Helvetica,sans-serif;
+  letter-spacing:-.09em;white-space:nowrap;
+  transform:translate3d(0,22px,0);opacity:.02;transition:transform 1s var(--tr-ease),opacity 1s ease;
+  text-shadow:0 3px 12px rgba(0,0,0,.12);
+}
+.tr-bridge__statement em{font:italic 400 1em Georgia,serif;color:#f4c18d}
+.tr-bridge.is-visible .tr-bridge__statement{transform:translate3d(0,0,0);opacity:1}
+.tr-bridge__micro{
+  position:absolute;z-index:2;left:var(--gutter);bottom:21px;color:#c2bcb6;
+  font:700 9px/1.2 Arial,sans-serif;letter-spacing:.17em
+}
+/* Refine existing scenes and navigation without touching the native scroll engine. */
+:root.reference-film .work-cinematic .scene-surface{
+  box-shadow:inset 0 0 0 1px rgba(12,18,24,.09),0 32px 78px rgba(0,0,0,.14)!important;
+}
+:root.reference-film .work-cinematic .scene-link{
+  position:relative;transition:gap .5s var(--tr-ease),color .3s ease;
+}
+:root.reference-film .work-cinematic .scene-link:hover,
+:root.reference-film .work-cinematic .scene-link:focus-visible{gap:36px}
+:root.reference-film .work-heading h2,
+:root.reference-film .services-head h2{
+  text-wrap:balance;
+}
+:root.reference-film .film-brief-form input:focus-visible,
+:root.reference-film .film-brief-form textarea:focus-visible,
+:root.reference-film .film-brief-form select:focus-visible{
+  outline:2px solid var(--tr-warm);outline-offset:4px;
+}
+/* Mobile: actual work and contact take precedence over decorative technology. */
+@media(max-width:900px){.tr-orb{opacity:.55;right:4vw;top:165px;width:104px}}
+@media(max-width:760px){
+  :root.reference-film .hero{
+    background:
+      radial-gradient(ellipse at 50% 49%,rgba(228,164,103,.25),transparent 62%),
+      linear-gradient(145deg,#11151d 0%,#26201f 62%,#0c1119 100%)!important;
+  }
+  :root.reference-film .hero-portrait{filter:brightness(.78) saturate(.91) sepia(.06)!important}
+  :root.reference-film .hero .hero-kicker{
+    top:99px!important;left:20px!important;right:20px;letter-spacing:.09em!important;
+    font-size:clamp(8px,2.2vw,10px)!important;
+  }
+  :root.reference-film .hero-quick .hero-action-fill{
+    background:var(--tr-warm)!important;color:#11161f!important;border-color:var(--tr-warm)!important;
+  }
+  :root.reference-film .hero-quick .hero-action-outline{background:rgba(6,10,16,.7)!important}
+  :root.reference-film .hero-title .title-line:last-child::after{display:none}
+  .tr-orb{display:none!important}
+  .tr-bridge{height:120px}
+  .tr-bridge::before{inset:-105% -28% 12%;box-shadow:0 14px 0 rgba(229,168,108,.74),0 29px 0 rgba(198,107,79,.31)}
+  .tr-bridge__statement{font-size:clamp(28px,9.1vw,58px);margin-top:15px}
+  .tr-bridge__micro{font-size:7px;bottom:12px;left:20px}
+  :root.reference-film .work-cinematic .scene-surface{box-shadow:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .tr-orb{animation:none!important;transition:none!important;transform:none!important;will-change:auto}
+  .tr-bridge__statement{opacity:1!important;transform:none!important;transition:none!important}
+  .tr-bridge::before{transform:translateY(-22%) rotate(-3deg)!important}
+  :root.reference-film .hero-title .title-line:last-child::after{transform:scaleX(1)!important;transition:none!important}
+  :root.reference-film .hero-quick .hero-action{transition:none!important;transform:none!important}
+}
