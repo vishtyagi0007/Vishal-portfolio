@@ -49,6 +49,8 @@ jobs:
           name: verified-static-preview
           path: |
             index.html
+            trionn-direction.css
+            trionn-direction.js
             portfolio/
             robots.txt
             sitemap.xml
