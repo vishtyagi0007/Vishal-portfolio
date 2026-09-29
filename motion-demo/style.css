@@ -170,9 +170,12 @@ a:focus-visible,button:focus-visible{outline:3px solid #ffc7ae;outline-offset:5p
  .wordmark img{width:42px;height:42px}
  .wordmark strong{font-size:12px}
  .wordmark small{font-size:8px}
- .mobile-menu{display:block}
- .nav-links{display:none;position:absolute;top:69px;right:20px;left:20px;padding:22px;background:#133840;box-shadow:0 16px 40px #06171b95;flex-direction:column;align-items:stretch;gap:0}
- .site-nav.menu-open .nav-links{display:flex}
+ .site-nav:not(.menu-enhanced){flex-wrap:wrap}
+ .site-nav:not(.menu-enhanced) .nav-links{display:flex;position:static;width:100%;flex-wrap:wrap;gap:2px 12px;padding:8px 0;background:transparent;box-shadow:none;align-items:center}
+ .site-nav:not(.menu-enhanced) .nav-links a{padding:5px 0;border:0;font-size:10px;min-height:28px}
+ .menu-enhanced .mobile-menu{display:block}
+ .menu-enhanced .nav-links{display:none;position:absolute;top:69px;right:20px;left:20px;padding:22px;background:#133840;box-shadow:0 16px 40px #06171b95;flex-direction:column;align-items:stretch;gap:0}
+ .site-nav.menu-enhanced.menu-open .nav-links{display:flex}
  .nav-links a{padding:14px 10px;border-bottom:1px solid #ffffff30;min-height:46px}
  .nav-links a.nav-contact{margin-top:8px;text-align:center}
  .hero{min-height:790px;min-height:100svh}
@@ -258,3 +261,5 @@ a:focus-visible,button:focus-visible{outline:3px solid #ffc7ae;outline-offset:5p
  .film-top{position:relative;top:auto;left:auto;right:auto;padding:45px var(--gutter) 5px}
  .film-card img,.hero-portrait,.hero-glow,.statement-line,.statement::after{transform:none!important}
 }
+
+@media(max-width:760px) and (prefers-reduced-motion:reduce){.film-scene,.film-ready .film-scene{display:flex;flex-direction:column;align-items:stretch}}
