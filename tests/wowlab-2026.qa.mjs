@@ -46,6 +46,10 @@ await test('TYPE/PORTAL: native vertical scroll physically enlarges typography a
  assert(openOpacity>0,JSON.stringify({openOpacity,after}));
  assert(fullOpacity>.85,'The final project must genuinely fill the hero instead of leaving a black VT counter gap: '+JSON.stringify({fullOpacity,after}));
 });
+await test('TYPE/PORTAL: original artwork remains visible and its final title does not dominate the frame',async()=>{
+ const r=await desk.locator('.open-title strong').boundingBox();
+ assert(r&&r.width<innerWidth*.42,'Final title should leave the full original artwork prominent: '+JSON.stringify(r));
+});
 await desk.screenshot({path:'qa-screenshots/wowlab-2026/02-portal-after-scroll.png'});
 await test('TYPE/PORTAL: original project cases, logo, portrait-free opening and contact work',async()=>{
  assert.equal(await desk.locator('.work-piece').count(),3);
@@ -64,7 +68,15 @@ await test('ORBIT/WORK: five dimensional original panels, no reused split landin
  assert.equal((await desk.evaluate(()=>window.__wowQA.state.concept)),'ORBIT/WORK');
  assert.equal(await desk.locator('.hero-photo').count(),0);
 });
-await desk.waitForTimeout(260);await desk.screenshot({path:'qa-screenshots/wowlab-2026/03-orbit-first-desktop.png'});
+await desk.waitForTimeout(260);
+await test('ORBIT/WORK: full original artwork fits before the metadata footer without clipping',async()=>{
+ const box=await desk.locator('.orbit-panel[data-i="0"]').evaluate(el=>({
+  art:el.querySelector('.frame img').getBoundingClientRect().bottom,
+  footer:el.querySelector('.panel-footer').getBoundingClientRect().top
+ }));
+ assert(box.art<=box.footer+2,JSON.stringify(box));
+});
+await desk.screenshot({path:'qa-screenshots/wowlab-2026/03-orbit-first-desktop.png'});
 await test('ORBIT/WORK: native wheel advances gallery and CSS 3D panel coordinates',async()=>{
  const old=await desk.evaluate(()=>window.__wowQA.state);
  const before=await desk.locator('.orbit-panel[data-i="3"]').evaluate(el=>getComputedStyle(el).getPropertyValue('--pz'));
