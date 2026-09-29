@@ -359,6 +359,7 @@ await check("Public root original portrait, logo, projects and archive still res
   assert.equal(await publicDesk.locator("a[href='/portfolio/']").count()>0,true);
   assert.deepEqual(publicErrors,[]);
 });
+await publicDesk.waitForTimeout(1700); // Capture fully revealed hero, not the intentional first-frame entrance animation.
 await publicDesk.screenshot({path:"qa-screenshots/vt-os-next/13-production-desktop-home.png"});
 await check("Public root workspace interaction and direct hiring entrypoint",async()=>{
   await publicDesk.locator("#open-commands").click();
@@ -379,6 +380,7 @@ await check("Public root real mobile viewport: no overflow; original visuals and
   assert.equal(metrics.apps,4);
   assert(await publicMobile.locator(".hero-portrait-plate img").isVisible());
 });
+await publicMobile.waitForTimeout(1700);
 await publicMobile.screenshot({path:"qa-screenshots/vt-os-next/14-production-mobile-home.png"});
 await publicMobile.locator("#workspace").scrollIntoViewIfNeeded();
 await publicMobile.screenshot({path:"qa-screenshots/vt-os-next/15-production-mobile-workspace.png"});
