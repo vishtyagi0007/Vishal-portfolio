@@ -1,0 +1,67 @@
+name: VT SHIFT kinetic original portfolio QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'vt-shift/**'
+      - 'tests/vt-shift.qa.mjs'
+      - '.github/workflows/vt-shift-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-and-art-direction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install real Chromium browser
+        run: |
+          npm install --no-save playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Validate original project experiences, keyboard, touch, reduced motion and seven viewport sizes
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/vt-shift-http.log 2>&1 &
+          for i in {1..25}; do
+            if curl -fsS http://127.0.0.1:4173/vt-shift/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/vt-shift.qa.mjs
+      - name: Record actual original-artwork kinetic interactions in Chromium
+        run: node tests/vt-shift-capture.mjs
+      - name: Build browser-openable original-asset offline ZIP
+        run: python3 tests/package-vt-shift.py
+      - name: Prove the downloadable demo runs without a web server
+        run: node tests/vt-shift-offline.qa.mjs
+      - name: Save evidence of desktop and mobile art direction
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-shift-desktop-mobile-actual-browser
+          path: qa-screenshots/vt-shift/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Offer original-media offline bundle for private review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VT_SHIFT_OFFLINE_DEMO
+          path: |
+            dist/VT_SHIFT_OFFLINE_DEMO.zip
+            dist/VT_SHIFT_STANDALONE.html
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Archive complete runnable private prototype
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vt-shift-complete-private-site
+          path: |
+            vt-shift/
+            tests/vt-shift.qa.mjs
+            tests/vt-shift-capture.mjs
+          retention-days: 14
+          if-no-files-found: error
