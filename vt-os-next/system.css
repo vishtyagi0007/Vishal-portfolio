@@ -921,3 +921,21 @@ body{background:var(--bg);color:var(--fg)}
 
 /* Disable removed interaction surfaces. */
 .command-modal{display:none!important}
+
+
+/* Curated exhibition metadata. */
+.present-art-label{position:absolute;z-index:3;top:20px;left:22px;right:22px;display:flex;justify-content:space-between;gap:18px;align-items:center;color:#21474A;font:900 8px Arial,sans-serif;letter-spacing:.12em;pointer-events:none}
+.present-art-label strong{font-size:8px;font-weight:900;color:#21474A}
+.present-facts{width:100%;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(211,230,227,.18);border-bottom:1px solid rgba(211,230,227,.18);margin:2px 0 28px}
+.present-facts>div{padding:15px 12px 15px 0;min-width:0}
+.present-facts>div+div{padding-left:14px;border-left:1px solid rgba(211,230,227,.18)}
+.present-facts span{display:block;color:#86A8A4;font:900 8px Arial,sans-serif;letter-spacing:.13em;margin-bottom:7px}
+.present-facts strong{display:block;color:#F5F6F2;font-size:11px;line-height:1.35;font-weight:700}
+.present-foot button{max-width:280px;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:820px){
+ .present-art-label{top:12px;left:13px;right:13px;font-size:7px}
+ .present-art-label strong{font-size:7px}
+ .present-facts{margin-bottom:20px}
+ .present-facts>div{padding-top:13px;padding-bottom:13px}
+ .present-foot button{max-width:none}
+}
