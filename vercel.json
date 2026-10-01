@@ -15,5 +15,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/vt-os-next/",
+      "permanent": false
+    }
   ]
 }
