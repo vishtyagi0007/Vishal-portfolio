@@ -4,12 +4,12 @@
 
 const BASE="/portfolio/assets/";
 const PROJECTS=[
-  {name:"Resultbull.ai",group:"identity",eyebrow:"BRAND IDENTITY · WEBSITE UI",description:"Logo design and website UI for Resultbull.ai.",archive:"/portfolio/#resultbull",tone:"tone-sand",images:["resultbull.svg"]},
-  {name:"GTM Leads",group:"identity",eyebrow:"B2B BRAND IDENTITY",description:"A visual identity for a B2B buyer–seller platform.",archive:"/portfolio/#gtm",tone:"tone-sage",images:["gtm.svg"]},
-  {name:"Discover ASR",group:"campaign",eyebrow:"TRAVEL & REWARDS CAMPAIGN",description:"Travel and rewards digital campaign artwork for Discover ASR.",archive:"/portfolio/#ascott",tone:"tone-rose",images:["001-ascott-discover-asr-india-01.webp","002-ascott-discover-asr-india-02.webp","003-ascott-discover-asr-india-03.webp","004-ascott-discover-asr-india-04.webp"]},
-  {name:"Pride Hotels",group:"campaign",eyebrow:"HOSPITALITY CAMPAIGN DESIGN",description:"Vacation, hospitality and food-promotion campaign creatives.",archive:"/portfolio/#pride",tone:"tone-lime",images:["008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp","009-pride-vacation-vibes-with-pride-campaign-creatives-02.webp","010-pride-vacation-vibes-with-pride-campaign-creatives-03.webp"]},
-  {name:"Radisson Chandigarh",group:"campaign",eyebrow:"HOSPITALITY CAMPAIGN DESIGN",description:"Hospitality and weekend buffet campaign artwork.",archive:"/portfolio/#rcz",tone:"tone-blue",images:["022-rcz-weekend-buffet-carnival-1.webp","023-rcz-weekend-buffet-carnival-2.webp","024-rcz-weekend-buffet-carnival-3.webp"]},
-  {name:"Vishal Tyagi",group:"identity",eyebrow:"PERSONAL VT VISUAL IDENTITY",description:"A personal VT monogram and visual identity.",archive:"/portfolio/#vt",tone:"tone-violet",images:["vishal-tyagi-logo.svg"]}
+  {name:"Resultbull.ai",group:"identity",eyebrow:"BRAND IDENTITY · WEBSITE UI",description:"Logo design and website UI for Resultbull.ai.",role:"Identity / UI Design",focus:"Recognition / Digital Clarity",archive:"/portfolio/#resultbull",tone:"tone-sand",images:["resultbull.svg"]},
+  {name:"GTM Leads",group:"identity",eyebrow:"B2B BRAND IDENTITY",description:"A visual identity for a B2B buyer–seller platform.",role:"Brand Identity",focus:"Trust / Fast Recognition",archive:"/portfolio/#gtm",tone:"tone-sage",images:["gtm.svg"]},
+  {name:"Discover ASR",group:"campaign",eyebrow:"TRAVEL & REWARDS CAMPAIGN",description:"Travel and rewards digital campaign artwork for Discover ASR.",role:"Campaign Design",focus:"Travel / Rewards / Digital",archive:"/portfolio/#ascott",tone:"tone-rose",images:["001-ascott-discover-asr-india-01.webp","002-ascott-discover-asr-india-02.webp","003-ascott-discover-asr-india-03.webp","004-ascott-discover-asr-india-04.webp","005-ascott-discover-asr-september-1.webp","006-ascott-discover-asr-september-2.webp"]},
+  {name:"Pride Hotels",group:"campaign",eyebrow:"HOSPITALITY CAMPAIGN DESIGN",description:"Vacation, hospitality and food-promotion campaign creatives.",role:"Campaign / Art Direction",focus:"Hospitality / Multi-format",archive:"/portfolio/#pride",tone:"tone-lime",images:["008-pride-vacation-vibes-with-pride-campaign-creatives-01.webp","009-pride-vacation-vibes-with-pride-campaign-creatives-02.webp","010-pride-vacation-vibes-with-pride-campaign-creatives-03.webp","011-pride-vacation-vibes-with-pride-campaign-creatives-04.webp","012-pride-vacation-vibes-with-pride-campaign-creatives-05.webp","013-pride-malabar-food-festival-round-1-vt-2.webp"]},
+  {name:"Radisson Chandigarh",group:"campaign",eyebrow:"HOSPITALITY CAMPAIGN DESIGN",description:"Hospitality and weekend buffet campaign artwork.",role:"Campaign Design",focus:"Hospitality / Promotion",archive:"/portfolio/#rcz",tone:"tone-blue",images:["022-rcz-weekend-buffet-carnival-1.webp","023-rcz-weekend-buffet-carnival-2.webp","024-rcz-weekend-buffet-carnival-3.webp","025-rcz-weekend-buffet-carnival-new-3.webp"]},
+  {name:"Vishal Tyagi",group:"identity",eyebrow:"PERSONAL VT VISUAL IDENTITY",description:"A personal VT monogram and visual identity.",role:"Personal Identity",focus:"Designer Brand / Monogram",archive:"/portfolio/#vt",tone:"tone-violet",images:["vishal-tyagi-logo.svg","vishal-tyagi-mark.svg","vishal-tyagi-favicon.svg"]}
 ];
 
 const qs=s=>document.querySelector(s);
@@ -82,7 +82,14 @@ function updatePresentation(){
   qs("#presentation-title").textContent=p.name;
   qs("#present-description").textContent=p.description;
   qs("#present-meta").textContent=p.eyebrow;
+  qs("#present-role").textContent=p.role;
+  qs("#present-focus").textContent=p.focus;
+  qs("#present-art-count").textContent="ARTWORK "+String(presentImage+1).padStart(2,"0")+" / "+String(p.images.length).padStart(2,"0");
   qs("#present-project-no").textContent="PROJECT / "+String(currentProject+1).padStart(2,"0")+" OF "+String(PROJECTS.length).padStart(2,"0");
+  const prev=PROJECTS[(currentProject-1+PROJECTS.length)%PROJECTS.length];
+  const next=PROJECTS[(currentProject+1)%PROJECTS.length];
+  qs("#present-prev").textContent="← "+prev.name.toUpperCase();
+  qs("#present-next").textContent=next.name.toUpperCase()+" →";
   qs("#present-archive").href=p.archive;
   const dots=qs("#present-dots");
   dots.replaceChildren();
@@ -120,13 +127,6 @@ qs("#present-next").addEventListener("click",()=>{stepProject(1);presentImage=0;
 qs("#present-prev").addEventListener("click",()=>{stepProject(-1);presentImage=0;updatePresentation();});
 qs("#presentation").addEventListener("close",()=>previousFocus?.focus?.());
 qs("#present-contact").addEventListener("click",()=>presentation.close());
-qs("#presentation-copy").addEventListener("click",async()=>{
-  const b=qs("#presentation-copy");
-  try{
-    await navigator.clipboard.writeText(new URL(selectedProject().archive,location.origin).href);
-    b.textContent="COPIED ✓";
-  }catch(e){b.textContent="COPY UNAVAILABLE";}
-});
 document.addEventListener("keydown",e=>{
   if(!presentation.open||e.altKey||e.ctrlKey||e.metaKey)return;
   if(e.key==="ArrowRight"){e.preventDefault();qs("#present-next").click();}
