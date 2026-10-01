@@ -1,0 +1,17 @@
+/* Presentation directions only. Original project content and assets remain unchanged. */
+window.EXHIBITIONS={
+ resultbull:{surface:'#e8dfce',ink:'#252b2a',layout:'identity',motion:'resolve',heading:'A mark with conviction.',chapters:[[0,'The identity','A focused stage for the original mark.']]},
+ gtm:{surface:'#dce5e8',ink:'#163642',layout:'identity',motion:'resolve',heading:'Built to connect.',chapters:[[0,'The identity','The original platform identity, at reading scale.']]},
+ vt:{surface:'#e8e2d6',ink:'#143e42',layout:'identity',motion:'resolve',heading:'The signature of the system.',chapters:[[0,'VT / The monogram','The personal identity behind this workspace.']]},
+ ascott:{surface:'#e9e5e1',ink:'#352332',layout:'sequence',motion:'travel',heading:'An invitation to discover.',chapters:[[0,'Discover ASR','Travel and rewards, through the original campaign series.'],[4,'The next destination','The September campaign pair.']]},
+ pride:{surface:'#eadfcd',ink:'#392b21',layout:'hospitality',motion:'warm',heading:'A place. A flavour. A feeling.',chapters:[[0,'Vacation vibes','The five-piece destination campaign.'],[5,'At the table','Food festival and dining compositions.'],[10,'Moments together','Festive greetings and guest communication.']]},
+ rcz:{surface:'#161f25',ink:'#f2eee5',layout:'sequence',motion:'travel',heading:'A weekend worth gathering for.',chapters:[[0,'The buffet carnival','Four original expressions of the hospitality campaign.']]},
+ hyatt:{surface:'#e7e4d8',ink:'#303625',layout:'hospitality',motion:'warm',heading:'Everyday rituals, reimagined.',chapters:[[0,'Wellness & dining','Seasonal moments from the original creative collection.'],[2,'Shared occasions','Friendship, celebration and the next dining moment.']]},
+ 'radisson-mumbai':{surface:'#dbdfd4',ink:'#293628',layout:'hospitality',motion:'warm',heading:'Food becomes a destination.',chapters:[[0,'Regional flavours','The Konkan and Kerala dining compositions.'],[2,'A different perspective','The original photowalk pair.']]},
+ namah:{surface:'#27291f',ink:'#f2ecd9',layout:'hospitality',motion:'warm',heading:'Room for a little indulgence.',chapters:[[0,'At Namah','Three original food and property compositions.']]},
+ oakwood:{surface:'#e9dfe6',ink:'#442d40',layout:'sequence',motion:'travel',heading:'Reasons to celebrate.',chapters:[[0,'Celebration, in two frames','Anniversary and festive dining artwork.']]},
+ signum:{surface:'#dce2d7',ink:'#273b32',layout:'poster',motion:'resolve',heading:'An invitation to get away.',chapters:[[0,'The property invitation','The original package-promotion composition.']]},
+ ginger:{surface:'#e8decb',ink:'#46362d',layout:'print',motion:'page',heading:'A destination, on paper.',chapters:[[0,'The opening page','Original launch and destination collateral.'],[1,'The reading sequence','Continue through the supplied booklet compositions.']]},
+ citadines:{surface:'#1c2b32',ink:'#edf1e8',layout:'poster',motion:'page',heading:'An occasion, at full scale.',chapters:[[0,'The standee','A tall composition with space to read every detail.']]},
+ archive:{surface:'#202729',ink:'#f2eee5',layout:'archive',motion:'resolve',heading:'Further explorations.',chapters:[[0,'Hospitality & occasions','Additional original artwork, in supplied order.'],[25,'Social compositions','A wider set of visual explorations.'],[35,'The personal collection','Original Vishal artwork.']]}
+};
