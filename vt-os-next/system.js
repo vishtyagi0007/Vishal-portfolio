@@ -17,7 +17,7 @@ const qs=s=>document.querySelector(s);
 const qsa=s=>[...document.querySelectorAll(s)];
 const root=document.documentElement;
 const reduced=matchMedia("(prefers-reduced-motion: reduce)");
-const desktop=matchMedia("(min-width:1200px) and (min-height:730px)");
+const desktop=matchMedia("(min-width:9999px)");
 const fine=matchMedia("(hover:hover) and (pointer:fine)");
 const stage=qs("#os-stage");
 const windows=qsa("[data-window]");
@@ -245,7 +245,19 @@ qsa("[data-reel]").forEach(b=>b.addEventListener("click",()=>{
  qsa("[data-reel]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
 }));
 qsa('[data-minimize="motion"]').forEach(b=>b.addEventListener("click",()=>video.pause()));
-qs("#launch-motion").addEventListener("click",()=>openApp("motion"));
+const mainMotion=qs("#main-motion-video");
+let mainMotionVertical=false;
+qs("#launch-motion").addEventListener("click",()=>{
+ if(!mainMotion)return;
+ mainMotion.pause();
+ mainMotionVertical=!mainMotionVertical;
+ const src=mainMotion.querySelector("source");
+ src.src=BASE+(mainMotionVertical?"motion-vertical.mp4":"motion-selected.mp4");
+ mainMotion.poster=BASE+(mainMotionVertical?"motion-vertical.jpg":"motion-selected.png");
+ mainMotion.setAttribute("aria-label",mainMotionVertical?"Original vertical motion work":"Original selected motion work");
+ mainMotion.load();
+ qs("#launch-motion").textContent=mainMotionVertical?"VIEW SELECTED REEL ↗":"VIEW VERTICAL REEL ↗";
+});
 
 /* Fullscreen original-artwork presentation. A native dialog, no spoofed fullscreen request. */
 let presentImage=0;
@@ -258,6 +270,7 @@ function updatePresentation(){
  qs("#presentation-title").textContent=p.name;
  qs("#present-description").textContent=p.description;
  qs("#present-meta").textContent=p.eyebrow;
+ presentation.dataset.tone=p.tone;
  qs("#present-project-no").textContent="PROJECT / "+String(currentProject+1).padStart(2,"0")+" OF 06";
  qs("#present-archive").href=p.archive;
  const dots=qs("#present-dots");dots.replaceChildren();
@@ -278,7 +291,23 @@ function present(){
 }
 qs("#present-project").addEventListener("click",present);
 qs("#dock-present").addEventListener("click",present);
-qs("#presentation-close").addEventListener("click",()=>presentation.close());
+qs("#presentation-close").addEventListener("click",async()=>{
+ if(document.fullscreenElement===presentation){try{await document.exitFullscreen()}catch(e){}}
+ presentation.close();
+});
+const fullscreenButton=qs("#presentation-fullscreen");
+fullscreenButton?.addEventListener("click",async()=>{
+ try{
+   if(document.fullscreenElement===presentation){
+     await document.exitFullscreen();
+   }else{
+     await presentation.requestFullscreen();
+   }
+ }catch(e){}
+});
+document.addEventListener("fullscreenchange",()=>{
+ if(fullscreenButton)fullscreenButton.textContent=document.fullscreenElement===presentation?"EXIT FULLSCREEN ✕":"FULLSCREEN ⛶";
+});
 qs("#present-next").addEventListener("click",()=>{selectProject((currentProject+1)%PROJECTS.length);presentImage=0;updatePresentation()});
 qs("#present-prev").addEventListener("click",()=>{selectProject((currentProject-1+PROJECTS.length)%PROJECTS.length);presentImage=0;updatePresentation()});
 qs("#presentation").addEventListener("close",()=>previousFocus?.focus?.());
@@ -327,6 +356,7 @@ function execute(action){
  action.run();
 }
 function openCommands(){
+ return;
  if(presentation.open)presentation.close();
  if(commands.open){commands.close();return}
  renderCommands();
@@ -374,7 +404,7 @@ qs("#theme-toggle").addEventListener("click",()=>{
 });
 
 /* Native scroll-to-horizontal project stories, only at wide screen sizes without reduced motion. */
-const storyDesktop=matchMedia("(min-width:1200px) and (min-height:730px)");
+const storyDesktop=matchMedia("(min-width:9999px)");
 let measureRAF=0;
 function measureStories(){
  const eligible=storyDesktop.matches&&!reduced.matches;
