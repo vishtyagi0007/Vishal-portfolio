@@ -917,3 +917,7 @@ body{background:var(--bg);color:var(--fg)}
 @media(prefers-reduced-motion:reduce){
   .top-nav a::after,.canvas-visual img,.presentation .present-art{transition:none!important}
 }
+
+
+/* Disable removed interaction surfaces. */
+.command-modal{display:none!important}
