@@ -160,3 +160,5 @@ img.deferred-image{display:none}.enhanced img.deferred-image{display:block}
  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) {animation:none!important}
 }
 
+::view-transition {pointer-events:none}
+
