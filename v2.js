@@ -10,9 +10,12 @@
       document.documentElement.dataset.qaLcp = String(Math.round(entry.startTime));
     })).observe({type:'largest-contentful-paint',buffered:true});
   }
-  const legacy = location.pathname.startsWith('/portfolio') && location.hash.slice(1);
+  const legacy = (location.pathname.startsWith('/portfolio') || location.pathname === '/') && location.hash.slice(1);
   const ids = ['pride','ascott','ginger','rcz','gtm','resultbull','vt','hyatt','radisson-mumbai','namah','oakwood','signum','citadines','archive'];
-  if (legacy && ids.includes(legacy)) { location.replace('/work/' + legacy + '/'); return; }
+  const aliases = {identity:'resultbull',campaigns:'ascott',print:'ginger',additional:'archive',radisson:'rcz'};
+  const project = aliases[legacy] || legacy;
+  if (project && ids.includes(project)) { location.replace('/work/' + project + '/'); return; }
+  if (legacy === 'workspace' || legacy === 'home') { location.replace(legacy === 'workspace' ? '/#work' : '/'); return; }
   const dialog = document.querySelector('.lightbox');
   let source;
   document.querySelectorAll('[data-art]').forEach(button => button.addEventListener('click', () => {
